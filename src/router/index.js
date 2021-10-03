@@ -11,9 +11,13 @@ const DokumenOPD = () => import('@/views/menu/dokumen-opd')
 const Download = () => import('@/views/menu/download')
 const Pesan = () => import('@/views/menu/pesan')
 const OnlineChat = () => import('@/views/menu/online-chat')
-
+const MasterUser = () => import('@/views/menu/master-user')
+const MasterOPD = () => import('@/views/menu/master-opd')
+const MasterRole = () => import('@/views/menu/master-role')
 const History = () => import('@/views/menu/history')
 const Gallery = () => import('@/views/menu/gallery')
+const TipeDokumen = () => import('@/views/menu/tipe-dokumen')
+const DetailAgenda = () => import('@/views/menu/detail-agenda')
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
@@ -34,6 +38,8 @@ export default new Router({
   routes: configRoutes()
 })
 
+
+
 function configRoutes () {
   return [
     {
@@ -49,13 +55,54 @@ function configRoutes () {
         },
         {
           path: 'agenda',
+          redirect: '/agenda/list',
           name: 'Agenda',
-          component: Agenda
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'list',
+              name: 'Agenda list',
+              component: Agenda
+            },
+            {
+              path: 'detail',
+              name: 'Detail Agenda',
+              component: DetailAgenda
+            },
+           
+          ]
         },
         {
           path: 'history',
           name: 'History',
           component: History
+        },
+        {
+          path: 'master-user',
+          redirect: '/master-user/user',
+          name: 'Master User',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'user',
+              name: 'User data',
+              component: MasterUser
+            },
+            {
+              path: 'opd',
+              name: 'OPD',
+              component: MasterOPD
+            },
+            {
+              path: 'role',
+              name: 'Role',
+              component: MasterRole
+            }
+          ]
         },
         {
           path: 'gallery',
@@ -79,6 +126,11 @@ function configRoutes () {
               path: 'download',
               name: 'Download',
               component: Download
+            },
+            {
+              path: 'tipe-dokumen',
+              name: 'Tipe Dokumen',
+              component: TipeDokumen
             }
           ]
         },

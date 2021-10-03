@@ -32,7 +32,9 @@
 
     <CDropdownDivider />
 
-    <CDropdownItem> <CIcon name="cil-lock-locked" /> Logout </CDropdownItem>
+    <CDropdownItem @click="logout()">
+      <CIcon name="cil-lock-locked" /> Logout
+    </CDropdownItem>
   </CDropdown>
 </template>
 
@@ -43,6 +45,15 @@ export default {
     return {
       itemsCount: 42,
     };
+  },
+
+  methods: {
+    logout() {
+      this.$store.dispatch("auth/logout").then(() => {
+        this.$toast.success("Logout Berhasil");
+        this.$router.replace({ path: "pages/login" });
+      });
+    },
   },
 };
 </script>

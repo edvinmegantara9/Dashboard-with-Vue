@@ -16,11 +16,26 @@ export default [
         _name: 'CSidebarNavTitle',
         _children: ['Menu']
       },
+      
       {
-        _name: 'CSidebarNavItem',
+        _name: 'CSidebarNavDropdown',
         name: 'Agenda Bappeda',
-        to: '/agenda',
-        icon: 'cil-calendar'
+        route: '/agenda',
+        icon: 'cil-calendar',
+        items: [
+          {
+            name: 'Daftar Agenda',
+            to: '/agenda/list',
+           
+          },
+          {
+            name: 'Detail Agenda',
+            to: '/agenda/detail',
+           
+          },
+         
+        
+        ]
       },
       {
         _name: 'CSidebarNavDropdown',
@@ -31,6 +46,11 @@ export default [
           {
             name: 'Dokumen OPD',
             to: '/data/dokumen-opd',
+           
+          },
+          {
+            name: 'Tipe Dokumen',
+            to: '/data/tipe-dokumen',
            
           },
           {
@@ -71,6 +91,30 @@ export default [
         name: 'Gallery',
         to: '/gallery',
         icon: 'cil-puzzle'
+      },
+
+      {
+        _name: 'CSidebarNavDropdown',
+        name: 'Master User',
+        route: '/master-user',
+        icon: 'cil-user',
+        items: [
+          {
+            name: 'User',
+            to: '/master-user/user',
+           
+          },
+          {
+            name: 'OPD',
+            to: '/master-user/opd'
+          },
+
+          {
+            name: 'Role',
+            to: '/master-user/role'
+          },
+        
+        ]
       },
      
     ]
