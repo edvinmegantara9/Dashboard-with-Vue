@@ -38,6 +38,7 @@
     "@coreui/vue": "^3.2.9",
     "@coreui/vue-chartjs": "^1.0.6",
     "axios": "^0.22.0",
+    "v-calendar": "^2.3.2",
     "vue": "~2.6.12",
     "vue-loading-overlay": "^3.4.2",
     "vue-pagination-2": "^3.0.91",
