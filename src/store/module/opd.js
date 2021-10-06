@@ -29,6 +29,29 @@ export default {
             });
         },
 
+        updateOPD(_,{id,data}){
+            return new Promise((resolve, reject) => {
+                axios.put('/opd/update/'+ id, data).then(resp => {
+                   
+                    resolve(resp.data);
+                }).catch(e => {
+                    reject(e);
+                })
+            });
+        },
+
+        deleteOPD(_,id){
+            return new Promise((resolve, reject) => {
+                axios.delete('/opd/delete/'+ id).then(resp => {
+                   
+                    resolve(resp.data);
+                }).catch(e => {
+                    reject(e);
+                })
+            });
+        },
+
+
 
 
     },

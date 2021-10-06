@@ -184,6 +184,7 @@ export default {
     edit(item) {
       console.log(item);
       var data = JSON.parse(JSON.stringify(item));
+      console.log("opds", item.opds);
       this.form = data;
       this.form.is_opd = data.is_opd == "Ya" ? 1 : 0;
       this.isUpdate = true;
@@ -191,6 +192,12 @@ export default {
     },
     update() {
       var loading = this.$loading.show();
+      if (this.form.is_opd == 1) {
+        this.form.opds = [];
+      }
+      if (this.form.opd) {
+        delete this.form.opd;
+      }
       this.$store
         .dispatch("role/updateRole", { id: this.form.id, data: this.form })
         .then(() => {
@@ -272,7 +279,20 @@ export default {
           name: item.name,
           is_opd: item.is_opd == 0 ? "Tidak" : "Ya",
           created_at: item.created_at.slice(0, 10),
-          opd: item.opd.length > 0 ? item.opd.join() : "Tidak ada",
+          opds: item.opd.map((e) => {
+            return {
+              value: e.id,
+              label: e.name,
+            };
+          }),
+          opd:
+            item.opd.length > 0
+              ? item.opd
+                  .map((e) => {
+                    return e.name;
+                  })
+                  .join()
+              : "Tidak ada",
         };
       });
     },
@@ -280,7 +300,7 @@ export default {
       return this.opds.map((item) => {
         return {
           value: item.id,
-          label: item.opd.name,
+          label: item.opd ? item.opd.name : "Tidak ada",
         };
       });
     },
