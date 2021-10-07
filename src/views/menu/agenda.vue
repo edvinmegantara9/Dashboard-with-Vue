@@ -154,7 +154,6 @@
 import Vue from 'vue';
 import VCalendar from "v-calendar";
 import axios from 'axios';
-import qs from "qs";
 
 Vue.use(VCalendar)
 
@@ -283,7 +282,6 @@ export default {
       this.page = page;
       this.params.page = page;
       this.getData();
-      console.log(page);
     },
     addSchedule(index){
       this.form_schedules.push({
@@ -312,15 +310,7 @@ export default {
     }
   },
   computed: {
-    // schedule () {
-    //   return this.form_schedules.map((item) => {
-    //     return {
-    //       ...item,
-    //       agenda_type: item.agenda_type,
-    //       schedule: item.schedule
-    //     }
-    //   });
-    // }
+    //
   },
   mounted() {
     this.getData();
