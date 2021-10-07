@@ -96,6 +96,29 @@ Vue.use(VueToast, {
 // pagination
 Vue.component('pagination', Pagination);
 
+// Firebase
+import firebase from "firebase/compat/app";
+import 'firebase/compat/storage';
+import "firebase/compat/analytics";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+
+const firebaseConfig = 
+{
+  apiKey: "AIzaSyCwAACGH2QF99QhbQuv3xDxwJFRdxplgYg",
+  projectId: "bwa-flutix-2246a",
+  storageBucket: "bwa-flutix-2246a.appspot.com",
+  messagingSenderId: "359270072999",
+  appId: "1:359270072999:android:8462c6eb8c5d54a9975182",
+};
+
+firebase.initializeApp(firebaseConfig);
+
+// Select-2
+import Select2 from 'v-select2-component';
+
+Vue.component('Select2', Select2);
+
 new Vue({
   el: '#app',
   router,

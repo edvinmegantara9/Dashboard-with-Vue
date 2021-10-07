@@ -19,6 +19,16 @@ export default {
             });
         },
 
+        me(_){
+            return new Promise((resolve, reject) => {
+                axios.get('/me').then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e);
+                })
+            });
+        },
+
         logout(_){
             return new Promise(resolve => {
                 localStorage.removeItem('token');            

@@ -4,7 +4,7 @@ import auth from './module/auth'
 import user from './module/user'
 import role from './module/role'
 import opd from './module/opd'
-
+import docs from './module/docs'
 
 
 Vue.use(Vuex)
@@ -34,7 +34,8 @@ export default new Vuex.Store({
     auth,
     user,
     role,
-    opd
+    opd,
+    docs,
   },
   mutations
 })
