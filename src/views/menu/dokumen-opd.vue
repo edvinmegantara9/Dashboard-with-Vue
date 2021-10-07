@@ -50,7 +50,10 @@
               <template v-if="modalTitle == 'Unduh Data'">
                 <p class="text-center">Apakah Anda yakin ingin mengunduh data ini?</p>
               </template>
-              <p class="text-danger text-center">{{ newData.name }}</p>
+              <ul v-for="check in checklist" :key="check.id">
+                <li>{{ check.title }}</li>
+              </ul>
+              <!-- <p class="text-danger text-center">{{ newData.name }}</p> -->
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-dark rounded shadow" @click="hideConfirm">
@@ -59,7 +62,7 @@
               <button type="button" class="btn btn-danger rounded shadow" v-if="modalTitle == 'Hapus Data'" @click="deleteData">
                 Hapus
               </button>
-              <button type="button" class="btn btn-warning rounded shadow" v-if="modalTitle == 'Unduh Data'" @click="downloadData()">
+              <button type="button" class="btn btn-warning rounded shadow" v-if="modalTitle == 'Unduh Data'" @click="downloadData">
                 Unduh
               </button>
             </div>
@@ -73,9 +76,13 @@
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-9">
-              <button type="button" class="mx-2 btn btn-danger rounded shadow">
+              <button v-if="checklist.length > 0" type="button" class="mx-2 btn btn-danger rounded shadow" @click="confirmDelete">
                 Delete Checklist</button>
-              <button type="button" class="mx-2 btn btn-warning rounded shadow">
+              <button v-else type="button" class="mx-2 btn btn-danger rounded shadow">
+                Delete Checklist</button>
+              <button v-if="checklist.length > 0" type="button" class="mx-2 btn btn-warning rounded shadow">
+                Download Checklist</button>
+              <button v-else type="button" class="mx-2 btn btn-warning rounded shadow">
                 Download Checklist</button>
               <button type="button" class="mx-2 btn bg-original rounded shadow" @click="addNewForm">+ Document</button>
             </div>
@@ -91,7 +98,7 @@
                 <tr>
                   <th scope="col">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="docAll">
+                      <input class="form-check-input" type="checkbox" @click="checkAll" id="doc">
                       <label class="form-check-label" for="docAll"></label>
                     </div>
                   </th>
@@ -106,8 +113,8 @@
                 <tr v-for="doc in documents" :key="doc.id">
                   <th scope="col">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="doc.id">
-                      <label class="form-check-label" for="doc.id"></label>
+                      <input class="form-check-input" type="checkbox" :id="doc.id" :value="doc" v-model="checklist">
+                      <label class="form-check-label" :for="doc.id"></label>
                     </div>
                   </th>
                   <td>{{ doc.title }}</td>
@@ -146,6 +153,8 @@ export default {
       documents : {},
       documentsType : {},
       progress : 0,
+      checklist : [],
+      success : null,
       // modal
       modalTitle : "",
       isModalVisible : false,
@@ -222,15 +231,24 @@ export default {
       .catch((err) => { console.log(err); alert("Gagal Mengolah Data!!\n\n" + err); });
     },
     deleteData() {
-      this.$store
-      .dispatch("docs/deleteDocumentsType", this.newData.id)
-      .then((resp) => { 
-        console.log(resp);
+      this.checklist.forEach(element => {
+        this.$store
+        .dispatch("docs/deleteDocuments", element.id)
+        .then((resp) => { 
+          console.log(resp);
+          this.success = true;
+        })
+        .catch((err) => { console.log(err); this.success = err; });
+      });
+      if (this.success == true) {
         this.hideConfirm();
         alert("Data Berhasil Dihapus!!");
-        this.getDocumentsType();
-      })
-      .catch((err) => { console.log(err); alert("Gagal Mengolah Data!!\n\n" + err); });
+        this.getDocuments();
+      } else {
+        this.hideConfirm();
+        alert("Gagal Mengolah Data!!\n\n" + this.success);
+        this.getDocuments();
+      }
     },
     selectFile(event) {
       console.log(event);
@@ -266,6 +284,19 @@ export default {
     downloadFile(url) {
       window.open(url,'_blank');
     },
+    downloadData() {
+      let number = null;
+      this.checklist.forEach((element, index) => {
+        window.open(element.file, '_blank');
+        number = number + (index+1);
+      });
+      if (number == this.checklist.length) {
+        this.hideConfirm();
+      }
+    },
+    checkAll(){
+      alert("ok") 
+    },
 
     // FORMS
     // #####################
@@ -285,8 +316,7 @@ export default {
 
     // CONFIRMATION
     // #####################
-    confirmDelete(type) {
-      this.newData = type;
+    confirmDelete() {
       this.modalTitle = "Hapus Data"
       this.isConfirmVisible = true;
     },
@@ -296,6 +326,7 @@ export default {
     },
     hideConfirm(){
       this.newData = {};
+      this.checklist = [];
       this.isConfirmVisible = false;
     },
 
