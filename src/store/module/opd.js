@@ -7,9 +7,9 @@ export default {
     mutations: {},
     actions: {
 
-        getRole(_,_params){
+        getOPD(_,_params){
             return new Promise((resolve, reject) => {
-                axios.get('/role', {params: _params}).then(resp => {
+                axios.get('/opd', {params: _params}).then(resp => {
                    
                     resolve(resp.data);
                 }).catch(e => {
@@ -18,9 +18,9 @@ export default {
             });
         },
 
-        addRole(_,data){
+        addOPD(_,data){
             return new Promise((resolve, reject) => {
-                axios.post('/role', data).then(resp => {
+                axios.post('/opd', data).then(resp => {
                    
                     resolve(resp.data);
                 }).catch(e => {
@@ -29,25 +29,28 @@ export default {
             });
         },
 
-        updateRole(_, {id,data}){
-            return new Promise((resolve,reject) => {
-                axios.put('role/update/'+ id, data).then(resp => {
-                    resolve(resp);
+        updateOPD(_,{id,data}){
+            return new Promise((resolve, reject) => {
+                axios.put('/opd/update/'+ id, data).then(resp => {
+                   
+                    resolve(resp.data);
                 }).catch(e => {
-                    reject(e)
+                    reject(e);
                 })
-            })
+            });
         },
 
-        deleteRole(_, id){
-            return new Promise((resolve,reject) => {
-                axios.delete('role/delete/'+ id).then(resp => {
-                    resolve(resp);
+        deleteOPD(_,id){
+            return new Promise((resolve, reject) => {
+                axios.delete('/opd/delete/'+ id).then(resp => {
+                   
+                    resolve(resp.data);
                 }).catch(e => {
-                    reject(e)
+                    reject(e);
                 })
-            })
-        }
+            });
+        },
+
 
 
 

@@ -15,6 +15,11 @@ import Pagination from 'vue-pagination-2';
 import VueToast from 'vue-toast-notification';
 //import 'vue-toast-notification/dist/theme-default.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
+//  select multiple 
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+// select
+Vue.component('v-select', vSelect)
 
 Vue.config.performance = true
 Vue.use(CoreuiVue)

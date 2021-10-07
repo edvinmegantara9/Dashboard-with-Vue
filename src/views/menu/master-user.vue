@@ -267,7 +267,7 @@ export default {
       return this.items.map((item) => {
         return {
           ...item,
-          role: item.role.name,
+          role: item.role ? item.role.name : "Tidak ada",
         };
       });
     },
