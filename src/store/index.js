@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import auth from './module/auth'
 import user from './module/user'
 import role from './module/role'
+import docs from './module/docs'
 
 
 Vue.use(Vuex)
@@ -31,7 +32,8 @@ export default new Vuex.Store({
   modules: {
     auth,
     user,
-    role
+    role,
+    docs,
   },
   mutations
 })
