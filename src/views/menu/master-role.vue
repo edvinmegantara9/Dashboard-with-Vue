@@ -161,11 +161,13 @@ export default {
   methods: {
     submit() {
       if (this.form.opds) {
+        // console.log("before ", this.form);
         var opds = this.form.opds.map((e) => {
           return e.value;
         });
         this.form.opds = opds;
       }
+      console.log("after", this.form);
       this.createModal = false;
       var loading = this.$loading.show();
       this.$store
@@ -306,7 +308,7 @@ export default {
     computedOPD() {
       return this.opds.map((item) => {
         return {
-          value: item.id,
+          value: item.opd ? item.opd.id : item.opd_id,
           label: item.opd ? item.opd.name : "Tidak ada",
         };
       });
