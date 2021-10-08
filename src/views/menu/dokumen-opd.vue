@@ -55,11 +55,11 @@
         >
           <template #action="{ item }">
             <td class="py-2">
-              <CButton 
-                @click="download(item)" 
+              <CButton
+                @click="download(item)"
                 class="mr-2"
-                color="success" 
-                square 
+                color="success"
+                square
                 size="sm"
               >
                 Download
@@ -108,7 +108,12 @@
         <div class="col">
           <div class="div" v-if="!isUpdate">
             <label class="form-label" for="newData.file">Upload File</label>
-            <input type="file" class="form-control" id="newData.file" @change="selectFile">
+            <input
+              type="file"
+              class="form-control"
+              id="newData.file"
+              @change="selectFile"
+            />
           </div>
           <CInput
             v-if="isUpdate"
@@ -122,15 +127,14 @@
           <CSelect
             :value.sync="form.document_type"
             label="Tipe"
+            placeholder="Pilih"
             :options="computedTypes"
           />
         </div>
       </div>
       <template slot="footer">
         <div>
-          <button @click="cancel" class="btn btn-secondary mr-3">
-            Batal
-          </button>
+          <button @click="cancel" class="btn btn-secondary mr-3">Batal</button>
 
           <button @click="submit" v-if="!isUpdate" class="btn btn-primary">
             Tambah Dokumen
@@ -207,51 +211,57 @@ export default {
     submit() {
       var loading = this.$loading.show();
       this.$store
-      .dispatch("auth/me")
-      .then((resp) => { 
-        console.log(resp.data)
-        this.form.upload_by = resp.data.id;
-        console.log(this.form)
-        this.$store
-        .dispatch("docs/addDocuments", this.form)
-        .then(() => {
-          this.$toast.success("Berhasil menambahkan dokumen");
-          loading.hide();
-          this.createModal = false;
-          this.form = {};
-          this.getDocuments();
+        .dispatch("auth/me")
+        .then((resp) => {
+          console.log(resp.data);
+          this.form.upload_by = resp.data.id;
+          console.log(this.form);
+          this.$store
+            .dispatch("docs/addDocuments", this.form)
+            .then(() => {
+              this.$toast.success("Berhasil menambahkan dokumen");
+              loading.hide();
+              this.createModal = false;
+              this.form = {};
+              this.getDocuments();
+            })
+            .catch((e) => {
+              this.$toast.error(e);
+              loading.hide();
+            });
         })
         .catch((e) => {
           this.$toast.error(e);
           loading.hide();
         });
-      })
-      .catch((e) => {
-        this.$toast.error(e);
-        loading.hide();
-      });
     },
     edit(item) {
-      this.form = item;
-      this.docTypes.forEach(element => {
+      var data = JSON.parse(JSON.stringify(item));
+      delete data.updated_at;
+      delete data.deleted_at;
+      delete data.created_at;
+
+      this.form = data;
+      this.form.upload_by = data.uploader.id;
+      this.docTypes.forEach((element) => {
         if (this.form.document_type == element.name) {
-          this.form.document_type = element.id
+          this.form.document_type = element.id;
         }
       });
       this.isUpdate = true;
       this.createModal = true;
     },
-    download(item){
-      window.open(item.file, '_blank');
+    download(item) {
+      window.open(item.file, "_blank");
     },
-    cancel(){
-      this.docTypes.forEach(element => {
+    cancel() {
+      this.docTypes.forEach((element) => {
         if (this.form.document_type == element.id) {
-          this.form.document_type = element.name
+          this.form.document_type = element.name;
         }
       });
       this.form = {};
-      this.createModal = false
+      this.createModal = false;
     },
     update() {
       var loading = this.$loading.show();
@@ -293,20 +303,20 @@ export default {
           this.items = resp.data.data;
           this.total = resp.data.total;
           this.$store
-          .dispatch("user/getUser", this.params)
-          .then((resp) => {
-            this.users = resp.data.data;
-            this.items.forEach(element => {
-              this.users.forEach(e=> {
-                if (element.upload_by == e.id) {
-                  element.upload_by = e.role.name;
-                }
+            .dispatch("user/getUser", this.params)
+            .then((resp) => {
+              this.users = resp.data.data;
+              this.items.forEach((element) => {
+                this.users.forEach((e) => {
+                  if (element.upload_by == e.id) {
+                    element.upload_by = e.role.name;
+                  }
+                });
               });
+            })
+            .catch((e) => {
+              this.$toast.error(e);
             });
-          })
-          .catch((e) => {
-            this.$toast.error(e);
-          });
           loading.hide();
         })
         .catch((e) => {
@@ -342,6 +352,8 @@ export default {
         return {
           ...item,
           document_type: item.document_type.name,
+          upload_by: item.uploader.name,
+          updated_at: item.updated_at.slice(0, 10),
         };
       });
     },

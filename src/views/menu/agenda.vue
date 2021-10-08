@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>Agenda BAPPEDA</h3>
-    <hr>
+    <hr />
     <div class="row">
       <div class="col-md-8 pr-md-5">
         <CCard>
@@ -9,24 +9,38 @@
             <CListGroup v-if="agendas.length > 0">
               <CListGroupItem v-for="agenda in agendas" :key="agenda.id">
                 <table>
-                  <tr>
-                    <td rowspan="2"><CIcon name="cil-bookmark" size="custom-size" :height="35"/></td>
-                    <td><CLink @click="show(agenda)" href="#" class="font-weight-bold h5" color="primary" style="text-decoration: none">{{ agenda.title }}</CLink></td>
+                  <tr class="mb-2">
+                    <td rowspan="4">
+                      <CIcon
+                        name="cil-bookmark"
+                        size="custom-size"
+                        class="mr-3"
+                        :height="35"
+                      />
+                    </td>
+                    <td>
+                      <CLink
+                        @click="show(agenda)"
+                        href="#"
+                        class="font-weight-bold h5"
+                        color="primary"
+                        style="text-decoration: none"
+                        >{{ agenda.title }}</CLink
+                      >
+                    </td>
                   </tr>
                   <tr>
-                    <td>{{ agenda.content }}</td>
+                    <td>{{ agenda.content.slice(0, 75) + "...." }}</td>
                   </tr>
                 </table>
               </CListGroupItem>
             </CListGroup>
             <CListGroup v-else>
               <CListGroupItem>
-                <div class="row">
-                  Tidak ada agenda
-                </div>
+                <div class="row">Tidak ada agenda</div>
               </CListGroupItem>
             </CListGroup>
-            <CPagination 
+            <CPagination
               v-if="total > 5"
               :records="total"
               :per-page="params.row"
@@ -39,16 +53,17 @@
         </CCard>
       </div>
       <div class="col-md-4 text-center">
-        <div class="row">
+        <div class="row mb-3">
           <div class="col-12">
-            <button @click="create" class="btn btn-primary">Tambah Agenda</button>
+            <button @click="create" class="btn btn-primary">
+              Tambah Agenda
+            </button>
+            <br />
           </div>
         </div>
         <div class="row">
-          <div class="col-12"><v-calendar
-            title-position="left"
-            :attributes="attrs"
-          />
+          <div class="col-12">
+            <v-calendar title-position="left" :attributes="attrs" />
           </div>
         </div>
       </div>
@@ -67,7 +82,7 @@
               placeholder="Judul..."
               v-bind:readonly="isShow"
             />
-            <CInput 
+            <CInput
               v-model="form.content"
               label="Deskripsi"
               placeholder="Deskripsi..."
@@ -77,11 +92,17 @@
         </CRow>
         <CRow>
           <CCol>
-            <h4>Detail</h4><br/>
+            <h4>Detail</h4>
+            <br />
             <CContainer fluid>
-              <CRow v-for="(item, k) in form_schedules" :key="k" alignVertical="center" aignHorizontal="center">
+              <CRow
+                v-for="(item, k) in form_schedules"
+                :key="k"
+                alignVertical="center"
+                aignHorizontal="center"
+              >
                 <CCol md="5">
-                  <CInput 
+                  <CInput
                     v-model="item.agenda_type"
                     label="Jenis Agenda"
                     placeholder="Jenis agenda..."
@@ -89,7 +110,7 @@
                   />
                 </CCol>
                 <CCol md="5">
-                  <CInput 
+                  <CInput
                     v-model="item.schedule"
                     label="Jadwal"
                     placeholder="Jadwal"
@@ -97,9 +118,9 @@
                   />
                 </CCol>
                 <CCol md="2" class="py-auto px-auto">
-                  <CButton 
-                    color="danger" 
-                    class="btn-pill" 
+                  <CButton
+                    color="danger"
+                    class="btn-pill"
                     size="sm"
                     @click="removeSchedule(k)"
                     v-if="!isShow"
@@ -110,9 +131,9 @@
               </CRow>
               <CRow class="text-center">
                 <CCol>
-                  <CButton 
-                    color="secondary" 
-                    class="text-primary w-100" 
+                  <CButton
+                    color="secondary"
+                    class="text-primary w-100"
                     @click="addSchedule"
                     v-if="!isShow"
                   >
@@ -125,7 +146,11 @@
         </CRow>
         <template slot="footer">
           <div class="row">
-            <button @click="destroy(form.id)" v-if="isUpdate || isShow" class="btn btn-danger mr-5">
+            <button
+              @click="destroy(form.id)"
+              v-if="isUpdate || isShow"
+              class="btn btn-danger mr-5"
+            >
               Hapus Agenda
             </button>
 
@@ -133,16 +158,27 @@
               Batal
             </button>
 
-            <button @click="store" v-if="!isUpdate && !isShow" class="btn btn-primary">
+            <button
+              @click="store"
+              v-if="!isUpdate && !isShow"
+              class="btn btn-primary"
+            >
               Tambah Agenda
             </button>
-            <button @click="edit" v-if="!isUpdate && isShow" class="btn btn-warning">
+            <button
+              @click="edit"
+              v-if="!isUpdate && isShow"
+              class="btn btn-warning"
+            >
               Edit Agenda
             </button>
-            <button @click="update" v-if="isUpdate && !isShow" class="btn btn-primary">
+            <button
+              @click="update"
+              v-if="isUpdate && !isShow"
+              class="btn btn-primary"
+            >
               Update Agenda
             </button>
-
           </div>
         </template>
       </CModal>
@@ -151,25 +187,25 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 import VCalendar from "v-calendar";
-import axios from 'axios';
+import axios from "axios";
 
-Vue.use(VCalendar)
+Vue.use(VCalendar);
 
 export default {
   data() {
     return {
       attrs: [
         {
-          key: 'today',
+          key: "today",
           highlight: {
-            color: 'purple',
-            fillMode: 'solid',
-            contentClass: 'italic',
+            color: "purple",
+            fillMode: "solid",
+            contentClass: "italic",
           },
           dates: new Date(),
-        }
+        },
       ],
       agendas: [],
       roles: [],
@@ -179,9 +215,9 @@ export default {
       form: {},
       form_schedules: [
         {
-          agenda_type: '',
-          schedule: ''
-        }
+          agenda_type: "",
+          schedule: "",
+        },
       ],
       params: {
         sorttype: "asc",
@@ -191,48 +227,51 @@ export default {
       },
       createModal: false,
       isUpdate: false,
-      isShow: false
-    }
+      isShow: false,
+    };
   },
   methods: {
     getData() {
       var loading = this.$loading.show();
-      var get_agenda = axios.get('/agenda', {params: this.params}).then(resp => {
-        this.agendas = resp.data.data.data;
-        this.total = resp.data.data.total;
-        this.last_page = resp.data.data.last_page;
-        loading.hide();
-      }).catch((e) => {
-        this.$toast.error(e);
-        loading.hide();
-      });
+      var get_agenda = axios
+        .get("/agenda", { params: this.params })
+        .then((resp) => {
+          this.agendas = resp.data.data.data;
+          this.total = resp.data.data.total;
+          this.last_page = resp.data.data.last_page;
+          loading.hide();
+        })
+        .catch((e) => {
+          this.$toast.error(e);
+          loading.hide();
+        });
     },
     create() {
-      this.isUpdate = false
-      this.isShow = false
-      this.createModal = true
+      this.isUpdate = false;
+      this.isShow = false;
+      this.createModal = true;
       this.form_schedules = [
         {
-          agenda_type: '',
-          schedule: ''
-        }
-      ]
+          agenda_type: "",
+          schedule: "",
+        },
+      ];
     },
     store() {
       var loading = this.$loading.show();
       this.form.agenda_detail = JSON.stringify(this.form_schedules);
-      axios.post(
-        '/agenda', 
-        this.form, 
-      ).then(resp => {
-        this.$toast.success("Berhasil menambah data!!");
-        this.getData();
-        this.closeModal();
-        loading.hide();
-      }).catch((e) => {
-        this.$toast.error(e);
-        loading.hide();
-      })
+      axios
+        .post("/agenda", this.form)
+        .then((resp) => {
+          this.$toast.success("Berhasil menambah data!!");
+          this.getData();
+          this.closeModal();
+          loading.hide();
+        })
+        .catch((e) => {
+          this.$toast.error(e);
+          loading.hide();
+        });
     },
     show(item) {
       this.form = item;
@@ -249,33 +288,34 @@ export default {
     update() {
       var loading = this.$loading.show();
       this.form.agenda_detail = JSON.stringify(this.form_schedules);
-      axios.put(
-        '/agenda/update/'+this.form.id, 
-        this.form, 
-      ).then(resp => {
-        this.$toast.success("Berhasil memperbarui data!!");
-        this.getData();
-        this.closeModal();
-        loading.hide();
-      }).catch((e) => {
-        this.$toast.error(e);
-        loading.hide();
-      })
-    },
-    destroy(id) {
-      if (confirm('Data akan dihapus!!')) {
-        var loading = this.$loading.show();
-        axios.delete(
-          '/agenda/delete/'+id,  
-        ).then(resp => {
-          this.$toast.success("Berhasil menghapus data!!");
+      axios
+        .put("/agenda/update/" + this.form.id, this.form)
+        .then((resp) => {
+          this.$toast.success("Berhasil memperbarui data!!");
           this.getData();
           this.closeModal();
           loading.hide();
-        }).catch((e) => {
+        })
+        .catch((e) => {
           this.$toast.error(e);
           loading.hide();
-        })
+        });
+    },
+    destroy(id) {
+      if (confirm("Data akan dihapus!!")) {
+        var loading = this.$loading.show();
+        axios
+          .delete("/agenda/delete/" + id)
+          .then((resp) => {
+            this.$toast.success("Berhasil menghapus data!!");
+            this.getData();
+            this.closeModal();
+            loading.hide();
+          })
+          .catch((e) => {
+            this.$toast.error(e);
+            loading.hide();
+          });
       }
     },
     pagination(page) {
@@ -283,13 +323,13 @@ export default {
       this.params.page = page;
       this.getData();
     },
-    addSchedule(index){
+    addSchedule(index) {
       this.form_schedules.push({
-        agenda_type: '',
-        schedule: ''
-       });
+        agenda_type: "",
+        schedule: "",
+      });
     },
-    removeSchedule(index){
+    removeSchedule(index) {
       if (this.isUpdate) {
         this.form_schedules.splice(index, 1);
       } else {
@@ -303,11 +343,11 @@ export default {
       this.form = {};
       this.form_schedules = [
         {
-          agenda_type: '',
-          schedule: ''
-        }
+          agenda_type: "",
+          schedule: "",
+        },
       ];
-    }
+    },
   },
   computed: {
     //

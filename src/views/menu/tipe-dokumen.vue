@@ -41,7 +41,10 @@
                 </div>
               </div>
               <div class="col">
-                <button class="btn btn-sm btn-primary" @click="addDocumentsType()">
+                <button
+                  class="btn btn-sm btn-primary"
+                  @click="addDocumentsType()"
+                >
                   Tambah Tipe Dokumen
                 </button>
               </div>
@@ -97,9 +100,7 @@
       </div>
       <template slot="footer">
         <div>
-          <button @click="cancel" class="btn btn-secondary mr-3">
-            Batal
-          </button>
+          <button @click="cancel" class="btn btn-secondary mr-3">Batal</button>
 
           <button @click="submit" v-if="!isUpdate" class="btn btn-primary">
             Tambah Tipe Dokumen
@@ -141,32 +142,36 @@ export default {
     submit() {
       var loading = this.$loading.show();
       this.$store
-      .dispatch("docs/addDocumentsType", this.form)
-      .then(() => {
-        this.$toast.success("Berhasil menambahkan tipe dokumen");
-        loading.hide();
-        this.createModal = false;
-        this.form = {};
-        this.getDocumentsType();
-      })
-      .catch((e) => {
-        this.$toast.error(e);
-        loading.hide();
-      });
+        .dispatch("docs/addDocumentsType", this.form)
+        .then(() => {
+          this.$toast.success("Berhasil menambahkan tipe dokumen");
+          loading.hide();
+          this.createModal = false;
+          this.form = {};
+          this.getDocumentsType();
+        })
+        .catch((e) => {
+          this.$toast.error(e);
+          loading.hide();
+        });
     },
     edit(item) {
       this.form = item;
       this.isUpdate = true;
       this.createModal = true;
     },
-    cancel(){
+    cancel() {
       this.form = {};
-      this.createModal = false
+      this.createModal = false;
     },
     update() {
       var loading = this.$loading.show();
+      delete this.form.updated_at;
       this.$store
-        .dispatch("docs/updateDocumentsType", { id: this.form.id, data: this.form })
+        .dispatch("docs/updateDocumentsType", {
+          id: this.form.id,
+          data: this.form,
+        })
         .then(() => {
           this.$toast.success("Berhasil merubah data tipe dokumen");
           loading.hide();
@@ -226,6 +231,8 @@ export default {
       return this.docTypes.map((item) => {
         return {
           ...item,
+          created_at: item.created_at.slice(0, 10),
+          updated_at: item.updated_at.slice(0, 10),
         };
       });
     },

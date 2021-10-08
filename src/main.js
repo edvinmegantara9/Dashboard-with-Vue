@@ -28,7 +28,7 @@ Vue.prototype.$log = console.log.bind(console)
 // setup base url
 Vue.prototype.$http = axios;
 // axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'http://silaper.xsrindonesia.com/api/';
+axios.defaults.baseURL = 'http://api-silaper.bappedapagaralam.org/api/';
 
 // add token to localstorage
 if(localStorage.getItem('token')){

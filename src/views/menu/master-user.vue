@@ -101,6 +101,12 @@
             placeholder="12345678"
           />
           <CInput
+            v-model="form.email"
+            label="Email"
+            type="email"
+            placeholder="test@email.com"
+          />
+          <CInput
             v-if="!isUpdate"
             v-model="form.password"
             label="Password"
@@ -253,6 +259,7 @@ export default {
     },
     addUser() {
       this.isUpdate = false;
+      this.form = {};
       this.createModal = true;
     },
     pagination(page) {

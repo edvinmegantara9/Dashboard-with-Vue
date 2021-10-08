@@ -192,14 +192,20 @@ export default {
     },
     update() {
       var loading = this.$loading.show();
-      if (this.form.is_opd == 1) {
-        this.form.opds = [];
+      var data = JSON.parse(JSON.stringify(this.form));
+      if (data.is_opd == 1) {
+        data.opds = [];
+      } else {
+        data.opds = data.opds.map((e) => {
+          return e.value;
+        });
       }
-      if (this.form.opd) {
-        delete this.form.opd;
+      if (data.opd) {
+        delete data.opd;
       }
+      console.log(data);
       this.$store
-        .dispatch("role/updateRole", { id: this.form.id, data: this.form })
+        .dispatch("role/updateRole", { id: data.id, data: data })
         .then(() => {
           this.$toast.success("Berhasil merubah data Role");
           loading.hide();
@@ -260,6 +266,7 @@ export default {
     },
     addRole() {
       this.isUpdate = false;
+      this.form = {};
       this.createModal = true;
     },
     pagination(page) {
