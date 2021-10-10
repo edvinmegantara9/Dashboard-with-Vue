@@ -6,7 +6,7 @@
       <CRow class="mb-2">
         <CCol sm="12" class="text-right"><CLink>All <CIcon name="cil-arrow-right" /></CLink></CCol>
       </CRow>
-      <CRow>
+      <CRow v-if="gallery.length > 0">
         <CCol md="4" sm="6" v-for="glr in gallery" :key="glr.id">
           <CCard class="rounded">
             <CCardHeader class="p-0">
@@ -26,11 +26,11 @@
           </CCard>
         </CCol>
       </CRow>
-      <!-- <CRow v-else>
+      <CRow v-else>
         <CCol sm="12">
           Tidak ada Gallery
         </CCol>
-      </CRow> -->
+      </CRow>
       <CPagination
         v-if="total > params.row"
         :activePage.sync="page"
