@@ -82,7 +82,7 @@
               placeholder="Judul..."
               v-bind:readonly="isShow"
             />
-            <CInput
+            <CTextarea
               v-model="form.content"
               label="Deskripsi"
               placeholder="Deskripsi..."
