@@ -87,20 +87,18 @@
     >
       <div class="row">
         <div class="col">
-          <label for="Role">OPD</label>
-
-          <v-select
-            v-model="form.opd_id"
-            placeholder="Pilih OPD"
-            :options="computedRole"
-          ></v-select>
-          <br />
-
           <label for="Role">Role</label>
           <v-select
             v-model="form.role_id"
             placeholder="Pilih Role"
             :options="computedRole"
+          ></v-select>
+          <br />
+          <label for="Role">OPD</label>
+          <v-select
+            v-model="form.opd_id"
+            placeholder="Pilih OPD"
+            :options="computedOPD"
           ></v-select>
         </div>
       </div>
@@ -136,6 +134,7 @@ export default {
       roles: [],
       total: 0,
       form: {},
+
       params: {
         sorttype: "desc",
         sortby: "id",
@@ -274,6 +273,16 @@ export default {
           value: item.id,
           label: item.name,
         };
+      });
+    },
+    computedOPD() {
+      return this.roles.map((item) => {
+        if (item.is_opd == 1) {
+          return {
+            value: item.id,
+            label: item.name,
+          };
+        }
       });
     },
   },

@@ -221,7 +221,11 @@ export default {
         });
     },
     hapus(item) {
-      if (confirm("Data akan dihapus !!")) {
+      if (
+        confirm(
+          "JIKA ROLE DIHAPUS, MAKA USER DENGAN ROLE TERKAIT AKAN IKUT TERHAPUS !!"
+        )
+      ) {
         this.$store
           .dispatch("role/deleteRole", item.id)
           .then(() => {
@@ -257,10 +261,10 @@ export default {
         row: 100,
       };
       this.$store
-        .dispatch("opd/getOPD", _params)
+        .dispatch("role/getRole", _params)
         .then((resp) => {
           this.opds = resp.data.data;
-          console.log(this.opds);
+          console.log("opd", this.opds);
         })
         .catch((e) => {
           this.$toast.error("gagal mengambil data opd \n", e);
@@ -307,10 +311,11 @@ export default {
     },
     computedOPD() {
       return this.opds.map((item) => {
-        return {
-          value: item.opd ? item.opd.id : item.opd_id,
-          label: item.opd ? item.opd.name : "Tidak ada",
-        };
+        if (item.is_opd == 1)
+          return {
+            value: item.id,
+            label: item.name,
+          };
       });
     },
   },

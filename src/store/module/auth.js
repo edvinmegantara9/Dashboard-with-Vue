@@ -11,7 +11,7 @@ export default {
             return new Promise((resolve, reject) => {
                 axios.post('/login', data).then(resp => {
                     localStorage.setItem('token', resp.data.token)
-                    localStorage.setItem('user', resp.data.user)
+                    localStorage.setItem('user', JSON.stringify(resp.data.user))
                     axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token');
                     resolve(resp);
                 }).catch(e => {

@@ -64,7 +64,13 @@
               >
                 Edit
               </CButton>
-              <CButton @click="hapus(item)" color="danger" square size="sm">
+              <CButton
+                v-if="item.id != user.id"
+                @click="hapus(item)"
+                color="danger"
+                square
+                size="sm"
+              >
                 Delete
               </CButton>
             </td>
@@ -128,6 +134,7 @@
           <CSelect
             :value.sync="form.role_id"
             label="Role"
+            placeholder="Pilih Role"
             :options="computedRole"
           />
         </div>
@@ -162,6 +169,7 @@ export default {
       isUpdate: false,
       items: [],
       roles: [],
+      user: JSON.parse(localStorage.getItem("user")),
       page: 1,
       total: 0,
       form: {},
