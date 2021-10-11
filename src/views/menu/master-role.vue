@@ -161,11 +161,13 @@ export default {
   methods: {
     submit() {
       if (this.form.opds) {
+        // console.log("before ", this.form);
         var opds = this.form.opds.map((e) => {
           return e.value;
         });
         this.form.opds = opds;
       }
+      console.log("after", this.form);
       this.createModal = false;
       var loading = this.$loading.show();
       this.$store
@@ -192,14 +194,20 @@ export default {
     },
     update() {
       var loading = this.$loading.show();
-      if (this.form.is_opd == 1) {
-        this.form.opds = [];
+      var data = JSON.parse(JSON.stringify(this.form));
+      if (data.is_opd == 1) {
+        data.opds = [];
+      } else {
+        data.opds = data.opds.map((e) => {
+          return e.value;
+        });
       }
-      if (this.form.opd) {
-        delete this.form.opd;
+      if (data.opd) {
+        delete data.opd;
       }
+      console.log(data);
       this.$store
-        .dispatch("role/updateRole", { id: this.form.id, data: this.form })
+        .dispatch("role/updateRole", { id: data.id, data: data })
         .then(() => {
           this.$toast.success("Berhasil merubah data Role");
           loading.hide();
@@ -260,6 +268,7 @@ export default {
     },
     addRole() {
       this.isUpdate = false;
+      this.form = {};
       this.createModal = true;
     },
     pagination(page) {
@@ -299,7 +308,7 @@ export default {
     computedOPD() {
       return this.opds.map((item) => {
         return {
-          value: item.id,
+          value: item.opd ? item.opd.id : item.opd_id,
           label: item.opd ? item.opd.name : "Tidak ada",
         };
       });

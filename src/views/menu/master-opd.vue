@@ -244,6 +244,7 @@ export default {
     },
     addOPD() {
       this.isUpdate = false;
+      this.form = {};
       this.createModal = true;
     },
     pagination(page) {

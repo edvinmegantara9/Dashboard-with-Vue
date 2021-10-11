@@ -1,275 +1,244 @@
 <template>
   <div>
     <h3>Tipe Dokumen</h3>
-    <!-- Modal & Confirmation -->
-    <section>
-      <div class="modal" v-show="isModalVisible">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header bg-original">
-              <h6 class="m-auto">Form {{ modalTitle }}</h6>
+    <br />
+    <CCard>
+      <CCardBody>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="row mb-3">
+              <label class="m-1 ml-3" for="">Search : </label>
+              <input
+                type="text"
+                style="max-width: 200px"
+                class="form-control form-control-sm mx-2"
+                placeholder="Ketik disini"
+              />
+              <button class="btn btn-sm btn-success">Cari</button>
             </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col">
-                  <div class="input-group mb-3">
-                    <label class="input-group-text" for="newTitle">Nama Tipe Dokumen</label>
-                    <input type="text" class="form-control" id="newTitle" v-model="newData.name" placeholder="Document Type">
+          </div>
+          <div class="col-md-5 ml-auto">
+            <div class="row">
+              <div class="col">
+                <div class="input-group input-group-sm mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01"
+                      >Per Halaman</label
+                    >
                   </div>
+                  <select
+                    class="custom-select"
+                    style="max-width: 100px"
+                    id="inputGroupSelect01"
+                    v-model="params.row"
+                    @change="getDocumentsType"
+                  >
+                    <!-- <option selected>Pilih...</option> -->
+                    <option selected value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                  </select>
                 </div>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-dark rounded shadow" @click="hideModal">
-                Kembali
-              </button>
-              <button v-if="modalTitle == 'Tambah Data Baru'" type="button" class="btn bg-original rounded shadow" @click="addData">Tambah Tipe Dokumen</button>
-              <button v-if="modalTitle == 'Ubah Data'" type="button" class="btn bg-warning rounded shadow" @click="editData">Ubah Tipe Dokumen</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal" v-show="isConfirmVisible">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-          <div class="modal-content">
-            <div class="modal-header bg-original">
-              <h6 class="m-auto">{{ modalTitle }}</h6>
-            </div>
-            <div class="modal-body">
-              <template v-if="modalTitle == 'Hapus Data'">
-                <p class="text-center">Apakah Anda yakin ingin menghapus data ini?</p>
-              </template>
-              <template v-if="modalTitle == 'Unduh Data'">
-                <p class="text-center">Apakah Anda yakin ingin mengunduh data ini?</p>
-              </template>
-              <p class="text-danger text-center">{{ newData.name }}</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-dark rounded shadow" @click="hideConfirm">
-                Kembali
-              </button>
-              <button type="button" class="btn btn-danger rounded shadow" v-if="modalTitle == 'Hapus Data'" @click="deleteData">
-                Hapus
-              </button>
-              <button type="button" class="btn btn-warning rounded shadow" v-if="modalTitle == 'Unduh Data'" @click="downloadData()">
-                Unduh
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Main -->
-    <section>
-      <div class="row bg-white shadow-lg p-3 mb-5 mt-5 rounded">
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-3 offset-9">
-              <div class="input-group-md mb-3">
-                <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <div class="col">
+                <button
+                  class="btn btn-sm btn-primary"
+                  @click="addDocumentsType()"
+                >
+                  Tambah Tipe Dokumen
+                </button>
               </div>
             </div>
           </div>
-          <div class="row">
-            <table class="table">
-              <thead class="bg-dark">
-                <tr>
-                  <th scope="col">No</th>
-                  <th scope="col">Nama</th>
-                  <th scope="col">Tanggal Dibuat</th>
-                  <th scope="col">Tanggal Diubah</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(type,index) in documentsType" :key="type.id">
-                  <td>{{ index+1 }}</td>
-                  <td>{{ type.name }}</td>
-                  <td>{{ type.created_at }}</td>
-                  <td>{{ type.updated_at }}</td>
-                  <td>
-                    <!-- <span class="material-icons">
-                      edit
-                    </span>
-                    <span class="material-icons">
-                      delete
-                    </span> -->
-                    <button type="button" class="mx-2 btn btn-warning rounded-pill shadow-sm" @click="editForm(type)">
-                    Edit</button>
-                    <button type="button" class="mx-2 btn btn-danger rounded-pill shadow-sm" @click="confirmDelete(type)">
-                    Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="row">
-            <button type="button" class="mx-2 btn bg-original rounded shadow-sm" @click="addNewForm">[+] Tambah Data</button>
-          </div>
+        </div>
+        <CDataTable
+          class="table-striped"
+          :items="computedItems"
+          :fields="fields"
+        >
+          <template #action="{ item }">
+            <td class="py-2">
+              <CButton
+                @click="edit(item)"
+                class="mr-2"
+                color="warning"
+                square
+                size="sm"
+              >
+                Edit
+              </CButton>
+              <CButton @click="hapus(item)" color="danger" square size="sm">
+                Delete
+              </CButton>
+            </td>
+          </template>
+        </CDataTable>
+        <pagination
+          v-if="total > 5"
+          v-model="page"
+          :records="total"
+          :per-page="5"
+          @paginate="pagination"
+        />
+      </CCardBody>
+    </CCard>
+    <CModal
+      size="lg"
+      :title="isUpdate ? 'Edit Tipe Dokumen' : 'Tambah Tipe Dokumen'"
+      centered
+      :color="isUpdate ? 'success' : 'primary'"
+      :show.sync="createModal"
+    >
+      <div class="row">
+        <div class="col">
+          <CInput
+            v-model="form.name"
+            label="Nama Tipe Dokumen"
+            placeholder="ketik disini"
+          />
         </div>
       </div>
-    </section>
+      <template slot="footer">
+        <div>
+          <button @click="cancel" class="btn btn-secondary mr-3">Batal</button>
+
+          <button @click="submit" v-if="!isUpdate" class="btn btn-primary">
+            Tambah Tipe Dokumen
+          </button>
+          <button @click="update" v-if="isUpdate" class="btn btn-primary">
+            Update Tipe Dokumen
+          </button>
+        </div>
+      </template>
+    </CModal>
   </div>
 </template>
 
 
 
 <script>
-// import firebase from "firebase";
+import * as data from "../../model/document";
 
 export default {
   data() {
     return {
-      userStatus : {},
-      documentsType : {},
-      // modal
-      modalTitle : "",
-      isModalVisible : false,
-      isConfirmVisible : false,
-      // pagination
-      cPage : 1,
-      lPage : null,
-      // Post New Documents
-      newData : {},
+      createModal: false,
+      fields: data.fieldsType,
+      isUpdate: false,
+      items: [],
+      docTypes: [],
+      page: 1,
+      total: 0,
+      form: {},
+      params: {
+        sorttype: "asc",
+        sortby: "id",
+        row: 5,
+        page: 1,
+      },
     };
   },
   methods: {
-    // GETDATA
-    // #####################   
-    getDocumentsType() {
+    submit() {
+      var loading = this.$loading.show();
       this.$store
-      .dispatch("docs/getDocumentsType")
-      .then((resp) => { 
-        this.documentsType = resp.data.data;
-        // this.lPage = resp.data.last_page;
-      })
-      .catch((err) => { console.log(err); alert("Gagal Memuat Data!!\n\n" + err); });
+        .dispatch("docs/addDocumentsType", this.form)
+        .then(() => {
+          this.$toast.success("Berhasil menambahkan tipe dokumen");
+          loading.hide();
+          this.createModal = false;
+          this.form = {};
+          this.getDocumentsType();
+        })
+        .catch((e) => {
+          this.$toast.error(e);
+          loading.hide();
+        });
     },
+    edit(item) {
+      this.form = item;
+      this.isUpdate = true;
+      this.createModal = true;
+    },
+    cancel() {
+      this.form = {};
+      this.createModal = false;
+    },
+    update() {
+      var loading = this.$loading.show();
+      delete this.form.updated_at;
+      this.$store
+        .dispatch("docs/updateDocumentsType", {
+          id: this.form.id,
+          data: this.form,
+        })
+        .then(() => {
+          this.$toast.success("Berhasil merubah data tipe dokumen");
+          loading.hide();
+          this.createModal = false;
+          this.form = {};
+          this.getDocumentsType();
+        })
+        .catch((e) => {
+          this.$toast.error(e);
+          loading.hide();
+        });
+    },
+    hapus(item) {
+      if (confirm("Data akan dihapus !!")) {
+        this.$store
+          .dispatch("docs/deleteDocumentsType", item.id)
+          .then(() => {
+            this.$toast.success("Berhasil menghapus data tipe dokumen");
 
-    // CRUD
-    // #####################
-    addData() {
-      this.$store
-      .dispatch("docs/addDocumentsType", this.newData)
-      .then((resp) => { 
-        console.log(resp);
-        this.hideModal();
-        alert("Selamat! Data Berhasil Ditambah!!");
-        this.getDocumentsType();
-      })
-      .catch((err) => { console.log(err); alert("Gagal Mengolah Data!!\n\n" + err); });
-    },
-    editData() {
-      const edited = {
-        name : this.newData.name
+            this.form = {};
+            this.getDocumentsType();
+          })
+          .catch((e) => {
+            this.$toast.error(e);
+            loading.hide();
+          });
       }
+    },
+    getDocumentsType() {
+      var loading = this.$loading.show();
       this.$store
-      .dispatch("docs/updateDocumentsType", {
-        id : this.newData.id,
-        data: edited
-      })
-      .then((resp) => { 
-        console.log(resp);
-        this.hideModal();
-        alert("Selamat! Data Berhasil Diubah!!");
-        this.getDocumentsType();
-      })
-      .catch((err) => { console.log(err); alert("Gagal Mengolah Data!!\n\n" + err); });
+        .dispatch("docs/getDocumentsType")
+        .then((resp) => {
+          this.docTypes = resp.data.data;
+          this.total = resp.data.total;
+          console.log(this.docTypes);
+          loading.hide();
+        })
+        .catch((e) => {
+          this.$toast.error("gagal mengambil data tipe dokumen \n", e);
+          loading.hide();
+        });
     },
-    deleteData() {
-      this.$store
-      .dispatch("docs/deleteDocumentsType", this.newData.id)
-      .then((resp) => { 
-        console.log(resp);
-        this.hideConfirm();
-        alert("Data Berhasil Dihapus!!");
-        this.getDocumentsType();
-      })
-      .catch((err) => { console.log(err); alert("Gagal Mengolah Data!!\n\n" + err); });
+    addDocumentsType() {
+      this.isUpdate = false;
+      this.createModal = true;
     },
-
-    // FORMS
-    // #####################
-    addNewForm() {
-      this.modalTitle = "Tambah Data Baru"
-      this.isModalVisible = true;
+    pagination(page) {
+      this.page = page;
+      this.params.page = page;
+      this.getDocumentsType();
+      // console.log(page);
     },
-    editForm(type) {
-      this.newData = type;
-      this.modalTitle = "Ubah Data";
-      this.isModalVisible = true;
-    },
-    hideModal(){
-      this.newData = {};
-      this.isModalVisible = false;
-    },
-
-    // CONFIRMATION
-    // #####################
-    confirmDelete(type) {
-      this.newData = type;
-      this.modalTitle = "Hapus Data"
-      this.isConfirmVisible = true;
-    },
-    confirmDownload() {
-      this.modalTitle = "Unduh Data"
-      this.isConfirmVisible = true;
-    },
-    hideConfirm(){
-      this.newData = {};
-      this.isConfirmVisible = false;
-    },
-
-    // PAGINATION
-    // #####################
-    pageUp() {
-      // this.isLoading = true;
-      this.cPage = this.cPage + 1;
-      this.getDocuments();
-    },
-    pageDown() {
-      // this.isLoading = true;
-      this.cPage = this.cPage - 1;
-      this.getDocuments();
-    },
-    pageFirst() {
-      // this.isLoading = true;
-      this.cPage = 1;
-      this.getDocuments();
-    },
-    pageLast() {
-      // this.isLoading = true;
-      this.cPage = this.lPage;
-      this.getDocuments();
-    },
-    goto(count) {
-      this.isLoading = true;
-      this.cPage = count;
-      this.getDocuments();
+  },
+  computed: {
+    computedItems() {
+      return this.docTypes.map((item) => {
+        return {
+          ...item,
+          created_at: item.created_at.slice(0, 10),
+          updated_at: item.updated_at.slice(0, 10),
+        };
+      });
     },
   },
   mounted() {
     this.getDocumentsType();
-  }
+  },
 };
 </script>
-
-<style scoped>
-.bg-original {
-  background-color: #24548c; 
-  color: white
-}
-.modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1050;
-  display: block;
-  overflow: hidden;
-  outline: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-</style>
-

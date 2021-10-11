@@ -16,27 +16,19 @@ export default [
         _name: 'CSidebarNavTitle',
         _children: ['Menu']
       },
-      
+
       {
-        _name: 'CSidebarNavDropdown',
+        _name: 'CSidebarNavItem',
         name: 'Agenda Bappeda',
-        route: '/agenda',
+        to: '/agenda',
         icon: 'cil-calendar',
-        items: [
-          {
-            name: 'Daftar Agenda',
-            to: '/agenda/list',
-           
-          },
-          {
-            name: 'Detail Agenda',
-            to: '/agenda/detail',
-           
-          },
-         
-        
-        ]
+        // badge: {
+        //   color: 'primary',
+        //   text: 'NEW'
+        // }
       },
+      
+     
       {
         _name: 'CSidebarNavDropdown',
         name: 'Data',
