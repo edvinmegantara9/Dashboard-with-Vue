@@ -152,7 +152,7 @@
 
 <script>
 import * as data from "../../model/document";
-import firebase from "firebase/compat";
+import { uploadFile } from "@/utils/fileUpload";
 
 export default {
   data() {
@@ -178,43 +178,26 @@ export default {
     selectFile(event) {
       console.log(event);
       this.file = event.target.files[0];
-      this.uploadFile(this.file);
-    },
-    uploadFile(file) {
       var loading = this.$loading.show();
-      var storageRef = firebase
-        .storage()
-        .ref("docsOPD/" + file.name)
-        .put(file);
-      // storageRef.put(this.file);
-      storageRef.on(
-        "state_changed",
-        (snapshot) => {
-          console.log(snapshot);
-          // this.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        },
-        (error) => {
-          console.log(error.message);
-          alert("Permintaan Gagal Diproses!!\n\n" + error.message);
-        },
-        () => {
-          this.progress = 100;
-          storageRef.snapshot.ref.getDownloadURL().then((resp) => {
-            this.form.file = resp;
-            // console.log();
-            loading.hide();
-            alert("Selamat! File Berhasil Diupload!!");
-          });
-        }
-      );
+      uploadFile(this.file)
+        .then((resp) => {
+          this.form.file = resp;
+          loading.hide();
+          alert("File berhasil diupload !!");
+        })
+        .catch((e) => {
+          loading.hide();
+          alert("Terjadi kesalahan !! | " + e);
+        });
     },
+
     submit() {
       var loading = this.$loading.show();
       this.$store
         .dispatch("auth/me")
         .then((resp) => {
           console.log(resp.data);
-          this.form.upload_by = resp.data.id;
+          this.form.upload_by = resp.data.role_id;
           console.log(this.form);
           this.$store
             .dispatch("docs/addDocuments", this.form)
@@ -352,7 +335,7 @@ export default {
         return {
           ...item,
           document_type: item.document_type.name,
-          upload_by: item.uploader.name,
+          upload_by: item.uploader ? item.uploader.name : "Tidak ada",
           updated_at: item.updated_at.slice(0, 10),
         };
       });

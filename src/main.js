@@ -31,66 +31,66 @@ Vue.prototype.$http = axios;
 axios.defaults.baseURL = 'http://api-silaper.bappedapagaralam.org/api/';
 
 // add token to localstorage
-if(localStorage.getItem('token')){
+if (localStorage.getItem('token')) {
   axios.defaults.headers.common['Authorization'] = 'bearer ' + localStorage.getItem('token');
 }
 // check valid token
 axios.interceptors.response.use((response) => {
-  if(response.data.status === 401) {
-       
-       console.log("You are not authorized");
+  if (response.data.status === 401) {
+
+    console.log("You are not authorized");
   }
   return response;
 }, (error) => {
   if (error.response && error.response.data) {
-       
-       if(error.response.data.status == 401 || error.response.data.status == 403){
-         store.dispatch('auth/logout');
-         router.replace('/');         
-       }
-       return Promise.reject(error.response.data.message);
+
+    if (error.response.data.status == 401 || error.response.data.status == 403) {
+      store.dispatch('auth/logout');
+      router.replace('/');
+    }
+    return Promise.reject(error.response.data.message);
   }
   return Promise.reject(error.message);
 });
 
 // guard for auth
-router.beforeEach((to,from,next) => {
+router.beforeEach((to, from, next) => {
   var hasToken = localStorage.getItem('token');
-  if(to.path != '/pages/login') {
-    
-    if(hasToken){
+  if (to.path != '/pages/login') {
+
+    if (hasToken) {
       next();
       return
     }
-      next('/pages/login');
-      return
-  }else{
-    if(hasToken){
-      next({path: '/dashboard'})
+    next('/pages/login');
+    return
+  } else {
+    if (hasToken) {
+      next({ path: '/dashboard' })
       return
     }
   }
 
   next();
-  
+
 })
 
 // setup overlay loading
 Vue.use(VueLoading, {
-    // props
-    color: 'blue',
-    loader: 'dots',
-    height: 64,
-    width: 64,
-  }, {
-    // slots
+  // props
+  color: 'blue',
+  loader: 'dots',
+  height: 64,
+  width: 64,
+}, {
+  // slots
 })
 
 //  setup toast
 Vue.use(VueToast, {
-    // One of the options
-    position: 'top-right',
-    duration: 2000
+  // One of the options
+  position: 'top-right',
+  duration: 2000
 })
 
 // pagination
@@ -103,7 +103,7 @@ import "firebase/compat/analytics";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
-const firebaseConfig = 
+const firebaseConfig =
 {
   apiKey: "AIzaSyCwAACGH2QF99QhbQuv3xDxwJFRdxplgYg",
   projectId: "bwa-flutix-2246a",

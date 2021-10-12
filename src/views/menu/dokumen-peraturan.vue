@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Download</h3>
+    <h3>Dokumen Peraturan</h3>
   </div>
 </template>
 
