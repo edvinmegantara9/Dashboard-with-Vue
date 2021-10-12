@@ -27,8 +27,8 @@ export default [
         //   text: 'NEW'
         // }
       },
-      
-     
+
+
       {
         _name: 'CSidebarNavDropdown',
         name: 'Data',
@@ -38,18 +38,22 @@ export default [
           {
             name: 'Dokumen OPD',
             to: '/data/dokumen-opd',
-           
+
           },
           {
             name: 'Tipe Dokumen',
             to: '/data/tipe-dokumen',
-           
+
           },
           {
-            name: 'Download',
-            to: '/data/download'
+            name: 'Dokumen Peraturan',
+            to: '/data/peraturan'
           },
-        
+          {
+            name: 'Dokumen Kota',
+            to: '/data/kota'
+          },
+
         ]
       },
       {
@@ -61,13 +65,13 @@ export default [
           {
             name: 'Pesan',
             to: '/komunikasi/pesan',
-           
+
           },
           {
             name: 'Online Chat',
             to: '/komunikasi/online-chat'
           },
-        
+
         ]
       },
 
@@ -77,7 +81,12 @@ export default [
         to: '/history',
         icon: 'cil-grid'
       },
-
+      {
+        _name: 'CSidebarNavItem',
+        name: 'Laporan Harian',
+        to: '/laporan-harian',
+        icon: 'cil-pencil'
+      },
       {
         _name: 'CSidebarNavItem',
         name: 'Gallery',
@@ -94,7 +103,7 @@ export default [
           {
             name: 'User',
             to: '/master-user/user',
-           
+
           },
           {
             name: 'OPD',
@@ -105,10 +114,10 @@ export default [
             name: 'Role',
             to: '/master-user/role'
           },
-        
+
         ]
       },
-     
+
     ]
   }
 ]

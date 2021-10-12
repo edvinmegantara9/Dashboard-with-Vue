@@ -8,7 +8,7 @@ const TheContainer = () => import('@/containers/TheContainer')
 const Dashboard = () => import('@/views/menu/dashboard')
 const Agenda = () => import('@/views/menu/agenda')
 const DokumenOPD = () => import('@/views/menu/dokumen-opd')
-const Download = () => import('@/views/menu/download')
+const DokumenPeraturan = () => import('@/views/menu/dokumen-peraturan')
 const Pesan = () => import('@/views/menu/pesan')
 const OnlineChat = () => import('@/views/menu/online-chat')
 const MasterUser = () => import('@/views/menu/master-user')
@@ -18,7 +18,8 @@ const History = () => import('@/views/menu/history')
 const Gallery = () => import('@/views/menu/gallery')
 const TipeDokumen = () => import('@/views/menu/tipe-dokumen')
 const DetailAgenda = () => import('@/views/menu/detail-agenda')
-
+const DokumenKota = () => import('@/views/menu/dokumen-kota')
+const LaporanHarian = () => import('@/views/menu/laporan-harian')
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
 const Page500 = () => import('@/views/pages/Page500')
@@ -40,7 +41,7 @@ export default new Router({
 
 
 
-function configRoutes () {
+function configRoutes() {
   return [
     {
       path: '/',
@@ -58,7 +59,7 @@ function configRoutes () {
           redirect: '/agenda/list',
           name: 'Agenda',
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
@@ -71,7 +72,7 @@ function configRoutes () {
               name: 'Detail Agenda',
               component: DetailAgenda
             },
-           
+
           ]
         },
         {
@@ -84,7 +85,7 @@ function configRoutes () {
           redirect: '/master-user/user',
           name: 'Master User',
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
@@ -105,6 +106,11 @@ function configRoutes () {
           ]
         },
         {
+          path: 'laporan-harian',
+          name: 'Laporan Harian',
+          component: LaporanHarian
+        },
+        {
           path: 'gallery',
           name: 'Gallery',
           component: Gallery
@@ -114,7 +120,7 @@ function configRoutes () {
           redirect: '/data/dokumen-opd',
           name: 'Data',
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
@@ -123,9 +129,14 @@ function configRoutes () {
               component: DokumenOPD
             },
             {
-              path: 'download',
-              name: 'Download',
-              component: Download
+              path: 'peraturan',
+              name: 'Dokumen Peraturan',
+              component: DokumenPeraturan
+            },
+            {
+              path: 'kota',
+              name: 'Dokumen Kota',
+              component: DokumenKota
             },
             {
               path: 'tipe-dokumen',
@@ -140,7 +151,7 @@ function configRoutes () {
           redirect: '/komunikasi/pesan',
           name: 'Komunikasi',
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
@@ -155,7 +166,7 @@ function configRoutes () {
             }
           ]
         },
-        
+
         {
           path: 'users',
           meta: {
@@ -182,8 +193,8 @@ function configRoutes () {
             }
           ]
         },
-        
-     
+
+
       ]
     },
     {
@@ -191,7 +202,7 @@ function configRoutes () {
       redirect: '/pages/404',
       name: 'Pages',
       component: {
-        render (c) { return c('router-view') }
+        render(c) { return c('router-view') }
       },
       children: [
         {
