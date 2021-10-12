@@ -12,7 +12,7 @@
       </CRow>
       <CRow v-if="gallery.length > 0">
         <CCol md="4" sm="6" v-for="glr in gallery" :key="glr.id">
-          <CCard class="rounded">
+          <CCard class="rounded shadow">
             <CCardHeader class="p-0">
               <CCardLink :href="glr.file" target="_blank" class="">
                 <CCardImg

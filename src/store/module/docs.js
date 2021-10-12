@@ -1,4 +1,4 @@
-import axios from 'axios'; 
+import axios from 'axios';
 
 
 export default {
@@ -8,14 +8,10 @@ export default {
     actions: {
 
         // Documents
-        getDocuments(_,_params){
+        getDocuments(_, _params) {
             return new Promise((resolve, reject) => {
                 axios.get('document', {
-                    params : {
-                        row: 20,
-                        sortby: 'id',
-                        sorttype: 'asc'
-                    }
+                    params: _params
                 }).then(resp => {
                     resolve(resp.data);
                 }).catch(e => {
@@ -23,9 +19,9 @@ export default {
                 })
             })
         },
-        
-        addDocuments(_, data){
-            return new Promise((resolve,reject) => {
+
+        addDocuments(_, data) {
+            return new Promise((resolve, reject) => {
                 axios.post('document', data).then(resp => {
                     resolve(resp);
                 }).catch(e => {
@@ -34,9 +30,9 @@ export default {
             })
         },
 
-        updateDocuments(_, {id,data}){
-            return new Promise((resolve,reject) => {
-                axios.put('document/update/'+ id, data).then(resp => {
+        updateDocuments(_, { id, data }) {
+            return new Promise((resolve, reject) => {
+                axios.put('document/update/' + id, data).then(resp => {
                     resolve(resp);
                 }).catch(e => {
                     reject(e)
@@ -44,9 +40,9 @@ export default {
             })
         },
 
-        deleteDocuments(_, id){
-            return new Promise((resolve,reject) => {
-                axios.delete('document/delete/'+ id).then(resp => {
+        deleteDocuments(_, id) {
+            return new Promise((resolve, reject) => {
+                axios.delete('document/delete/' + id).then(resp => {
                     resolve(resp);
                 }).catch(e => {
                     reject(e)
@@ -55,10 +51,10 @@ export default {
         },
 
         // Documents Type
-        getDocumentsType(_,_params){
+        getDocumentsType(_, _params) {
             return new Promise((resolve, reject) => {
                 axios.get('document_type', {
-                    params : {
+                    params: {
                         row: 20,
                         sortby: 'id',
                         sorttype: 'asc'
@@ -71,8 +67,8 @@ export default {
             })
         },
 
-        addDocumentsType(_, data){
-            return new Promise((resolve,reject) => {
+        addDocumentsType(_, data) {
+            return new Promise((resolve, reject) => {
                 axios.post('document_type', data).then(resp => {
                     resolve(resp);
                 }).catch(e => {
@@ -81,9 +77,9 @@ export default {
             })
         },
 
-        updateDocumentsType(_, {id,data}){
-            return new Promise((resolve,reject) => {
-                axios.put('document_type/update/'+ id, data).then(resp => {
+        updateDocumentsType(_, { id, data }) {
+            return new Promise((resolve, reject) => {
+                axios.put('document_type/update/' + id, data).then(resp => {
                     resolve(resp);
                 }).catch(e => {
                     reject(e)
@@ -91,9 +87,9 @@ export default {
             })
         },
 
-        deleteDocumentsType(_, id){
-            return new Promise((resolve,reject) => {
-                axios.delete('document_type/delete/'+ id).then(resp => {
+        deleteDocumentsType(_, id) {
+            return new Promise((resolve, reject) => {
+                axios.delete('document_type/delete/' + id).then(resp => {
                     resolve(resp);
                 }).catch(e => {
                     reject(e)
