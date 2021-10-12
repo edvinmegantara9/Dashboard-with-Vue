@@ -1,4 +1,4 @@
-import axios from 'axios'; 
+import axios from 'axios';
 
 
 export default {
@@ -7,11 +7,11 @@ export default {
     mutations: {},
     actions: {
 
-        login(_, data){
+        login(_, data) {
             return new Promise((resolve, reject) => {
                 axios.post('/login', data).then(resp => {
                     localStorage.setItem('token', resp.data.token)
-                    localStorage.setItem('user', resp.data.user)
+                    localStorage.setItem('user', JSON.stringify(resp.data.user))
                     axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token');
                     resolve(resp);
                 }).catch(e => {
@@ -20,7 +20,7 @@ export default {
             });
         },
 
-        me(_){
+        me(_) {
             return new Promise((resolve, reject) => {
                 axios.get('/me').then(resp => {
                     resolve(resp);
@@ -30,9 +30,9 @@ export default {
             });
         },
 
-        logout(_){
+        logout(_) {
             return new Promise(resolve => {
-                localStorage.removeItem('token');            
+                localStorage.removeItem('token');
                 resolve();
             })
         }
