@@ -167,7 +167,7 @@ export default {
       total: 0,
       form: {},
       params: {
-        sorttype: "asc",
+        sorttype: "desc",
         sortby: "id",
         row: 5,
         page: 1,
