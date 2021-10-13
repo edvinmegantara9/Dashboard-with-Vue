@@ -77,23 +77,17 @@
     </div>
     <div class="row">
       <div class="col-md-6">
-        <div class="card border-top rounded shadow">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium
-            deleniti dicta ex impedit odit iusto quidem corrupti at minima
-            quaerat? Consequuntur architecto molestiae pariatur repellendus odit
-            at facere quasi mollitia.
-          </p>
+        <div class="card border-top rounded shadow p-3" style="height: 200px">
+          <p class="p-0 m-0"><b> Permintaan Layanan Online Chat </b></p>
+          <hr />
+          <center><p>Tidak ada permintaan</p></center>
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card border-top rounded shadow">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium
-            deleniti dicta ex impedit odit iusto quidem corrupti at minima
-            quaerat? Consequuntur architecto molestiae pariatur repellendus odit
-            at facere quasi mollitia.
-          </p>
+        <div class="card border-top rounded shadow p-3" style="height: 200px">
+          <p class="p-0 m-0"><b> Pesan </b></p>
+          <hr />
+          <center><p>Tidak ada pesan</p></center>
         </div>
       </div>
     </div>
