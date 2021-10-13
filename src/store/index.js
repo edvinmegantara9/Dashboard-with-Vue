@@ -6,7 +6,9 @@ import role from './module/role'
 import opd from './module/opd'
 import docs from './module/docs'
 import gallery from './module/gallery'
+import report from './module/report'
 import message from './module/message'
+
 
 
 Vue.use(Vuex)
@@ -39,7 +41,9 @@ export default new Vuex.Store({
     opd,
     docs,
     gallery,
+    report,
     message
+
   },
   mutations
 })
