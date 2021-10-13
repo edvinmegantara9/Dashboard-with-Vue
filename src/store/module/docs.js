@@ -97,6 +97,53 @@ export default {
             })
         },
 
+        // Public Documents
+        getPubDocuments(_, _params) {
+            return new Promise((resolve, reject) => {
+                axios.get('public_document', {
+                    params: {
+                        row: 20,
+                        sortby: 'id',
+                        sorttype: 'asc'
+                    }
+                }).then(resp => {
+                    resolve(resp.data);
+                }).catch(e => {
+                    reject(e);
+                })
+            })
+        },
+
+        addPubDocuments(_, data) {
+            return new Promise((resolve, reject) => {
+                axios.post('public_document', data).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e);
+                })
+            })
+        },
+
+        updatePubDocuments(_, { id, data }) {
+            return new Promise((resolve, reject) => {
+                axios.put('public_document/update/' + id, data).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
+
+        deletePubDocuments(_, id) {
+            return new Promise((resolve, reject) => {
+                axios.delete('public_document/delete/' + id).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
+
     },
     getters: {
 
