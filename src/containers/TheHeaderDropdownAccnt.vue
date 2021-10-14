@@ -12,7 +12,7 @@
         </div>
       </CHeaderNavLink>
     </template>
-    <CDropdownHeader tag="div" class="text-center" color="light">
+    <!-- <CDropdownHeader tag="div" class="text-center" color="light">
       <strong>Account</strong>
     </CDropdownHeader>
 
@@ -28,9 +28,9 @@
     <CDropdownHeader tag="div" class="text-center" color="light">
       <strong>Settings</strong>
     </CDropdownHeader>
-    <CDropdownItem> <CIcon name="cil-user" /> Profile </CDropdownItem>
+    <CDropdownItem> <CIcon name="cil-user" /> Profile </CDropdownItem> -->
 
-    <CDropdownDivider />
+    <!-- <CDropdownDivider /> -->
 
     <CDropdownItem @click="logout()">
       <CIcon name="cil-lock-locked" /> Logout
