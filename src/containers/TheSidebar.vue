@@ -1,11 +1,5 @@
 <template>
-  <CSidebar
-    class="bg-main"
-    fixed
-    :minimize="minimize"
-    :show="show"
-    @update:show="(value) => $store.commit('set', ['sidebarShow', value])"
-  >
+  <CSidebar class="bg-main" fixed :minimize="minimize" :show.sync="show">
     <CSidebarBrand class="d-md-down-none" to="/">
       <!-- <CIcon 
         class="c-sidebar-brand-full" 
@@ -25,7 +19,7 @@
       /> -->
     </CSidebarBrand>
 
-    <CRenderFunction flat :content-to-render="$options.nav" />
+    <CRenderFunction flat :content-to-render="computedSidebar" />
     <CSidebarMinimizer
       class="d-md-down-none"
       @click.native="$store.commit('set', ['sidebarMinimize', !minimize])"
@@ -34,17 +28,64 @@
 </template>
 
 <script>
-import nav from "./_nav";
+import * as data from "./_nav";
 
 export default {
   name: "TheSidebar",
-  nav,
+  data() {
+    return {
+      role: {},
+    };
+  },
+
   computed: {
     show() {
       return this.$store.state.sidebarShow;
     },
     minimize() {
       return this.$store.state.sidebarMinimize;
+    },
+    getRoles() {
+      return this.$store.getters["auth/getUser"];
+    },
+
+    getRoleFromLocal() {
+      return JSON.parse(localStorage.getItem("user"));
+    },
+
+    computedSidebar() {
+      console.log("getrole", this.getRoleFromLocal.role);
+      this.role = this.getRoles
+        ? this.getRoles.role
+        : this.getRoleFromLocal.role;
+      console.log("role", this.role);
+      if (this.role.name.toLowerCase() == "admin") {
+        console.log("admin");
+        return [
+          {
+            _name: "CSidebarNav",
+            _children: data.admin,
+          },
+        ];
+      } else if (this.role.is_opd == 1) {
+        console.log("isopd");
+
+        return [
+          {
+            _name: "CSidebarNav",
+            _children: data.opd,
+          },
+        ];
+      } else {
+        console.log("notopd");
+
+        return [
+          {
+            _name: "CSidebarNav",
+            _children: data.not_opd,
+          },
+        ];
+      }
     },
   },
 };

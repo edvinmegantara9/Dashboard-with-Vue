@@ -50,7 +50,7 @@
         </div>
         <CDataTable
           class="table-striped"
-          :items="computedItems"
+          :items="computedItems.filter((n) => n)"
           :fields="fields"
         >
           <template #action="{ item }">
@@ -70,10 +70,23 @@
                 color="warning"
                 square
                 size="sm"
+                v-if="
+                  user.role.is_opd == 0 ||
+                  user.role.name.toLowerCase() == 'admin'
+                "
               >
                 Edit
               </CButton>
-              <CButton @click="hapus(item)" color="danger" square size="sm">
+              <CButton
+                @click="hapus(item)"
+                color="danger"
+                square
+                size="sm"
+                v-if="
+                  user.role.is_opd == 0 ||
+                  user.role.name.toLowerCase() == 'admin'
+                "
+              >
                 Delete
               </CButton>
             </td>
@@ -160,9 +173,11 @@ export default {
       createModal: false,
       fields: data.fields,
       isUpdate: false,
+      user: {},
       items: [],
       users: [],
       docTypes: [],
+      opd_list: [],
       page: 1,
       total: 0,
       form: {},
@@ -176,7 +191,6 @@ export default {
   },
   methods: {
     selectFile(event) {
-      console.log(event);
       this.file = event.target.files[0];
       var loading = this.$loading.show();
       uploadFile(this.file)
@@ -196,9 +210,8 @@ export default {
       this.$store
         .dispatch("auth/me")
         .then((resp) => {
-          console.log(resp.data);
           this.form.upload_by = resp.data.role_id;
-          console.log(this.form);
+
           this.$store
             .dispatch("docs/addDocuments", this.form)
             .then(() => {
@@ -312,7 +325,6 @@ export default {
         .dispatch("docs/getDocumentsType")
         .then((resp) => {
           this.docTypes = resp.data.data;
-          console.log(this.docTypes);
         })
         .catch((e) => {
           this.$toast.error("gagal mengambil data tipe dokumen \n", e);
@@ -326,18 +338,51 @@ export default {
       this.page = page;
       this.params.page = page;
       this.getDocuments();
-      // console.log(page);
     },
+    getUserFromLocal() {
+      var data = JSON.parse(localStorage.getItem("user"));
+      this.user = data;
+
+      this.getOpdList();
+    },
+    getOpdList() {
+      this.opd_list = this.user.role.opd.map((e) => {
+        return e.id;
+      });
+    },
+  },
+  watch: {
+    computedItems(val) {},
   },
   computed: {
     computedItems() {
       return this.items.map((item) => {
-        return {
-          ...item,
-          document_type: item.document_type.name,
-          upload_by: item.uploader ? item.uploader.name : "Tidak ada",
-          updated_at: item.updated_at.slice(0, 10),
-        };
+        if (this.user.role.name.toLowerCase() == "admin") {
+          return {
+            ...item,
+            document_type: item.document_type.name,
+            upload_by: item.uploader ? item.uploader.name : "Tidak ada",
+            updated_at: item.updated_at.slice(0, 10),
+          };
+        } else if (this.user.role.is_opd == 0) {
+          if (this.opd_list.includes(item.uploader.id)) {
+            return {
+              ...item,
+              document_type: item.document_type.name,
+              upload_by: item.uploader ? item.uploader.name : "Tidak ada",
+              updated_at: item.updated_at.slice(0, 10),
+            };
+          }
+        } else {
+          if (item.uploader.id == this.user.role.id) {
+            return {
+              ...item,
+              document_type: item.document_type.name,
+              upload_by: item.uploader ? item.uploader.name : "Tidak ada",
+              updated_at: item.updated_at.slice(0, 10),
+            };
+          }
+        }
       });
     },
     computedTypes() {
@@ -352,6 +397,7 @@ export default {
   mounted() {
     this.getDocuments();
     this.getDocumentsType();
+    this.getUserFromLocal();
   },
 };
 </script>
