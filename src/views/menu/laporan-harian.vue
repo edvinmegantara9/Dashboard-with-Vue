@@ -93,6 +93,49 @@
         :show.sync="createModal"
       >
         <CRow>
+          <CCol sm="6">
+            <CInput 
+              v-model="form.name"
+              label="Nama"
+              placeholder="Ketik disini..."
+              readonly
+            />
+          </CCol>
+          <CCol sm="6">
+            <CInput 
+              v-model="form.email"
+              label="Email"
+              type="email"
+              placeholder="Ketik disini..."
+              readonly
+            />
+          </CCol>
+          <CCol sm="6">
+            <CInput 
+              v-model="form.nip"
+              label="NIP"
+              placeholder="Ketik disini..."
+              readonly
+            />
+          </CCol>
+          <CCol sm="6">
+            <CInput 
+              v-model="form.position"
+              label="Jabatan"
+              placeholder="Ketik disini..."
+              readonly
+            />
+          </CCol>
+          <CCol sm="6">
+            <CInput 
+              v-model="form.role"
+              label="Role"
+              placeholder="Ketik disini..."
+              readonly
+            />
+          </CCol>
+        </CRow>
+        <CRow>
           <CCol sm="12">
             <CTextarea
               v-model="form.report"
@@ -169,6 +212,11 @@ export default {
         });
     },
     create() {
+      this.form.name = this.user.full_name;
+      this.form.email = this.user.email;
+      this.form.nip = this.user.nip;
+      this.form.position = this.user.position;
+      this.form.role = this.user.role.name;
       this.createModal = true;
       this.isUpdate = false;
     },
@@ -196,6 +244,11 @@ export default {
       this.isUpdate = true;
       this.form = item;
       this.form.id = item.id;
+      this.form.name = item.name;
+      this.form.email = item.email;
+      this.form.nip = item.nip;
+      this.form.position = item.position;
+      this.form.role = item.role;
       this.createModal = true;
     },
     update() {
