@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>Laporan Harian</h3>
-    <br/>
+    <br />
     <CCard>
       <CCardBody>
         <div class="row">
@@ -51,7 +51,7 @@
         </div>
         <CDataTable
           class="table-striped"
-          :items="computedItems"
+          :items="computedItems.filter((n) => n)"
           :fields="fields"
           sorter
         >
@@ -87,87 +87,79 @@
       </CCardBody>
     </CCard>
     <CModal
-        :title="!isUpdate ? 'Tambah Laporan Harian' : 'Update Laporan Harian'"
-        :color="!isUpdate ? 'primary' : 'warning'"
-        size="lg"
-        :show.sync="createModal"
-      >
-        <CRow>
-          <CCol sm="6">
-            <CInput 
-              v-model="form.name"
-              label="Nama"
-              placeholder="Ketik disini..."
-              readonly
-            />
-          </CCol>
-          <CCol sm="6">
-            <CInput 
-              v-model="form.email"
-              label="Email"
-              type="email"
-              placeholder="Ketik disini..."
-              readonly
-            />
-          </CCol>
-          <CCol sm="6">
-            <CInput 
-              v-model="form.nip"
-              label="NIP"
-              placeholder="Ketik disini..."
-              readonly
-            />
-          </CCol>
-          <CCol sm="6">
-            <CInput 
-              v-model="form.position"
-              label="Jabatan"
-              placeholder="Ketik disini..."
-              readonly
-            />
-          </CCol>
-          <CCol sm="6">
-            <CInput 
-              v-model="form.role"
-              label="Role"
-              placeholder="Ketik disini..."
-              readonly
-            />
-          </CCol>
-        </CRow>
-        <CRow>
-          <CCol sm="12">
-            <CTextarea
-              v-model="form.report"
-              label="Laporan Harian"
-              placeholder="Tulis laporan disini ..."
-            />
-          </CCol>
-        </CRow>
-        <template slot="footer">
-          <div class="row">
-            <button @click="closeModal" class="btn btn-secondary mr-3">
-              Batal
-            </button>
+      :title="!isUpdate ? 'Tambah Laporan Harian' : 'Update Laporan Harian'"
+      :color="!isUpdate ? 'primary' : 'warning'"
+      size="lg"
+      :show.sync="createModal"
+    >
+      <CRow>
+        <CCol sm="6">
+          <CInput
+            v-model="form.name"
+            label="Nama"
+            placeholder="Ketik disini..."
+            readonly
+          />
+        </CCol>
+        <CCol sm="6">
+          <CInput
+            v-model="form.email"
+            label="Email"
+            type="email"
+            placeholder="Ketik disini..."
+            readonly
+          />
+        </CCol>
+        <CCol sm="6">
+          <CInput
+            v-model="form.nip"
+            label="NIP"
+            placeholder="Ketik disini..."
+            readonly
+          />
+        </CCol>
+        <CCol sm="6">
+          <CInput
+            v-model="form.position"
+            label="Jabatan"
+            placeholder="Ketik disini..."
+            readonly
+          />
+        </CCol>
+        <CCol sm="6">
+          <CInput
+            v-model="form.role"
+            label="Role"
+            placeholder="Ketik disini..."
+            readonly
+          />
+        </CCol>
+      </CRow>
+      <CRow>
+        <CCol sm="12">
+          <CTextarea
+            v-model="form.report"
+            label="Laporan Harian"
+            placeholder="Tulis laporan disini ..."
+          />
+        </CCol>
+      </CRow>
+      <template slot="footer">
+        <div class="row">
+          <button @click="closeModal" class="btn btn-secondary mr-3">
+            Batal
+          </button>
 
-            <button
-              @click="store"
-              v-if="!isUpdate"
-              class="btn btn-primary"
-            >
-              Tambah Laporan
-            </button>
-            
-            <button
-              @click="update"
-              v-if="isUpdate"
-              class="btn btn-primary"
-            >
-              Update Laporan
-            </button>
-          </div>
-        </template>
-      </CModal>
+          <button @click="store" v-if="!isUpdate" class="btn btn-primary">
+            Tambah Laporan
+          </button>
+
+          <button @click="update" v-if="isUpdate" class="btn btn-primary">
+            Update Laporan
+          </button>
+        </div>
+      </template>
+    </CModal>
   </div>
 </template>
 
@@ -187,14 +179,14 @@ export default {
       page: 1,
       total: 0,
       form: {},
-      search: '',
+      search: "",
       params: {
         sorttype: "desc",
         sortby: "date",
         row: 5,
         page: 1,
       },
-    }
+    };
   },
   methods: {
     getData() {
@@ -220,7 +212,7 @@ export default {
       this.createModal = true;
       this.isUpdate = false;
     },
-    store () {
+    store() {
       var loading = this.$loading.show();
       this.form.name = this.user.full_name;
       this.form.email = this.user.email;
@@ -240,7 +232,7 @@ export default {
           loading.hide();
         });
     },
-    edit(item){
+    edit(item) {
       this.isUpdate = true;
       this.form = item;
       this.form.id = item.id;
@@ -255,7 +247,10 @@ export default {
       if (this.isUpdate) {
         var loading = this.$loading.show();
         this.$store
-          .dispatch("report/updateReport", {id: this.form.id, data: this.form})
+          .dispatch("report/updateReport", {
+            id: this.form.id,
+            data: this.form,
+          })
           .then((resp) => {
             this.$toast.success("Berhasil memperbarui laporan harian");
             loading.hide();
@@ -304,15 +299,25 @@ export default {
   computed: {
     computedItems() {
       return this.items.map((item) => {
-        return {
-          ...item,
-          role: item.role
-        };
+        if (this.user.role.is_opd == 0) {
+          if (item.role == this.user.role.name) {
+            return {
+              ...item,
+              role: item.role,
+            };
+          }
+        }
+        if (this.user.role.name.toLowerCase() == "admin") {
+          return {
+            ...item,
+            role: item.role,
+          };
+        }
       });
-    }
+    },
   },
   mounted() {
     this.getData();
-  }
+  },
 };
 </script>

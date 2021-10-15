@@ -55,7 +55,13 @@
       <div class="col-md-4 text-center">
         <div class="row mb-3">
           <div class="col-12">
-            <button @click="create" class="btn btn-primary">
+            <button
+              @click="create"
+              v-if="
+                user.role.name.toLowerCase() == 'admin' || user.role.is_opd == 0
+              "
+              class="btn btn-primary"
+            >
               Tambah Agenda
             </button>
             <br />
@@ -69,7 +75,7 @@
       </div>
 
       <CModal
-        :title="!isUpdate ? 'Tambah Agenda' : 'Update Agenda'"
+        :title="!isUpdate ? 'Agenda' : 'Update Agenda'"
         :color="!isUpdate ? 'primary' : 'warning'"
         size="lg"
         :show.sync="createModal"
@@ -144,7 +150,12 @@
             </CContainer>
           </CCol>
         </CRow>
-        <template slot="footer">
+        <template
+          slot="footer"
+          v-if="
+            user.role.name.toLowerCase() == 'admin' || user.role.is_opd == 0
+          "
+        >
           <div class="row">
             <button
               @click="destroy(form.id)"
@@ -228,6 +239,7 @@ export default {
       createModal: false,
       isUpdate: false,
       isShow: false,
+      user: JSON.parse(localStorage.getItem("user")),
     };
   },
   methods: {
