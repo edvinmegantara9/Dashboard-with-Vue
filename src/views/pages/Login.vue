@@ -4,11 +4,11 @@
       <CRow class="">
         <CCol md="7" class="mt-5">
           <CRow>
-            <CCol md="2">
+            <!-- <CCol md="2">
               <img src="@/assets/logo/pagaralam.png" width="100%" alt="" />
-            </CCol>
+            </CCol> -->
             <CCol md="5">
-              <img src="@/assets/logo/bapedda.png" width="100%" alt="" />
+              <img src="@/assets/logo/bapedda.png" width="150%" alt="" />
             </CCol>
           </CRow>
           <CRow class="d-flex flex-row align-items-end">

@@ -1,6 +1,6 @@
 <template>
   <CSidebar class="bg-main" fixed :minimize="minimize" :show.sync="show">
-    <CSidebarBrand class="d-md-down-none" to="/">
+    <CSidebarBrand class="d-md-down-none mb-2 p-2" to="/">
       <!-- <CIcon 
         class="c-sidebar-brand-full" 
         name="logo" 

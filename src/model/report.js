@@ -1,5 +1,5 @@
 export const fields = [
-    { key: 'date', label: "Tanggal ", _style: 'min-width:50px'},
+    { key: 'date', label: "Tanggal ", _style: 'min-width:100px' },
     { key: 'report', label: "Laporan", _style: 'min-width:100px' },
     { key: 'name', label: "Nama", _style: 'min-width:100px' },
     { key: 'nip', label: "NIP", _style: 'min-width:100px' },
