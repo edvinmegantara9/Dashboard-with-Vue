@@ -292,6 +292,7 @@ export default {
       }
     },
     getDocuments() {
+      this.params.role_id = this.user.role.id;
       var loading = this.$loading.show();
       this.$store
         .dispatch("docs/getDocuments", this.params)
@@ -357,32 +358,12 @@ export default {
   computed: {
     computedItems() {
       return this.items.map((item) => {
-        if (this.user.role.name.toLowerCase() == "admin") {
-          return {
-            ...item,
-            document_type: item.document_type.name,
-            upload_by: item.uploader ? item.uploader.name : "Tidak ada",
-            updated_at: item.updated_at.slice(0, 10),
-          };
-        } else if (this.user.role.is_opd == 0) {
-          if (this.opd_list.includes(item.uploader.id)) {
-            return {
-              ...item,
-              document_type: item.document_type.name,
-              upload_by: item.uploader ? item.uploader.name : "Tidak ada",
-              updated_at: item.updated_at.slice(0, 10),
-            };
-          }
-        } else {
-          if (item.uploader.id == this.user.role.id) {
-            return {
-              ...item,
-              document_type: item.document_type.name,
-              upload_by: item.uploader ? item.uploader.name : "Tidak ada",
-              updated_at: item.updated_at.slice(0, 10),
-            };
-          }
-        }
+        return {
+          ...item,
+          document_type: item.document_type.name,
+          upload_by: item.uploader ? item.uploader.name : "Tidak ada",
+          updated_at: item.updated_at.slice(0, 10),
+        };
       });
     },
     computedTypes() {
@@ -395,9 +376,9 @@ export default {
     },
   },
   mounted() {
+    this.getUserFromLocal();
     this.getDocuments();
     this.getDocumentsType();
-    this.getUserFromLocal();
   },
 };
 </script>
