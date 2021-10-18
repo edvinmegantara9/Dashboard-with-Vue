@@ -56,6 +56,16 @@ export default {
                     reject(e)
                 })
             })
+        },
+
+        getReceiver({ _ }, { id, params }) {
+            return new Promise((resolve, reject) => {
+                axios.get('/message/receiver/' + id, { params }).then(resp => {
+                    resolve(resp.data)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
         }
 
 

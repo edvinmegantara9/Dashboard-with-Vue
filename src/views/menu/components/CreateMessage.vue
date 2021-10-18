@@ -82,26 +82,11 @@ export default {
         attachments: [],
       },
       user: {},
-      roles: [],
+
+      receivers: [],
     };
   },
   methods: {
-    getRole() {
-      let _params = {
-        sorttype: "asc",
-        sortby: "id",
-        row: 100,
-      };
-      this.$store
-        .dispatch("role/getRole", _params)
-        .then((resp) => {
-          this.roles = resp.data.data;
-          console.log(this.roles);
-        })
-        .catch((e) => {
-          this.$toast.error("gagal mengambil data roles \n", e);
-        });
-    },
     upload() {
       this.$refs.upload.click();
     },
@@ -122,6 +107,25 @@ export default {
         .catch((e) => {
           loading.hide();
           alert("Terjadi kesalahan !! | " + e);
+        });
+    },
+    getReceiver() {
+      var params = {
+        row: 100,
+        sortby: "id",
+        sorttype: "desc",
+      };
+      this.$store
+        .dispatch("message/getReceiver", {
+          id: this.user.role.id,
+          params: params,
+        })
+        .then((resp) => {
+          this.receivers = resp.data;
+          console.log("receiver", this.receivers);
+        })
+        .catch((e) => {
+          this.$toast.error("gagal mengambil data!! | " + e);
         });
     },
     submit() {
@@ -152,7 +156,7 @@ export default {
 
   computed: {
     computedRole() {
-      return this.roles.map((item) => {
+      return this.receivers.map((item) => {
         return {
           value: item.id,
           label: item.name,
@@ -162,8 +166,8 @@ export default {
   },
 
   mounted() {
-    this.getRole();
     this.user = JSON.parse(localStorage.getItem("user"));
+    this.getReceiver();
   },
 };
 </script>
