@@ -8,7 +8,7 @@ import docs from './module/docs'
 import gallery from './module/gallery'
 import report from './module/report'
 import message from './module/message'
-
+import report_citizen from './module/report-citizen'
 
 
 Vue.use(Vuex)
@@ -42,7 +42,8 @@ export default new Vuex.Store({
     docs,
     gallery,
     report,
-    message
+    message,
+    report_citizen
 
   },
   mutations
