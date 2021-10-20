@@ -17,9 +17,9 @@
               <button class="btn btn-sm btn-success">Cari</button>
             </div>
           </div>
-          <div class="col-md-5 ml-auto">
+          <div :class="['col-md-5', 'ml-auto', user.role.is_opd == 0 || user.role.name.toLowerCase() == 'admin'? '':'offset-md-2']">
             <div class="row">
-              <div class="col">
+              <div :class="['col-md-6', user.role.is_opd == 0 || user.role.name.toLowerCase() == 'admin'? '':'offset-md-6']">
                 <div class="input-group input-group-sm mb-3">
                   <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01"
@@ -42,6 +42,10 @@
               </div>
               <div class="col">
                 <button
+                  v-if="
+                  user.role.is_opd == 0 ||
+                  user.role.name.toLowerCase() == 'admin'
+                "
                   class="btn btn-sm btn-primary"
                   @click="addPubDocuments()"
                 >
@@ -73,10 +77,23 @@
                 color="warning"
                 square
                 size="sm"
+                v-if="
+                  user.role.is_opd == 0 ||
+                  user.role.name.toLowerCase() == 'admin'
+                "
               >
                 Edit
               </CButton>
-              <CButton @click="hapus(item)" color="danger" square size="sm">
+              <CButton 
+                @click="hapus(item)" 
+                color="danger" 
+                square 
+                size="sm"
+                v-if="
+                  user.role.is_opd == 0 ||
+                  user.role.name.toLowerCase() == 'admin'
+                "
+              >
                 Delete
               </CButton>
             </td>
@@ -155,7 +172,11 @@ export default {
       createModal: false,
       fields: data.fieldsPublic,
       isUpdate: false,
+      user: {
+        role : { is_opd: null, name: '' }
+      },
       items: [],
+      opd_list: [],
       page: 1,
       total: 0,
       form: {},
@@ -250,6 +271,7 @@ export default {
       }
     },
     getPubDocuments() {
+      this.params.role_id = this.user.role.id;
       var loading = this.$loading.show();
       this.$store
         .dispatch("docs/getPubDocuments", this.params)
@@ -273,6 +295,20 @@ export default {
       this.getPubDocuments();
       // console.log(page);
     },
+    getUserFromLocal() {
+      var data = JSON.parse(localStorage.getItem("user"));
+      this.user = data;
+
+      this.getOpdList();
+    },
+    getOpdList() {
+      this.opd_list = this.user.role.opd.map((e) => {
+        return e.id;
+      });
+    },
+  },
+  watch: {
+    computedItems(val) {},
   },
   computed: {
     computedItems() {
@@ -286,6 +322,7 @@ export default {
     },
   },
   mounted() {
+    this.getUserFromLocal();
     this.getPubDocuments();
   },
 };

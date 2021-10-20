@@ -20,3 +20,18 @@ export const fieldsPublic = [
     { key: 'updated_at', label: "Terakhir Diperbarui", _style:'min-width:100px;' },
     { key: "action", label: 'Aksi', _style: 'min-width:75px'}
 ]
+export const LaporanMasyarakat = [
+
+    { key: 'name', label: "Nama", _style:'min-width:75px' },
+    { key: 'address', label: "Alamat", _style:'min-width:100px;' },
+    { key: 'phone_number', label: "No. Telepon", _style:'min-width:75px;' },
+    { key: "report", label: 'Isi Laporan', _style: 'min-width:100px'},
+    { key: "action", label: 'Aksi', _style: 'min-width:75px'}
+]
+export const LaporanMasyarakat_opd = [
+
+    { key: 'name', label: "Nama", _style:'min-width:100px' },
+    { key: 'address', label: "Alamat", _style:'min-width:100px;' },
+    { key: 'phone_number', label: "No. Telepon", _style:'min-width:100px;' },
+    { key: "report", label: 'Isi Laporan', _style: 'min-width:125px'},
+]
