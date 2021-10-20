@@ -120,7 +120,7 @@ export default {
       if (confirm("Data akan dihapus !!")) {
         var loading = this.$loading.show();
         this.$store
-          .dispatch("citizen_report/deleteCitizenReport", id)
+          .dispatch("report_citizen/deleteCitizenReport", id)
           .then((resp) => {
             this.$toast.success("Berhasil menghapus laporan");
             if (this.total == this.params.row + 1) {
