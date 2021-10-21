@@ -52,6 +52,7 @@
         <CDataTable
           class="table-striped"
           :items="computedItems.filter((n) => n)"
+          :itemsPerPage="5"
           :fields="fields"
           sorter
         >
@@ -77,13 +78,13 @@
             </td>
           </template>
         </CDataTable>
-        <pagination
+        <!-- <pagination
           v-if="total > 5"
           v-model="page"
           :records="total"
           :per-page="5"
           @paginate="pagination"
-        />
+        /> -->
       </CCardBody>
     </CCard>
     <CModal

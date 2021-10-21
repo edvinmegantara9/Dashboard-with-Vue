@@ -15,9 +15,7 @@
                 style="max-width: 200px"
                 class="form-control form-control-sm mx-2"
                 placeholder="Ketik disini"
-
                 v-model="search"
-
               />
               <button class="btn btn-sm btn-success">Cari</button>
             </div>
@@ -38,9 +36,7 @@
                     style="max-width: 100px"
                     id="inputGroupSelect01"
                     v-model="params.row"
-
                     @change="getData"
-
                   >
                     <!-- <option selected>Pilih...</option> -->
                     <option selected value="5">5</option>
@@ -53,19 +49,15 @@
           </div>
         </div>
         <CDataTable
-
           class="table-striped"
           :items="computedItems.filter((n) => n)"
           :fields="fields"
           sorter
-
         >
           <template #action="{ item }">
             <td class="py-2">
               <CButton
-<
                 @click="destroy(item.id)"
-
                 color="danger"
                 square
                 size="sm"
@@ -92,12 +84,10 @@
 <script>
 import * as data from "../../model/report-citizen";
 
-
 export default {
   data() {
     return {
       createModal: false,
-
       fields: data.fields,
       isUpdate: false,
       items: [],
@@ -107,14 +97,11 @@ export default {
       total: 0,
       form: {},
       search: "",
-
       params: {
         sorttype: "desc",
         sortby: "id",
         row: 5,
-
         page: 1
-
       },
     };
   },
@@ -171,14 +158,11 @@ export default {
             ...item
           }
         }
-
       });
     },
   },
   mounted() {
-
     this.getData();
-
   },
 };
 </script>
