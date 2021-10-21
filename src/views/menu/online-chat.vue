@@ -16,43 +16,90 @@
             </div>
           </div>
           <div class="card-body scroll">
-            <div
-              class="row"
-              v-for="(item, index) in generateChats"
-              :key="index"
-            >
-              <div class="col-md">
-                <div class="row" v-if="item.sender_id != id">
-                  <div class="col-md-8 mr-auto">
-                    <div class="row mb-3">
-                      <div class="col-sm-10 m-0">
-                        <div class="card rounded m-0 p-3 bg-secondary">
-                          {{ item.chat }}
+            <div v-if="chats.length != 0">
+              <div
+                class="row"
+                v-for="(item, index) in generateChats"
+                :key="index"
+              >
+                <div class="col-md">
+                  <div class="row" v-if="item.sender_id != user.role.id">
+                    <div class="col-md-8 mr-auto">
+                      <div class="row mb-3 ml-3 align-items-center">
+                        <div
+                          class="
+                            card
+                            rounded
+                            m-0
+                            mr-3
+                            px-3
+                            py-2
+                            buble
+                            bg-secondary
+                          "
+                        >
+                          <b>
+                            {{ item.chat }}
+                          </b>
+                          <hr class="m-0 mt-2 mb-1" />
+                          <small
+                            >{{ item.sender_name }} |
+                            {{ item.role_name }}</small
+                          >
                         </div>
-                      </div>
-                      <div class="col-sm-1 p-0 m-0 align-self-center">
+
                         <small>
                           {{ item.date }}
                         </small>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="row" v-if="item.sender_id == id">
-                  <div class="col-md-8 ml-auto">
-                    <div class="row mb-3">
-                      <div class="col-sm-1 p-0 m-0 align-self-center">
+                  <div class="row" v-if="item.sender_id == user.role.id">
+                    <div class="col-md-8 ml-auto">
+                      <div
+                        class="
+                          row
+                          mb-3
+                          justify-content-end
+                          mr-3
+                          align-items-center
+                        "
+                      >
                         <small>{{ item.date }}</small>
-                      </div>
-                      <div class="col-sm-11">
-                        <div class="card m-0 rounded p-3 bg-primary text-white">
-                          {{ item.chat }}
+
+                        <div
+                          class="
+                            card
+                            m-0
+                            ml-3
+                            rounded
+                            px-3
+                            py-2
+                            bg-primary
+                            text-white
+                            buble
+                          "
+                        >
+                          <b>
+                            {{ item.chat }}
+                          </b>
+                          <hr
+                            class="m-0 mt-2 mb-1"
+                            style="border-color: white"
+                          />
+                          <small
+                            >{{ item.sender_name }} |
+                            {{ item.role_name }}</small
+                          >
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div v-if="chats.length == 0">
+              <center>Belum ada chat</center>
             </div>
           </div>
           <div class="card-footer bg-primary">
@@ -158,7 +205,6 @@ import firebase from "firebase/compat/app";
 export default {
   data() {
     return {
-      id: 0,
       form: {},
       createModal: false,
       selectedRoom: null,
@@ -171,6 +217,7 @@ export default {
         sortby: "id",
         row: 100,
       },
+      chats: [],
       roles: [],
       rooms: [],
       user: JSON.parse(localStorage.getItem("user")),
@@ -185,6 +232,7 @@ export default {
         this.selectedRoom = index;
       }
       this.showRoom = item;
+      this.getChat();
     },
     submit() {
       this.form.created_by = this.user.role.id;
@@ -215,6 +263,24 @@ export default {
       this.createModal = false;
       this.form = {};
     },
+    getChat() {
+      let room = firebase.database().ref(this.showRoom.room_id);
+      console.log(room);
+      room.on("value", (snapshot) => {
+        // console.log(snapshot);
+        if (snapshot.val()) {
+          this.chats = [];
+
+          for (let [key, value] of Object.entries(snapshot.val())) {
+            this.chats.push(value);
+          }
+        } else {
+          this.chats = [];
+        }
+
+        console.log("chat", this.chats);
+      });
+    },
     getRoles() {
       this.$store
         .dispatch("role/getRole", this.params)
@@ -226,8 +292,8 @@ export default {
         });
     },
     sendChat() {
-      // let room = firebase.database().ref(this.showRoom.room_id);
-      let room = firebase.database().ref("roomsilaper kedua");
+      let room = firebase.database().ref(this.showRoom.room_id);
+      // let room = firebase.database().ref("roomsilaper kedua");
 
       this.formChat.sender_name = this.user.full_name;
       this.formChat.sender_id = this.user.role.id;
@@ -239,9 +305,8 @@ export default {
       // );
 
       room.push(this.formChat);
-      room.on("value", (snapshot) => {
-        console.log(snapshot.val());
-      });
+      this.formChat = {};
+      this.getChat();
     },
     getRooms() {
       var params = {
@@ -266,13 +331,13 @@ export default {
 
   computed: {
     generateChats() {
-      return [0, 1, 1, 0, 0, 1].map((item) => {
+      return this.chats.map((item) => {
         return {
-          chat:
-            "inisldlaskdlaskldkasldklaskddariLoremipsumdolorsitametconsecteturi" +
-            item,
-          sender_id: item,
-          date: "12:45",
+          chat: item.chat,
+          sender_id: item.sender_id,
+          sender_name: item.sender_name,
+          role_name: item.role_name,
+          date: this.$moment(item.datetime).format(" h:mm"),
         };
       });
     },
@@ -290,8 +355,10 @@ export default {
 
 <style scoped>
 .scroll {
+  min-height: 350px;
   height: 350px;
   overflow-y: auto;
+  background-color: ghostwhite;
 }
 .rounded {
   border-radius: 25px !important;
@@ -308,5 +375,16 @@ ul {
 .list-group-item:hover {
   background-color: #5997e869;
   color: white;
+}
+.buble {
+  width: auto !important;
+  display: inline-block;
+}
+@media screen and (min-width: 1920px) {
+  .scroll {
+    min-height: 350px;
+    height: 650px;
+    overflow-y: auto;
+  }
 }
 </style>
