@@ -3,7 +3,7 @@
     <h3>Agenda BAPPEDA</h3>
     <hr />
     <div class="row">
-      <div class="col-md-8 pr-md-5">
+      <div class="col-md-8">
         <CCard>
           <CCardBody>
             <CListGroup v-if="agendas.length > 0">
@@ -53,14 +53,14 @@
         </CCard>
       </div>
       <div class="col-md-4 text-center">
-        <div class="row mb-3">
+        <div class="row mb-2">
           <div class="col-12">
             <button
               @click="create"
               v-if="
                 user.role.name.toLowerCase() == 'admin' || user.role.is_opd == 0
               "
-              class="btn btn-primary"
+              class="btn btn-block btn-primary"
             >
               Tambah Agenda
             </button>
@@ -69,7 +69,11 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <v-calendar title-position="left" :attributes="attrs" />
+            <v-calendar
+              title-position="left"
+              style="width: 100%"
+              :attributes="attrs"
+            />
           </div>
         </div>
       </div>
