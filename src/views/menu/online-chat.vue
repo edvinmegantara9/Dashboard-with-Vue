@@ -110,6 +110,7 @@
                   placeholder="Ketik disini..."
                   class="form-control rounded"
                   type="text "
+                  @keydown.enter="sendChat()"
                 />
               </div>
 
@@ -253,6 +254,7 @@ export default {
           this.createModal = false;
           loading.hide();
           this.form = {};
+          this.getRooms();
         })
         .catch((e) => {
           this.$toast.error("gagal membuat room | " + e);
