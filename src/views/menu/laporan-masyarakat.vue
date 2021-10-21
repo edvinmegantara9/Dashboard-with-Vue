@@ -2,7 +2,7 @@
   <div>
     <h3>Laporan Masyarakat</h3>
 
-    <br/>
+    <br />
 
     <CCard>
       <CCardBody>
@@ -15,9 +15,7 @@
                 style="max-width: 200px"
                 class="form-control form-control-sm mx-2"
                 placeholder="Ketik disini"
-
                 v-model="search"
-
               />
               <button class="btn btn-sm btn-success">Cari</button>
             </div>
@@ -26,7 +24,6 @@
           <div class="col-md-5 ml-auto">
             <div class="row">
               <div class="col">
-
                 <div class="input-group input-group-sm mb-3">
                   <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01"
@@ -38,9 +35,7 @@
                     style="max-width: 100px"
                     id="inputGroupSelect01"
                     v-model="params.row"
-
                     @change="getData"
-
                   >
                     <!-- <option selected>Pilih...</option> -->
                     <option selected value="5">5</option>
@@ -53,19 +48,15 @@
           </div>
         </div>
         <CDataTable
-
           class="table-striped"
           :items="computedItems.filter((n) => n)"
           :fields="fields"
           sorter
-
         >
           <template #action="{ item }">
             <td class="py-2">
               <CButton
-<
                 @click="destroy(item.id)"
-
                 color="danger"
                 square
                 size="sm"
@@ -92,7 +83,6 @@
 <script>
 import * as data from "../../model/report-citizen";
 
-
 export default {
   data() {
     return {
@@ -113,13 +103,11 @@ export default {
         sortby: "id",
         row: 5,
 
-        page: 1
-
+        page: 1,
       },
     };
   },
   methods: {
-
     getData() {
       var loading = this.$loading.show();
       this.$store
@@ -134,7 +122,7 @@ export default {
           loading.hide();
         });
     },
-    
+
     destroy(id) {
       if (confirm("Data akan dihapus !!")) {
         var loading = this.$loading.show();
@@ -148,7 +136,6 @@ export default {
             }
             this.getData();
             loading.hide();
-
           })
           .catch((e) => {
             this.$toast.error(e);
@@ -166,19 +153,19 @@ export default {
   computed: {
     computedItems() {
       return this.items.map((item) => {
-        if (this.user.role.name.toLowerCase() == "admin" || this.user.role.isOpd == 0) {
+        if (
+          this.user.role.name.toLowerCase() == "admin" ||
+          this.user.role.isOpd == 0
+        ) {
           return {
-            ...item
-          }
+            ...item,
+          };
         }
-
       });
     },
   },
   mounted() {
-
     this.getData();
-
   },
 };
 </script>
