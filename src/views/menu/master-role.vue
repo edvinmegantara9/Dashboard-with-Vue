@@ -114,7 +114,7 @@
             v-model="form.opds"
             multiple
             placeholder="Pilih OPD"
-            :options="computedOPD"
+            :options="computedOPD.filter((n) => n)"
           ></v-select>
         </div>
       </div>
