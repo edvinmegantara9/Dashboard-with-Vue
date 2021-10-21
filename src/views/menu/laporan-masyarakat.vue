@@ -1,7 +1,9 @@
 <template>
   <div>
     <h3>Laporan Masyarakat</h3>
-    <br />
+
+    <br/>
+
     <CCard>
       <CCardBody>
         <div class="row">
@@ -13,13 +15,18 @@
                 style="max-width: 200px"
                 class="form-control form-control-sm mx-2"
                 placeholder="Ketik disini"
+
+                v-model="search"
+
               />
               <button class="btn btn-sm btn-success">Cari</button>
             </div>
           </div>
-          <div class="col-md-5 offset-md-2 ml-auto">
+
+          <div class="col-md-5 ml-auto">
             <div class="row">
-              <div class="col-md-6 offset-md-6">
+              <div class="col">
+
                 <div class="input-group input-group-sm mb-3">
                   <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01"
@@ -31,7 +38,9 @@
                     style="max-width: 100px"
                     id="inputGroupSelect01"
                     v-model="params.row"
-                    @change="getCitizenReport"
+
+                    @change="getData"
+
                   >
                     <!-- <option selected>Pilih...</option> -->
                     <option selected value="5">5</option>
@@ -44,18 +53,19 @@
           </div>
         </div>
         <CDataTable
-          v-if="
-            user.role.is_opd == 0 ||
-            user.role.name.toLowerCase() == 'admin'
-          "
+
           class="table-striped"
           :items="computedItems.filter((n) => n)"
           :fields="fields"
+          sorter
+
         >
           <template #action="{ item }">
             <td class="py-2">
               <CButton
-                @click="hapus(item)"
+<
+                @click="destroy(item.id)"
+
                 color="danger"
                 square
                 size="sm"
@@ -65,13 +75,7 @@
             </td>
           </template>
         </CDataTable>
-        <CDataTable
-          v-if="user.role.is_opd == 1"
-          class="table-striped"
-          :items="computedItems.filter((n) => n)"
-          :fields="fields_opd"
-        >
-        </CDataTable>
+
         <pagination
           v-if="total > 5"
           v-model="page"
@@ -85,43 +89,66 @@
 </template>
 
 
-
 <script>
-import * as data from "../../model/document";
+import * as data from "../../model/report-citizen";
+
 
 export default {
   data() {
     return {
       createModal: false,
-      fields: data.LaporanMasyarakat,
-      fields_opd: data.LaporanMasyarakat_opd,
+
+      fields: data.fields,
       isUpdate: false,
-      user: {
-        role: { is_opd: null, name: '' }
-      },
       items: [],
-      report: [],
-      docTypes: [],
-      opd_list: [],
+      roles: [],
+      user: JSON.parse(localStorage.getItem("user")),
       page: 1,
       total: 0,
       form: {},
+      search: "",
+
       params: {
         sorttype: "desc",
         sortby: "id",
         row: 5,
-        page: 1,
+
+        page: 1
+
       },
     };
   },
   methods: {
-    hapus(item) {
+
+    getData() {
+      var loading = this.$loading.show();
+      this.$store
+        .dispatch("report_citizen/getCitizenReport", this.params)
+        .then((resp) => {
+          this.items = resp.data.data;
+          this.total = resp.data.total;
+          loading.hide();
+        })
+        .catch((e) => {
+          this.$toast.error(e);
+          loading.hide();
+        });
+    },
+    
+    destroy(id) {
       if (confirm("Data akan dihapus !!")) {
+        var loading = this.$loading.show();
         this.$store
-          .dispatch("docs/deleteCitizenReport", item.id)
-          .then(() => {
-            this.$toast.success("Berhasil menghapus data laporan");
-            this.getCitizenReport();
+          .dispatch("report_citizen/deleteCitizenReport", id)
+          .then((resp) => {
+            this.$toast.success("Berhasil menghapus laporan");
+            if (this.total == this.params.row + 1) {
+              this.page--;
+              this.params.page = this.page;
+            }
+            this.getData();
+            loading.hide();
+
           })
           .catch((e) => {
             this.$toast.error(e);
@@ -129,47 +156,29 @@ export default {
           });
       }
     },
-    getCitizenReport() {
-      this.$store
-        .dispatch("docs/getCitizenReport")
-        .then((resp) => {
-          this.report = resp.data.data;
-        })
-        .catch((e) => {
-          this.$toast.error("gagal mengambil data laporan \n", e);
-        });
-    },
+
     pagination(page) {
       this.page = page;
       this.params.page = page;
-      this.getCitizenReport();
+      this.getData();
     },
-    getUserFromLocal() {
-      var data = JSON.parse(localStorage.getItem("user"));
-      this.user = data;
-      this.getOpdList();
-    },
-    getOpdList() {
-      this.opd_list = this.user.role.opd.map((e) => {
-        return e.id;
-      });
-    },
-  },
-  watch: {
-    computedItems(val) {},
   },
   computed: {
     computedItems() {
-      return this.report.map((item) => {
-        return {
-          ...item
-        };
+      return this.items.map((item) => {
+        if (this.user.role.name.toLowerCase() == "admin" || this.user.role.isOpd == 0) {
+          return {
+            ...item
+          }
+        }
+
       });
     },
   },
   mounted() {
-    this.getUserFromLocal();
-    this.getCitizenReport();
+
+    this.getData();
+
   },
 };
 </script>
