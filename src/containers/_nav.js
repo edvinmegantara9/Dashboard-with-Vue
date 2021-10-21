@@ -87,6 +87,12 @@ export const admin = [
   },
   {
     _name: 'CSidebarNavItem',
+    name: 'Laporan Masyarakat',
+    to: '/laporan-masyarakat',
+    icon: 'cil-pencil'
+  },
+  {
+    _name: 'CSidebarNavItem',
     name: 'Gallery',
     to: '/gallery',
     icon: 'cil-puzzle'
@@ -195,6 +201,12 @@ export const opd = [
     to: '/history',
     icon: 'cil-grid'
   },
+  {
+    _name: 'CSidebarNavItem',
+    name: 'Laporan Masyarakat',
+    to: '/laporan-masyarakat',
+    icon: 'cil-pencil'
+  },
 
 
 
@@ -287,6 +299,12 @@ export const not_opd = [
     _name: 'CSidebarNavItem',
     name: 'Laporan Harian',
     to: '/laporan-harian',
+    icon: 'cil-pencil'
+  },
+  {
+    _name: 'CSidebarNavItem',
+    name: 'Laporan Masyarakat',
+    to: '/laporan-masyarakat',
     icon: 'cil-pencil'
   },
   {

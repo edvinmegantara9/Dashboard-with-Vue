@@ -8,8 +8,12 @@ import docs from './module/docs'
 import gallery from './module/gallery'
 import report from './module/report'
 import message from './module/message'
+
 import room from './module/room'
 
+
+
+import report_citizen from './module/report-citizen'
 
 
 
@@ -45,7 +49,11 @@ export default new Vuex.Store({
     gallery,
     report,
     message,
-    room
+
+    room,
+
+    report_citizen
+
 
   },
   mutations

@@ -185,12 +185,16 @@ export default {
         sortby: "date",
         row: 5,
         page: 1,
+        role_id: 0
       },
     };
   },
   methods: {
     getData() {
       var loading = this.$loading.show();
+      if (this.user.role_id != null) {
+        this.params.role_id = this.user.role_id
+      }
       this.$store
         .dispatch("report/getReport", this.params)
         .then((resp) => {
@@ -299,6 +303,12 @@ export default {
   computed: {
     computedItems() {
       return this.items.map((item) => {
+        if (this.user.role.name.toLowerCase() == "admin") {
+          return {
+            ...item,
+            role: item.role,
+          };
+        } 
         if (this.user.role.is_opd == 0) {
           if (item.role == this.user.role.name) {
             return {
@@ -306,12 +316,6 @@ export default {
               role: item.role,
             };
           }
-        }
-        if (this.user.role.name.toLowerCase() == "admin") {
-          return {
-            ...item,
-            role: item.role,
-          };
         }
       });
     },
