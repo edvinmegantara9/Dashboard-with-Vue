@@ -201,6 +201,12 @@ export const opd = [
     to: '/history',
     icon: 'cil-grid'
   },
+  {
+    _name: 'CSidebarNavItem',
+    name: 'Laporan Masyarakat',
+    to: '/laporan-masyarakat',
+    icon: 'cil-pencil'
+  },
 
 
 

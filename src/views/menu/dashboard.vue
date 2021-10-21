@@ -45,18 +45,6 @@
               <table class="table table-sm table-striped">
                 <tbody>
                   <tr>
-                    <td>Provinsi</td>
-                    <td>Sumatra Selatan</td>
-                  </tr>
-                  <tr>
-                    <td>Kota</td>
-                    <td>Pagar Alam</td>
-                  </tr>
-                  <tr>
-                    <td>Jabatan</td>
-                    <td>{{ user.position }}</td>
-                  </tr>
-                  <tr>
                     <td>Nama</td>
                     <td>{{ user.full_name }}</td>
                   </tr>
@@ -64,6 +52,19 @@
                     <td>NIP</td>
                     <td>{{ user.nip }}</td>
                   </tr>
+                  <tr>
+                    <td>Role</td>
+                    <td>{{ user.role.name }}</td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td>{{ user.email }}</td>
+                  </tr>
+                  <tr>
+                    <td>Jabatan</td>
+                    <td>{{ user.position }}</td>
+                  </tr>
+
                   <tr>
                     <td>Pangkat / Golongan</td>
                     <td>{{ user.group }}</td>

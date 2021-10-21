@@ -113,7 +113,9 @@ function configRoutes() {
         },
         {
           path: 'laporan-masyarakat',
-          name: 'laporan-masyarakat',
+
+          name: 'Laporan Masyarakat',
+
           component: LaporanMasyarakat
         },
         {

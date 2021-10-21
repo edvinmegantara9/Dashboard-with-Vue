@@ -1,7 +1,9 @@
 <template>
   <div>
     <h3>Laporan Masyarakat</h3>
+
     <br/>
+
     <CCard>
       <CCardBody>
         <div class="row">
@@ -13,14 +15,18 @@
                 style="max-width: 200px"
                 class="form-control form-control-sm mx-2"
                 placeholder="Ketik disini"
+
                 v-model="search"
+
               />
               <button class="btn btn-sm btn-success">Cari</button>
             </div>
           </div>
+
           <div class="col-md-5 ml-auto">
             <div class="row">
               <div class="col">
+
                 <div class="input-group input-group-sm mb-3">
                   <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01"
@@ -32,7 +38,9 @@
                     style="max-width: 100px"
                     id="inputGroupSelect01"
                     v-model="params.row"
+
                     @change="getData"
+
                   >
                     <!-- <option selected>Pilih...</option> -->
                     <option selected value="5">5</option>
@@ -45,15 +53,19 @@
           </div>
         </div>
         <CDataTable
+
           class="table-striped"
           :items="computedItems.filter((n) => n)"
           :fields="fields"
           sorter
+
         >
           <template #action="{ item }">
             <td class="py-2">
               <CButton
+<
                 @click="destroy(item.id)"
+
                 color="danger"
                 square
                 size="sm"
@@ -63,6 +75,7 @@
             </td>
           </template>
         </CDataTable>
+
         <pagination
           v-if="total > 5"
           v-model="page"
@@ -79,10 +92,12 @@
 <script>
 import * as data from "../../model/report-citizen";
 
+
 export default {
   data() {
     return {
       createModal: false,
+
       fields: data.fields,
       isUpdate: false,
       items: [],
@@ -92,15 +107,19 @@ export default {
       total: 0,
       form: {},
       search: "",
+
       params: {
         sorttype: "desc",
         sortby: "id",
         row: 5,
+
         page: 1
+
       },
     };
   },
   methods: {
+
     getData() {
       var loading = this.$loading.show();
       this.$store
@@ -129,6 +148,7 @@ export default {
             }
             this.getData();
             loading.hide();
+
           })
           .catch((e) => {
             this.$toast.error(e);
@@ -136,6 +156,7 @@ export default {
           });
       }
     },
+
     pagination(page) {
       this.page = page;
       this.params.page = page;
@@ -150,11 +171,14 @@ export default {
             ...item
           }
         }
+
       });
     },
   },
   mounted() {
+
     this.getData();
+
   },
 };
 </script>

@@ -144,6 +144,53 @@ export default {
             })
         },
 
+        
+        // Citizen Report
+        getCitizenReport(_, _params) {
+            return new Promise((resolve, reject) => {
+                axios.get('citizen_report', {
+                    params: {
+                        row: 20,
+                        sortby: 'id',
+                        sorttype: 'asc'
+                    }
+                }).then(resp => {
+                    resolve(resp.data);
+                }).catch(e => {
+                    reject(e);
+                })
+            })
+        },
+
+        addCitizenReport(_, data) {
+            return new Promise((resolve, reject) => {
+                axios.post('citizen_report', data).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e);
+                })
+            })
+        },
+
+        updateCitizenReport(_, { id, data }) {
+            return new Promise((resolve, reject) => {
+                axios.put('citizen_report/update/' + id, data).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
+
+        deleteCitizenReport(_, id) {
+            return new Promise((resolve, reject) => {
+                axios.delete('citizen_report/delete/' + id).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
     },
     getters: {
 
