@@ -45,9 +45,25 @@
                             bg-secondary
                           "
                         >
-                          <b>
+                          <b v-if="item.is_file == 0">
                             {{ item.chat }}
                           </b>
+                          <center v-if="item.is_file == 1">
+                            <img
+                              src="@/assets/attachment.png"
+                              class="mb-2"
+                              style="width: 150px"
+                              alt=""
+                            />
+                            <br />
+                            <a
+                              :href="item.chat"
+                              target="_blank"
+                              class="btn btn-sm btn-success"
+                            >
+                              Lihat</a
+                            >
+                          </center>
                           <hr class="m-0 mt-2 mb-1" />
                           <small
                             >{{ item.sender_name }} |
@@ -87,9 +103,25 @@
                             buble
                           "
                         >
-                          <b>
+                          <b v-if="item.is_file == 0">
                             {{ item.chat }}
                           </b>
+                          <center v-if="item.is_file == 1">
+                            <img
+                              src="@/assets/attachment.png"
+                              class="mb-2"
+                              style="width: 150px"
+                              alt=""
+                            />
+                            <br />
+                            <a
+                              :href="item.chat"
+                              target="_blank"
+                              class="btn btn-sm btn-success"
+                            >
+                              Lihat</a
+                            >
+                          </center>
                           <hr
                             class="m-0 mt-2 mb-1"
                             style="border-color: white"
@@ -121,7 +153,10 @@
                 />
               </div>
               <div class="col-md-1 p-0">
-                <button class="btn mr-2 btn-secondary rounded btn-block">
+                <button
+                  @click="$refs.upload.click()"
+                  class="btn mr-2 btn-secondary rounded btn-block"
+                >
                   <CIcon
                     size="md"
                     style="color: black"
@@ -254,6 +289,7 @@
         </div>
       </template>
     </CModal>
+    <input type="file" @change="selectFile" name="" ref="upload" hidden id="" />
   </div>
 </template>
 
@@ -261,6 +297,7 @@
 
 <script>
 import firebase from "firebase/compat/app";
+import { uploadFile } from "@/utils/fileUpload";
 
 export default {
   data() {
@@ -270,6 +307,7 @@ export default {
       endModal: false,
       selectedRoom: null,
       formChat: {},
+      file: null,
       showRoom: {
         room_name: "NAMA ROOM",
       },
@@ -287,6 +325,34 @@ export default {
   },
 
   methods: {
+    selectFile(event) {
+      this.file = event.target.files[0];
+      var loading = this.$loading.show();
+      uploadFile(this.file)
+        .then((resp) => {
+          let room = firebase.database().ref(this.showRoom.room_id);
+          this.formChat.chat = resp;
+          // let room = firebase.database().ref("roomsilaper kedua");
+
+          this.formChat.sender_name = this.user.full_name;
+          this.formChat.sender_id = this.user.role.id;
+          this.formChat.is_file = 1;
+          this.formChat.role_name = this.user.role.name;
+          this.formChat.datetime = new Date().getTime();
+          // this.formChat.datetime = this.$moment(new Date()).format(
+          //   "MMMM Do YYYY, h:mm"
+          // );
+
+          room.push(this.formChat);
+          this.formChat = {};
+          this.getChat();
+          loading.hide();
+        })
+        .catch((e) => {
+          loading.hide();
+          alert("Terjadi kesalahan !! | " + e);
+        });
+    },
     selectRoom(index, item) {
       if (this.selectedRoom === index) {
         this.selectedRoom = null;
@@ -426,6 +492,7 @@ export default {
     generateChats() {
       return this.chats.map((item) => {
         return {
+          ...item,
           chat: item.chat,
           sender_id: item.sender_id,
           sender_name: item.sender_name,
