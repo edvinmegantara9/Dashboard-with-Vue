@@ -87,7 +87,6 @@ export default {
   data() {
     return {
       createModal: false,
-
       fields: data.fields,
       isUpdate: false,
       items: [],
@@ -97,13 +96,13 @@ export default {
       total: 0,
       form: {},
       search: "",
-
       params: {
         sorttype: "desc",
         sortby: "id",
         row: 5,
 
-        page: 1,
+        page: 1
+
       },
     };
   },
