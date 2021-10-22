@@ -30,8 +30,7 @@
       </CCardBody>
     </CCard>
     <CModal
-      :title="!isUpdate ? 'Tambah Laporan Harian' : 'Update Laporan Harian'"
-      :color="!isUpdate ? 'primary' : 'warning'"
+      title="Detail History Layanan"
       size="lg"
       :show.sync="createModal"
     >
