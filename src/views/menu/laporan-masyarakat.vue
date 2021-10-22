@@ -2,7 +2,7 @@
   <div>
     <h3>Laporan Masyarakat</h3>
 
-    <br/>
+    <br />
 
     <CCard>
       <CCardBody>
@@ -24,7 +24,6 @@
           <div class="col-md-5 ml-auto">
             <div class="row">
               <div class="col">
-
                 <div class="input-group input-group-sm mb-3">
                   <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01"
@@ -101,12 +100,13 @@ export default {
         sorttype: "desc",
         sortby: "id",
         row: 5,
+
         page: 1
+
       },
     };
   },
   methods: {
-
     getData() {
       var loading = this.$loading.show();
       this.$store
@@ -121,7 +121,7 @@ export default {
           loading.hide();
         });
     },
-    
+
     destroy(id) {
       if (confirm("Data akan dihapus !!")) {
         var loading = this.$loading.show();
@@ -135,7 +135,6 @@ export default {
             }
             this.getData();
             loading.hide();
-
           })
           .catch((e) => {
             this.$toast.error(e);
@@ -153,10 +152,13 @@ export default {
   computed: {
     computedItems() {
       return this.items.map((item) => {
-        if (this.user.role.name.toLowerCase() == "admin" || this.user.role.isOpd == 0) {
+        if (
+          this.user.role.name.toLowerCase() == "admin" ||
+          this.user.role.isOpd == 0
+        ) {
           return {
-            ...item
-          }
+            ...item,
+          };
         }
       });
     },
