@@ -100,17 +100,30 @@ Vue.component('pagination', Pagination);
 import firebase from "firebase/compat/app";
 import 'firebase/compat/storage';
 import "firebase/compat/analytics";
+import "firebase/compat/database";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
-const firebaseConfig =
-{
-  apiKey: "AIzaSyCwAACGH2QF99QhbQuv3xDxwJFRdxplgYg",
-  projectId: "bwa-flutix-2246a",
-  storageBucket: "bwa-flutix-2246a.appspot.com",
-  messagingSenderId: "359270072999",
-  appId: "1:359270072999:android:8462c6eb8c5d54a9975182",
+// const firebaseConfig =
+// {
+//   apiKey: "AIzaSyCwAACGH2QF99QhbQuv3xDxwJFRdxplgYg",
+//   projectId: "bwa-flutix-2246a",
+//   storageBucket: "bwa-flutix-2246a.appspot.com",
+//   messagingSenderId: "359270072999",
+//   appId: "1:359270072999:android:8462c6eb8c5d54a9975182",
+// };
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBtJXWRSed_BHy9XS4e8uZWOjI5bREoES4",
+  authDomain: "silaper-fa45b.firebaseapp.com",
+  projectId: "silaper-fa45b",
+  storageBucket: "silaper-fa45b.appspot.com",
+  messagingSenderId: "552838804992",
+  appId: "1:552838804992:web:d057e45d911bb2ce668ae5",
+  measurementId: "G-26YSE205PD",
+  databaseURL: "https://silaper-fa45b-default-rtdb.firebaseio.com/",
 };
+
 
 firebase.initializeApp(firebaseConfig);
 
