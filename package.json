@@ -43,6 +43,7 @@
     "v-calendar": "^2.3.2",
     "v-select2-component": "^0.4.7",
     "vue": "~2.6.12",
+    "vue-chat-scroll": "^1.4.0",
     "vue-loading-overlay": "^3.4.2",
     "vue-moment": "^4.1.0",
     "vue-pagination-2": "^3.0.91",
