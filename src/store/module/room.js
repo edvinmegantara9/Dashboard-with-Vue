@@ -29,6 +29,15 @@ export default {
             });
         },
 
+        endRoom(_, { id, data }) {
+            return new Promise((resolve, reject) => {
+                axios.put('/chat/endchat/' + id, data).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        }
 
 
 

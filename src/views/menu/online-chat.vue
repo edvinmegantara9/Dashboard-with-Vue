@@ -9,13 +9,20 @@
                 <b> {{ showRoom.room_name }} </b>
               </div>
               <div class="col-md-3 ml-auto text-right">
-                <button class="btn btn-danger btn-sm pull-right">
+                <button
+                  v-if="selectedRoom != null"
+                  class="btn btn-danger btn-sm pull-right"
+                  @click="endModal = true"
+                >
                   Akhiri Layanan
                 </button>
               </div>
             </div>
           </div>
-          <div class="card-body scroll">
+          <div
+            class="card-body scroll"
+            v-chat-scroll="{ always: true, smooth: true }"
+          >
             <div v-if="chats.length != 0">
               <div
                 class="row"
@@ -104,7 +111,7 @@
           </div>
           <div class="card-footer bg-primary">
             <div class="row">
-              <div class="col-md-10">
+              <div class="col-md-9">
                 <input
                   v-model="formChat.chat"
                   placeholder="Ketik disini..."
@@ -113,10 +120,20 @@
                   @keydown.enter="sendChat()"
                 />
               </div>
+              <div class="col-md-1 p-0">
+                <button class="btn mr-2 btn-secondary rounded btn-block">
+                  <CIcon
+                    size="md"
+                    style="color: black"
+                    class="p-0 m-0"
+                    name="cil-file"
+                  ></CIcon>
+                </button>
+              </div>
 
               <div class="col-md-2">
                 <button
-                  class="btn rounded btn-secondary btn-block"
+                  class="btn rounded btn-secondary btn-block font-weight-bold"
                   @click="sendChat()"
                 >
                   Kirim
@@ -134,7 +151,7 @@
           <div class="card-body p-1 mt-2 scroll">
             <ul class="list-group" v-if="rooms.length != 0">
               <li
-                v-for="(item, index) in rooms"
+                v-for="(item, index) in generateRooms.filter((n) => n)"
                 :key="index"
                 :class="[
                   'list-group-item ',
@@ -195,6 +212,48 @@
         </div>
       </template>
     </CModal>
+    <CModal
+      size="md"
+      title="Penilaian layanan online chat"
+      centered
+      color="primary"
+      :show.sync="endModal"
+    >
+      <div class="row">
+        <div class="col-md-10 mx-auto text-center">
+          <p>
+            Terima kasih telah menghubungi kami <br />
+            jika masih adakeluhan yang belum terselesaikan jangan ragu untuk
+            menghubungi kami kembali.
+          </p>
+          <hr />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-10 mx-auto text-center">
+          <b>Beri Rating</b> <br />
+          <select v-model="rating" class="form-control mt-2" name="" id="">
+            <option value="0" selected disabled>Pilih</option>
+            <option value="1">Tidak Baik</option>
+            <option value="2">Kurang Baik</option>
+            <option value="3">Cukup Baik</option>
+            <option value="4">Baik</option>
+            <option value="5">Sangat Baik</option>
+          </select>
+        </div>
+      </div>
+      <template slot="footer">
+        <div>
+          <button @click="endModal = false" class="btn btn-secondary mr-3">
+            Batal
+          </button>
+
+          <button @click="endChat" class="btn btn-primary">
+            Berikan review
+          </button>
+        </div>
+      </template>
+    </CModal>
   </div>
 </template>
 
@@ -208,11 +267,13 @@ export default {
     return {
       form: {},
       createModal: false,
+      endModal: false,
       selectedRoom: null,
       formChat: {},
       showRoom: {
         room_name: "NAMA ROOM",
       },
+      rating: 0,
       params: {
         sorttype: "desc",
         sortby: "id",
@@ -234,6 +295,27 @@ export default {
       }
       this.showRoom = item;
       this.getChat();
+    },
+    endChat() {
+      var loading = this.$loading.show();
+      this.endModal = false;
+
+      this.$store
+        .dispatch("room/endRoom", {
+          id: this.showRoom.id,
+          data: { rating: this.rating },
+        })
+        .then(() => {
+          loading.hide();
+          this.chats = [];
+          this.selectedRoom = null;
+          this.getRooms();
+          this.$toast.success("Berhasil memberi penilaian");
+        })
+        .catch((e) => {
+          loading.hide();
+          this.$toast.error("Gagar memberi penilaian | " + e);
+        });
     },
     submit() {
       this.form.created_by = this.user.role.id;
@@ -332,6 +414,15 @@ export default {
   },
 
   computed: {
+    generateRooms() {
+      return this.rooms.map((e) => {
+        if (e.end_chat == null) {
+          return {
+            ...e,
+          };
+        }
+      });
+    },
     generateChats() {
       return this.chats.map((item) => {
         return {
