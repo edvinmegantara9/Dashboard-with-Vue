@@ -140,6 +140,10 @@ Vue.use(require('vue-moment'), {
   moment
 })
 
+//  scroll chat
+import VueChatScroll from 'vue-chat-scroll'
+Vue.use(VueChatScroll)
+
 
 new Vue({
   el: '#app',
