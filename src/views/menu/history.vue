@@ -120,7 +120,7 @@ export default {
       this.form.start_chat = item.start_chat;
       this.form.end_chat = item.end_chat;
       this.form.rating = item.rating;
-      this.form.duration = "belum";
+      this.form.duration = item.duration;
 
       this.createModal = true;
     },
@@ -156,8 +156,14 @@ export default {
   computed: {
     computedItems() {
       return this.items.map((item) => {
+        const start_chat = new Date(item.start_chat);
+        const end_chat = new Date(item.end_chat);
+        var diff = end_chat - start_chat;
+        var hour = Math.floor(diff / 3600000);
+        var minutes = Math.floor((diff - (hour * 3600000)) / 60000);
         return {
           ...item,
+          duration: hour + ' jam' + ' ' + minutes + ' menit',
           rating: this.getRating(item.rating),
         };
       });
