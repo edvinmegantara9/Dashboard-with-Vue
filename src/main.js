@@ -46,7 +46,7 @@ axios.interceptors.response.use((response) => {
 
     if (error.response.data.status == 401 || error.response.data.status == 403) {
       store.dispatch('auth/logout');
-      router.replace('/');
+      router.replace('/pages/login');
     }
     return Promise.reject(error.response.data.message);
   }
@@ -65,10 +65,13 @@ router.beforeEach((to, from, next) => {
     next('/pages/login');
     return
   } else {
-    if (hasToken) {
-      next({ path: '/dashboard' })
-      return
-    }
+    // if (hasToken) {
+    //   next({ path: '/dashboard' })
+    //   return
+    // }
+    next();
+
+    return
   }
 
   next();
