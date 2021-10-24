@@ -10,11 +10,14 @@
               <label class="m-1 ml-3" for="">Search : </label>
               <input
                 type="text"
+                v-model="params.keyword"
                 style="max-width: 200px"
                 class="form-control form-control-sm mx-2"
                 placeholder="Ketik disini"
               />
-              <button class="btn btn-sm btn-success">Cari</button>
+              <button @click="search()" class="btn btn-sm btn-success">
+                Cari
+              </button>
             </div>
           </div>
           <div class="col-md-5 ml-auto">
@@ -186,6 +189,7 @@ export default {
         sortby: "id",
         row: 5,
         page: 1,
+        keyword: "",
       },
     };
   },
@@ -203,6 +207,13 @@ export default {
           loading.hide();
           alert("Terjadi kesalahan !! | " + e);
         });
+    },
+    search() {
+      if (this.params.keyword != "") {
+        this.getDocuments();
+      } else {
+        this.$toast.error("Inputan tidak boleh kosong !!");
+      }
     },
 
     submit() {

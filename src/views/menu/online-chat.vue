@@ -415,7 +415,20 @@ export default {
     },
     getChat() {
       let room = firebase.database().ref(this.showRoom.room_id);
-      console.log(room);
+      // console.log(room);
+      var loading = this.$loading.show();
+      // room.on("value").then((snapshot) => {
+      //   if (snapshot.val()) {
+      //     this.chats = [];
+
+      //     for (let [key, value] of Object.entries(snapshot.val())) {
+      //       this.chats.push(value);
+      //     }
+      //   } else {
+      //     this.chats = [];
+      //   }
+      //   loading.hide();
+      // });
       room.on("value", (snapshot) => {
         // console.log(snapshot);
         if (snapshot.val()) {
@@ -428,7 +441,7 @@ export default {
           this.chats = [];
         }
 
-        console.log("chat", this.chats);
+        loading.hide();
       });
     },
     getRoles() {

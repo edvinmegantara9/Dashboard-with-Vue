@@ -78,17 +78,66 @@
     </div>
     <div class="row">
       <div class="col-md-6">
-        <div class="card border-top rounded shadow p-3" style="height: 200px">
+        <div class="card border-top rounded shadow p-3" style="height: 250px">
           <p class="p-0 m-0"><b> Permintaan Layanan Online Chat </b></p>
           <hr />
-          <center><p>Tidak ada permintaan</p></center>
+          <center v-if="rooms.length == 0"><p>Tidak ada permintaan</p></center>
+          <table v-if="rooms.length != 0" class="table table-sm table-striped">
+            <tbody>
+              <tr v-for="item in rooms" :key="item.id">
+                <td width="20px">
+                  <CIcon
+                    name="cil-comment-square"
+                    size="custom-size"
+                    class="mr-3"
+                    :height="25"
+                  />
+                </td>
+                <td class="font-weight-bold">
+                  {{ item.room_name }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <router-link
+            to="/komunikasi/online-chat"
+            style="width: 25%"
+            class="btn btn-sm btn-primary"
+          >
+            Selengkapnya
+          </router-link>
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card border-top rounded shadow p-3" style="height: 200px">
+        <div class="card border-top rounded shadow p-3" style="height: 250px">
           <p class="p-0 m-0"><b> Pesan </b></p>
           <hr />
-          <center><p>Tidak ada pesan</p></center>
+          <center v-if="inbox.length == 0"><p>Tidak ada pesan</p></center>
+          <table v-if="inbox.length != 0" class="table table-sm table-striped">
+            <tbody>
+              <tr v-for="item in inbox" :key="item.id">
+                <td width="20px">
+                  <CIcon
+                    name="cil-envelope"
+                    size="custom-size"
+                    class="mr-3"
+                    :height="25"
+                  />
+                </td>
+                <td class="font-weight-bold">
+                  {{ item.title }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <router-link
+            v-if="inbox.length != 0"
+            to="/komunikasi/pesan"
+            style="width: 25%"
+            class="btn btn-sm btn-primary"
+          >
+            Selengkapnya
+          </router-link>
         </div>
       </div>
     </div>
@@ -104,6 +153,8 @@ export default {
     return {
       user: {},
       agenda: [],
+      rooms: [],
+      inbox: [],
       params: {
         sorttype: "desc",
         sortby: "id",
@@ -126,9 +177,45 @@ export default {
           loading.hide();
         });
     },
+    getRooms() {
+      var params = {
+        sortby: "id",
+        sorttype: "desc",
+        row: 3,
+        role_id: this.user.role.id,
+      };
+      this.$store
+        .dispatch("room/getRoom", params)
+        .then((resp) => {
+          this.rooms = resp.data;
+        })
+        .catch((e) => {
+          this.$toast.error(e);
+        });
+    },
+    getInbox() {
+      var params = {
+        sortby: "id",
+        sorttype: "desc",
+        row: 3,
+      };
+      this.$store
+        .dispatch("message/getInbox", {
+          id: this.user.role_id,
+          params: params,
+        })
+        .then((resp) => {
+          this.inbox = resp.data.data;
+        })
+        .catch((e) => {
+          this.$toast.error(e);
+        });
+    },
   },
   mounted() {
     this.getData();
+    this.getRooms();
+    this.getInbox();
   },
   created() {
     this.user = JSON.parse(localStorage.getItem("user"));
@@ -139,5 +226,14 @@ export default {
 <style scoped>
 .border-top {
   border-top: 3px solid #1d4374 !important;
+}
+</style>
+
+<style>
+table {
+  display: table;
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 </style>
