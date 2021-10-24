@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Tipe Dokumen</h3>
+    <h3>Jadwal Perencanaan</h3>
     <br />
     <CCard>
       <CCardBody>
@@ -31,7 +31,7 @@
                     style="max-width: 100px"
                     id="inputGroupSelect01"
                     v-model="params.row"
-                    @change="getDocumentsType"
+                    @change="getData()"
                   >
                     <!-- <option selected>Pilih...</option> -->
                     <option selected value="5">5</option>
@@ -43,9 +43,10 @@
               <div class="col">
                 <button
                   class="btn btn-sm btn-primary"
-                  @click="addDocumentsType()"
+                  v-if="user.role.name.toLowerCase() == 'admin'"
+                  @click="addModal()"
                 >
-                  Tambah Tipe Dokumen
+                  Tambah Jadwal Perencanaan
                 </button>
               </div>
             </div>
@@ -77,14 +78,16 @@
           v-if="total > 5"
           v-model="page"
           :records="total"
-          :per-page="params.row"
+          :per-page="5"
           @paginate="pagination"
         />
       </CCardBody>
     </CCard>
     <CModal
-      size="lg"
-      :title="isUpdate ? 'Edit Tipe Dokumen' : 'Tambah Tipe Dokumen'"
+      size="md"
+      :title="
+        isUpdate ? 'Edit Jadwal Perencanaan' : 'Tambah Jadwal Perencanaan'
+      "
       centered
       :color="isUpdate ? 'success' : 'primary'"
       :show.sync="createModal"
@@ -92,10 +95,26 @@
       <div class="row">
         <div class="col">
           <CInput
-            v-model="form.name"
-            label="Nama Tipe Dokumen"
+            v-model="form.plan"
+            label="Perencanaan"
             placeholder="ketik disini"
           />
+          <CInput
+            v-model="form.schedule"
+            label="Jadwal"
+            placeholder="ketik disini"
+          />
+          <label for="">Tipe Anggaran</label>
+          <select
+            name=""
+            v-model="form.type"
+            class="form-control"
+            placeholder="Pilih"
+            id=""
+          >
+            <option value="0">APBD Induk</option>
+            <option value="1">APBD Perubahan</option>
+          </select>
         </div>
       </div>
       <template slot="footer">
@@ -103,10 +122,10 @@
           <button @click="cancel" class="btn btn-secondary mr-3">Batal</button>
 
           <button @click="submit" v-if="!isUpdate" class="btn btn-primary">
-            Tambah Tipe Dokumen
+            Tambah Jadwal Perencanaan
           </button>
           <button @click="update" v-if="isUpdate" class="btn btn-primary">
-            Update Tipe Dokumen
+            Update Jadwal Perencanaan
           </button>
         </div>
       </template>
@@ -117,24 +136,28 @@
 
 
 <script>
-import * as data from "../../model/document";
+import * as data from "../../model/schedule";
 
 export default {
   data() {
     return {
       createModal: false,
-      fields: data.fieldsType,
+      fields: [],
       isUpdate: false,
       items: [],
-      docTypes: [],
+
       page: 1,
       total: 0,
-      form: {},
+      form: {
+        type: 0,
+      },
+      user: JSON.parse(localStorage.getItem("user")),
       params: {
         sorttype: "desc",
         sortby: "id",
         row: 5,
         page: 1,
+        type: [0, 1],
       },
     };
   },
@@ -142,13 +165,15 @@ export default {
     submit() {
       var loading = this.$loading.show();
       this.$store
-        .dispatch("docs/addDocumentsType", this.form)
+        .dispatch("schedule/addSchedule", this.form)
         .then(() => {
-          this.$toast.success("Berhasil menambahkan tipe dokumen");
+          this.$toast.success("Berhasil menambahkan data");
           loading.hide();
           this.createModal = false;
-          this.form = {};
-          this.getDocumentsType();
+          this.form = {
+            type: 0,
+          };
+          this.getData();
         })
         .catch((e) => {
           this.$toast.error(e);
@@ -161,23 +186,27 @@ export default {
       this.createModal = true;
     },
     cancel() {
-      this.form = {};
+      this.form = {
+        type: 0,
+      };
       this.createModal = false;
     },
     update() {
       var loading = this.$loading.show();
       delete this.form.updated_at;
       this.$store
-        .dispatch("docs/updateDocumentsType", {
+        .dispatch("schedule/updateSchedule", {
           id: this.form.id,
           data: this.form,
         })
         .then(() => {
-          this.$toast.success("Berhasil merubah data tipe dokumen");
+          this.$toast.success("Berhasil merubah data ");
           loading.hide();
           this.createModal = false;
-          this.form = {};
-          this.getDocumentsType();
+          this.form = {
+            type: 0,
+          };
+          this.getData();
         })
         .catch((e) => {
           this.$toast.error(e);
@@ -187,12 +216,14 @@ export default {
     hapus(item) {
       if (confirm("Data akan dihapus !!")) {
         this.$store
-          .dispatch("docs/deleteDocumentsType", item.id)
+          .dispatch("schedule/deleteSchedule", item.id)
           .then(() => {
-            this.$toast.success("Berhasil menghapus data tipe dokumen");
+            this.$toast.success("Berhasil menghapus data ");
 
-            this.form = {};
-            this.getDocumentsType();
+            this.form = {
+              type: 0,
+            };
+            this.getData();
           })
           .catch((e) => {
             this.$toast.error(e);
@@ -200,45 +231,52 @@ export default {
           });
       }
     },
-    getDocumentsType() {
+    getData() {
       var loading = this.$loading.show();
       this.$store
-        .dispatch("docs/getDocumentsType", this.params)
+        .dispatch("schedule/getSchedule", this.params)
         .then((resp) => {
-          this.docTypes = resp.data.data;
+          this.items = resp.data.data;
           this.total = resp.data.total;
-          console.log(this.docTypes);
+
           loading.hide();
         })
         .catch((e) => {
-          this.$toast.error("gagal mengambil data tipe dokumen \n", e);
+          this.$toast.error("gagal mengambil data  \n", e);
           loading.hide();
         });
     },
-    addDocumentsType() {
+    addModal() {
       this.isUpdate = false;
       this.createModal = true;
     },
     pagination(page) {
       this.page = page;
       this.params.page = page;
-      this.getDocumentsType();
+      this.getData();
       // console.log(page);
     },
   },
   computed: {
     computedItems() {
-      return this.docTypes.map((item) => {
+      return this.items.map((item) => {
         return {
           ...item,
           created_at: item.created_at.slice(0, 10),
-          updated_at: item.updated_at.slice(0, 10),
+          type: item.type == 0 ? "APBD Induk" : "APBD Perubahan",
         };
       });
     },
   },
   mounted() {
-    this.getDocumentsType();
+    this.getData();
+  },
+
+  created() {
+    this.fields =
+      this.user.role.name.toLowerCase() == "admin"
+        ? data.fields
+        : data.fields_no_action;
   },
 };
 </script>

@@ -21,6 +21,8 @@ const DetailAgenda = () => import('@/views/menu/detail-agenda')
 const DokumenKota = () => import('@/views/menu/dokumen-kota')
 const LaporanHarian = () => import('@/views/menu/laporan-harian')
 const LaporanMasyarakat = () => import('@/views/menu/laporan-masyarakat')
+const JadwalPerencanaan = () => import('@/views/menu/jadwal-perencanaan')
+
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
 const Page500 = () => import('@/views/pages/Page500')
@@ -150,6 +152,11 @@ function configRoutes() {
               path: 'tipe-dokumen',
               name: 'Tipe Dokumen',
               component: TipeDokumen
+            },
+            {
+              path: 'jadwal-perencanaan',
+              name: 'Jadwal Perencanaan',
+              component: JadwalPerencanaan
             }
           ]
         },

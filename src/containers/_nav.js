@@ -50,6 +50,10 @@ export const admin = [
         name: 'Dokumen Kota',
         to: '/data/kota'
       },
+      {
+        name: 'Jadwal Perencanaan',
+        to: '/data/jadwal-perencanaan'
+      },
 
     ]
   },
@@ -172,6 +176,10 @@ export const opd = [
         name: 'Dokumen Kota',
         to: '/data/kota'
       },
+      {
+        name: 'Jadwal Perencanaan',
+        to: '/data/jadwal-perencanaan'
+      },
 
     ]
   },
@@ -265,6 +273,10 @@ export const not_opd = [
       {
         name: 'Dokumen Kota',
         to: '/data/kota'
+      },
+      {
+        name: 'Jadwal Perencanaan',
+        to: '/data/jadwal-perencanaan'
       },
 
     ]
