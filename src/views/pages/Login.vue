@@ -8,7 +8,7 @@
               <img src="@/assets/logo/pagaralam.png" width="100%" alt="" />
             </CCol> -->
             <CCol md="5">
-              <img src="@/assets/logo/bapedda.png" width="150%" alt="" />
+              <img src="@/assets/logo/bappeda.png" width="150%" alt="" />
             </CCol>
           </CRow>
           <CRow class="d-flex flex-row align-items-end">
