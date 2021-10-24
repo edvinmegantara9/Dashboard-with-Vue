@@ -65,13 +65,13 @@ router.beforeEach((to, from, next) => {
     next('/pages/login');
     return
   } else {
-    // if (hasToken) {
-    //   next({ path: '/dashboard' })
-    //   return
-    // }
-    next();
+    if (hasToken) {
+      next({ path: '/dashboard' })
+      return
+    }
+    // next();
 
-    return
+    // return
   }
 
   next();

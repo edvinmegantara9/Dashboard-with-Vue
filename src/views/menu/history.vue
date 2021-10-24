@@ -3,11 +3,10 @@
     <h3>History Layanan</h3>
     <CCard>
       <CCardBody>
-        
         <CDataTable
           class="table-striped"
           :fields="fields"
-          :items="items"
+          :items="computedItems"
           items-per-page-select
           :items-per-page="5"
           :table-filter="{ label: 'Search', placeholder: 'Cari disini...' }"
@@ -16,12 +15,7 @@
         >
           <template #action="{ item }">
             <td class="py-2">
-              <CButton
-                @click="show(item)"
-                color="primary"
-                square
-                size="sm"
-              >
+              <CButton @click="show(item)" color="primary" square size="sm">
                 Show
               </CButton>
             </td>
@@ -29,11 +23,7 @@
         </CDataTable>
       </CCardBody>
     </CCard>
-    <CModal
-      title="Detail History Layanan"
-      size="lg"
-      :show.sync="createModal"
-    >
+    <CModal title="Detail History Layanan" size="lg" :show.sync="createModal">
       <CRow>
         <CCol sm="12">
           <CInput
@@ -67,6 +57,9 @@
             readonly
           />
         </CCol>
+        <CCol sm="6">
+          <CInput v-model="form.duration" label="Durasi" readonly />
+        </CCol>
       </CRow>
       <template slot="footer">
         <div class="row">
@@ -81,10 +74,9 @@
 
 
 <script>
-import * as data from '../../model/history-chat'
+import * as data from "../../model/history-chat";
 
 export default {
-  
   data() {
     return {
       user: JSON.parse(localStorage.getItem("user")),
@@ -93,23 +85,23 @@ export default {
       total: 0,
       createModal: false,
       form: {
-        room_name: '',
-        start_chat: '',
-        end_chat: '',
-        rating: 0
+        room_name: "",
+        start_chat: "",
+        end_chat: "",
+        rating: 0,
       },
       params: {
-        sortby: 'id',
-        sorttype: 'asc',
-        role_id: 0
-      }
-    }
+        sortby: "id",
+        sorttype: "asc",
+        role_id: 0,
+      },
+    };
   },
   methods: {
     getData() {
       var loading = this.$loading.show();
       if (this.user.role_id != null) {
-        this.params.role_id = this.user.role_id
+        this.params.role_id = this.user.role_id;
       }
       this.$store
         .dispatch("history_chat/getHistory", this.params)
@@ -128,22 +120,51 @@ export default {
       this.form.start_chat = item.start_chat;
       this.form.end_chat = item.end_chat;
       this.form.rating = item.rating;
+      this.form.duration = "belum";
 
       this.createModal = true;
     },
     closeModal() {
       this.form = {
-        room_name: '',
-        start_chat: '',
-        end_chat: '',
-        rating: 0
+        room_name: "",
+        start_chat: "",
+        end_chat: "",
+        rating: 0,
       };
 
       this.createModal = false;
-    }
+    },
+    getRating(item) {
+      switch (item) {
+        case 1:
+          return "Tidak Baik";
+
+        case 2:
+          return "Kurang Baik";
+
+        case 3:
+          return "Cukup Baik";
+
+        case 4:
+          return "Baik";
+
+        case 5:
+          return "Sangat Baik";
+      }
+    },
+  },
+  computed: {
+    computedItems() {
+      return this.items.map((item) => {
+        return {
+          ...item,
+          rating: this.getRating(item.rating),
+        };
+      });
+    },
   },
   mounted() {
     this.getData();
-  }
+  },
 };
 </script>
