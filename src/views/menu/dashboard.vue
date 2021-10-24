@@ -5,32 +5,42 @@
         <div class="card border-top rounded shadow p-3">
           <p class="p-0 m-0"><b> Agenda Bappeda </b></p>
           <hr />
-          <table class="table table-sm table-striped">
-            <tbody>
-              <tr v-for="item in agenda" :key="item.id">
-                <td width="20px">
-                  <CIcon
-                    name="cil-bookmark"
-                    size="custom-size"
-                    class="mr-3"
-                    :height="35"
-                  />
-                </td>
-                <td>
-                  {{ item.title }} <br />
-                  {{ item.content.slice(0, 15) + "...." }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="card-body p-0">
+            <center v-if="agenda.length == 0">
+              <p>Tidak ada agenda</p>
+            </center>
+            <table
+              v-if="agenda.length != 0"
+              class="table table-sm table-striped"
+            >
+              <tbody>
+                <tr v-for="item in agenda" :key="item.id">
+                  <td width="20px">
+                    <CIcon
+                      name="cil-bookmark"
+                      size="custom-size"
+                      class="mr-3"
+                      :height="35"
+                    />
+                  </td>
+                  <td>
+                    {{ item.title }} <br />
+                    {{ item.content.slice(0, 15) + "...." }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-          <router-link
-            to="/agenda"
-            style="width: 25%"
-            class="btn btn-sm btn-primary"
-          >
-            Selengkapnya
-          </router-link>
+          <div class="card-footer py-1 px-0">
+            <router-link
+              to="/agenda"
+              style="width: 25%"
+              class="btn btn-sm btn-primary mt-2 mb-0"
+            >
+              Selengkapnya
+            </router-link>
+          </div>
         </div>
       </div>
       <div class="col-md-6">
@@ -81,64 +91,85 @@
         <div class="card border-top rounded shadow p-3" style="height: 250px">
           <p class="p-0 m-0"><b> Permintaan Layanan Online Chat </b></p>
           <hr />
-          <center v-if="rooms.length == 0"><p>Tidak ada permintaan</p></center>
-          <table v-if="rooms.length != 0" class="table table-sm table-striped">
-            <tbody>
-              <tr v-for="item in rooms" :key="item.id">
-                <td width="20px">
-                  <CIcon
-                    name="cil-comment-square"
-                    size="custom-size"
-                    class="mr-3"
-                    :height="25"
-                  />
-                </td>
-                <td class="font-weight-bold">
-                  {{ item.room_name }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <router-link
-            to="/komunikasi/online-chat"
-            style="width: 25%"
-            class="btn btn-sm btn-primary"
-          >
-            Selengkapnya
-          </router-link>
+          <div class="card-body p-0">
+            <center v-if="rooms.length == 0">
+              <p>Tidak ada permintaan</p>
+            </center>
+            <table
+              v-if="rooms.length != 0"
+              class="table table-sm table-striped"
+            >
+              <tbody>
+                <tr v-for="item in rooms.slice(0, 3)" :key="item.id">
+                  <td width="20px">
+                    <CIcon
+                      name="cil-comment-square"
+                      size="custom-size"
+                      class="mr-3"
+                      :height="25"
+                    />
+                  </td>
+                  <td class="font-weight-bold">
+                    {{ item.room_name }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-footer py-1 px-0">
+            <router-link
+              to="/komunikasi/online-chat"
+              style="width: 25%"
+              class="btn btn-sm btn-primary mt-2 mb-0"
+            >
+              Selengkapnya
+            </router-link>
+          </div>
         </div>
       </div>
       <div class="col-md-6">
         <div class="card border-top rounded shadow p-3" style="height: 250px">
           <p class="p-0 m-0"><b> Pesan </b></p>
           <hr />
-          <center v-if="inbox.length == 0"><p>Tidak ada pesan</p></center>
-          <table v-if="inbox.length != 0" class="table table-sm table-striped">
-            <tbody>
-              <tr v-for="item in inbox" :key="item.id">
-                <td width="20px">
-                  <CIcon
-                    name="cil-envelope"
-                    size="custom-size"
-                    class="mr-3"
-                    :height="25"
-                  />
-                </td>
-                <td class="font-weight-bold">
-                  {{ item.title }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <router-link
-            v-if="inbox.length != 0"
-            to="/komunikasi/pesan"
-            style="width: 25%"
-            class="btn btn-sm btn-primary"
-          >
-            Selengkapnya
-          </router-link>
+          <div class="card-body p-0">
+            <center v-if="inbox.length == 0"><p>Tidak ada pesan</p></center>
+            <table
+              v-if="inbox.length != 0"
+              class="table table-sm table-striped"
+            >
+              <tbody>
+                <tr v-for="item in inbox" :key="item.id">
+                  <td width="20px">
+                    <CIcon
+                      name="cil-envelope"
+                      size="custom-size"
+                      class="mr-3"
+                      :height="25"
+                    />
+                  </td>
+                  <td class="font-weight-bold">
+                    {{ item.title }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer py-1 px-0">
+            <router-link
+              to="/komunikasi/pesan"
+              style="width: 25%"
+              class="btn btn-sm btn-primary mt-2 mb-0"
+            >
+              Selengkapnya
+            </router-link>
+          </div>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md">
+        <schedule-table />
       </div>
     </div>
   </div>
@@ -148,7 +179,11 @@
 
 <script>
 import axios from "axios";
+import ScheduleTable from "./components/schedule-table.vue";
 export default {
+  components: {
+    ScheduleTable,
+  },
   data() {
     return {
       user: {},

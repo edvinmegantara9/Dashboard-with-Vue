@@ -10,7 +10,9 @@
               </div>
               <div class="col-md-3 ml-auto text-right">
                 <button
-                  v-if="selectedRoom != null"
+                  v-if="
+                    selectedRoom != null && showRoom.created_by == user.role.id
+                  "
                   class="btn btn-danger btn-sm pull-right"
                   @click="endModal = true"
                 >
@@ -204,7 +206,7 @@
             </ul>
             <center v-if="rooms.length == 0">Tidak ada room</center>
           </div>
-          <div class="card-footer">
+          <div class="card-footer" v-if="user.role.is_opd == 0">
             <button
               class="btn btn-block btn-primary"
               @click="createModal = true"
@@ -472,6 +474,7 @@ export default {
       this.getChat();
     },
     getRooms() {
+      var loading = this.$loading.show();
       var params = {
         role_id: this.user.role.id,
         sorttype: "desc",
@@ -481,9 +484,13 @@ export default {
         .dispatch("room/getRoom", params)
         .then((resp) => {
           this.rooms = resp.data;
+          this.chats = [];
+          this.selectedRoom = null;
+          loading.hide();
         })
         .catch((e) => {
           this.$toast.error("gagal mengambil room | " + e);
+          loading.hide();
         });
     },
   },

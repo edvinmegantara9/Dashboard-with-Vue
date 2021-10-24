@@ -8,31 +8,27 @@
           <CCardBody>
             <CListGroup v-if="agendas.length > 0">
               <CListGroupItem v-for="agenda in agendas" :key="agenda.id">
-                <table>
-                  <tr class="mb-2">
-                    <td rowspan="4">
-                      <CIcon
-                        name="cil-bookmark"
-                        size="custom-size"
-                        class="mr-3"
-                        :height="35"
-                      />
-                    </td>
-                    <td>
-                      <CLink
-                        @click="show(agenda)"
-                        href="#"
-                        class="font-weight-bold h5"
-                        color="primary"
-                        style="text-decoration: none"
-                        >{{ agenda.title }}</CLink
-                      >
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>{{ agenda.content.slice(0, 75) + "...." }}</td>
-                  </tr>
-                </table>
+                <div class="row">
+                  <div class="col-md-1">
+                    <CIcon
+                      name="cil-bookmark"
+                      size="custom-size"
+                      class=""
+                      :height="35"
+                    />
+                  </div>
+                  <div class="col-md-11">
+                    <CLink
+                      @click="show(agenda)"
+                      href="#"
+                      class="font-weight-bold h5"
+                      color="primary"
+                      >{{ agenda.title }}</CLink
+                    >
+                    <br />
+                    {{ agenda.content.slice(0, 75) + "...." }}
+                  </div>
+                </div>
               </CListGroupItem>
             </CListGroup>
             <CListGroup v-else>

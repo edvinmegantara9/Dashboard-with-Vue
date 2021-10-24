@@ -54,11 +54,7 @@ export default {
         getDocumentsType(_, _params) {
             return new Promise((resolve, reject) => {
                 axios.get('document_type', {
-                    params: {
-                        row: 20,
-                        sortby: 'id',
-                        sorttype: 'asc'
-                    }
+                    params: _params
                 }).then(resp => {
                     resolve(resp.data);
                 }).catch(e => {
@@ -144,7 +140,7 @@ export default {
             })
         },
 
-        
+
         // Citizen Report
         getCitizenReport(_, _params) {
             return new Promise((resolve, reject) => {
