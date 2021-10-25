@@ -109,7 +109,7 @@
         <div class="col">
           <CInput
             v-model="form.title"
-            label="Deskripsi"
+            label="Judul"
             placeholder="ketik disini"
           />
         </div>
@@ -126,6 +126,12 @@
               @change="selectFile"
             />
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="">Deskripsi</label>
+          <vue-editor v-model="form.description" placeholder="Ketik disini..."></vue-editor>
         </div>
       </div>
       <template slot="footer">
@@ -147,7 +153,13 @@
 
 <script>
 import { uploadImage } from "@/utils/fileUpload";
+import { VueEditor } from "vue2-editor";
+
 export default {
+  components: {
+    VueEditor
+  },
+
   data() {
     return {
       gallery: [],
@@ -244,6 +256,7 @@ export default {
       this.preview = item.file;
       this.form.title = item.title;
       this.form.id = item.id;
+      this.form.description = item.description;
       this.isUpdate = true;
       this.createModal = true;
     },
@@ -269,6 +282,7 @@ export default {
     addData() {
       this.isUpdate = false;
       this.createModal = true;
+      this.preview = "";
       this.form = {};
     },
 
