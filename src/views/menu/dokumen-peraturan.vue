@@ -17,9 +17,25 @@
               <button class="btn btn-sm btn-success">Cari</button>
             </div>
           </div>
-          <div :class="['col-md-5', 'ml-auto', user.role.is_opd == 0 || user.role.name.toLowerCase() == 'admin'? '':'offset-md-2']">
+          <div
+            :class="[
+              'col-md-5',
+              'ml-auto',
+              user.role.is_opd == 0 || user.role.name.toLowerCase() == 'admin'
+                ? ''
+                : 'offset-md-2',
+            ]"
+          >
             <div class="row">
-              <div :class="['col-md-6', user.role.is_opd == 0 || user.role.name.toLowerCase() == 'admin'? '':'offset-md-6']">
+              <div
+                :class="[
+                  'col-md-6',
+                  user.role.is_opd == 0 ||
+                  user.role.name.toLowerCase() == 'admin'
+                    ? ''
+                    : 'offset-md-6',
+                ]"
+              >
                 <div class="input-group input-group-sm mb-3">
                   <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01"
@@ -40,7 +56,13 @@
                   </select>
                 </div>
               </div>
-              <div class="col" v-if="user.role.is_opd == 0 || user.role.name.toLowerCase() == 'admin'">
+              <div
+                class="col"
+                v-if="
+                  user.role.is_opd == 0 ||
+                  user.role.name.toLowerCase() == 'admin'
+                "
+              >
                 <button
                   class="btn btn-sm btn-primary"
                   @click="addPubDocuments()"
@@ -80,10 +102,10 @@
               >
                 Edit
               </CButton>
-              <CButton 
-                @click="hapus(item)" 
-                color="danger" 
-                square 
+              <CButton
+                @click="hapus(item)"
+                color="danger"
+                square
                 size="sm"
                 v-if="
                   user.role.is_opd == 0 ||
@@ -169,7 +191,7 @@ export default {
       fields: data.fieldsPublic,
       isUpdate: false,
       user: {
-        role : { is_opd: null, name: '' }
+        role: { is_opd: null, name: "" },
       },
       items: [],
       opd_list: [],
@@ -177,10 +199,11 @@ export default {
       total: 0,
       form: {},
       params: {
-        sorttype: "asc",
+        sorttype: "desc",
         sortby: "id",
         row: 5,
         page: 1,
+        type: [1],
       },
     };
   },
@@ -205,18 +228,18 @@ export default {
       this.form.document_type = 1;
       var loading = this.$loading.show();
       this.$store
-      .dispatch("docs/addPubDocuments", this.form)
-      .then(() => {
-        this.$toast.success("Berhasil menambahkan dokumen");
-        loading.hide();
-        this.createModal = false;
-        this.form = {};
-        this.getPubDocuments();
-      })
-      .catch((e) => {
-        this.$toast.error(e);
-        loading.hide();
-      });
+        .dispatch("docs/addPubDocuments", this.form)
+        .then(() => {
+          this.$toast.success("Berhasil menambahkan dokumen");
+          loading.hide();
+          this.createModal = false;
+          this.form = {};
+          this.getPubDocuments();
+        })
+        .catch((e) => {
+          this.$toast.error(e);
+          loading.hide();
+        });
     },
     edit(item) {
       this.form = item;
@@ -272,7 +295,7 @@ export default {
       this.$store
         .dispatch("docs/getPubDocuments", this.params)
         .then((resp) => {
-          this.items = resp.data.data.filter(data => data.document_type == 1);
+          this.items = resp.data.data;
           this.total = resp.data.total;
           loading.hide();
         })
@@ -302,7 +325,6 @@ export default {
         return e.id;
       });
     },
-    
   },
   watch: {
     computedItems(val) {},

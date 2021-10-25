@@ -97,11 +97,7 @@ export default {
         getPubDocuments(_, _params) {
             return new Promise((resolve, reject) => {
                 axios.get('public_document', {
-                    params: {
-                        row: 20,
-                        sortby: 'id',
-                        sorttype: 'asc'
-                    }
+                    params: _params
                 }).then(resp => {
                     resolve(resp.data);
                 }).catch(e => {
@@ -145,11 +141,7 @@ export default {
         getCitizenReport(_, _params) {
             return new Promise((resolve, reject) => {
                 axios.get('citizen_report', {
-                    params: {
-                        row: 20,
-                        sortby: 'id',
-                        sorttype: 'asc'
-                    }
+                    params: _params
                 }).then(resp => {
                     resolve(resp.data);
                 }).catch(e => {
