@@ -3,15 +3,52 @@
     <h3>History Layanan</h3>
     <CCard>
       <CCardBody>
+        <div class="row">
+          <div class="col-md-5">
+            <div class="row mb-3">
+              <label class="m-1 ml-3" for="">Search : </label>
+              <input
+                type="text"
+                v-model="params.keyword"
+                style="max-width: 200px"
+                class="form-control form-control-sm mx-2"
+                placeholder="Ketik disini"
+              />
+              <button @click="search()" class="btn btn-sm btn-success">
+                Cari
+              </button>
+            </div>
+          </div>
+          <div class="col-md-5 ml-auto">
+            <div class="row">
+              <div class="col">
+                <div class="input-group input-group-sm mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01"
+                      >Per Halaman</label
+                    >
+                  </div>
+                  <select
+                    class="custom-select"
+                    style="max-width: 100px"
+                    id="inputGroupSelect01"
+                    v-model="params.row"
+                    @change="getData"
+                  >
+                    <!-- <option selected>Pilih...</option> -->
+                    <option selected value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <CDataTable
           class="table-striped"
           :fields="fields"
           :items="computedItems"
-          items-per-page-select
-          :items-per-page="5"
-          :table-filter="{ label: 'Search', placeholder: 'Cari disini...' }"
-          sorter
-          :pagination="true"
         >
           <template #action="{ item }">
             <td class="py-2">
@@ -21,6 +58,13 @@
             </td>
           </template>
         </CDataTable>
+        <pagination
+          v-if="total > 5"
+          v-model="page"
+          :records="total"
+          :per-page="params.row"
+          @paginate="pagination"
+        />
       </CCardBody>
     </CCard>
     <CModal title="Detail History Layanan" size="lg" :show.sync="createModal">
@@ -82,6 +126,7 @@ export default {
       user: JSON.parse(localStorage.getItem("user")),
       fields: data.fields,
       items: [],
+      page: 1,
       total: 0,
       createModal: false,
       form: {
@@ -92,8 +137,10 @@ export default {
       },
       params: {
         sortby: "id",
-        sorttype: "asc",
+        sorttype: "desc",
+        page: 1,
         role_id: 0,
+        row: 5,
       },
     };
   },
@@ -106,9 +153,10 @@ export default {
       this.$store
         .dispatch("history_chat/getHistory", this.params)
         .then((resp) => {
-          this.items = resp.data;
-          this.total = this.items.length;
+          this.items = resp.data.data;
+          this.total = resp.data.total;
           loading.hide();
+          console.log("items", this.items);
         })
         .catch((e) => {
           this.$toast.error(e);
@@ -150,23 +198,36 @@ export default {
 
         case 5:
           return "Sangat Baik";
+
+        default:
+          return "Tidak ada";
       }
+    },
+    search() {},
+    pagination(page) {
+      this.page = page;
+      this.params.page = page;
+      this.getData();
     },
   },
   computed: {
     computedItems() {
-      return this.items.map((item) => {
-        const start_chat = new Date(item.start_chat);
-        const end_chat = new Date(item.end_chat);
-        var diff = end_chat - start_chat;
-        var hour = Math.floor(diff / 3600000);
-        var minutes = Math.floor((diff - (hour * 3600000)) / 60000);
-        return {
-          ...item,
-          duration: hour + ' jam' + ' ' + minutes + ' menit',
-          rating: this.getRating(item.rating),
-        };
-      });
+      if (this.items.length != 0) {
+        return this.items.map((item) => {
+          const start_chat = new Date(item.start_chat);
+          const end_chat = new Date(item.end_chat);
+          var diff = end_chat - start_chat;
+          var hour = Math.floor(diff / 3600000);
+          var minutes = Math.floor((diff - hour * 3600000) / 60000);
+          return {
+            ...item,
+            duration: hour + " jam" + " " + minutes + " menit",
+            rating: this.getRating(item.rating),
+          };
+        });
+      } else {
+        return [];
+      }
     },
   },
   mounted() {

@@ -52,7 +52,7 @@
               <img src="@/assets/logo/pagaralam.png" alt="" srcset="" />
             </div>
             <div class="col">
-              <table class="table table-sm table-striped">
+              <table class="table table-sm table-striped dytable">
                 <tbody>
                   <tr>
                     <td>Nama</td>
@@ -261,6 +261,12 @@ export default {
 <style scoped>
 .border-top {
   border-top: 3px solid #1d4374 !important;
+}
+
+.dytable {
+  display: block;
+  min-width: 100%;
+  overflow-x: auto;
 }
 </style>
 
