@@ -45,7 +45,7 @@
       </div>
       <div class="col-md-6">
         <div class="card border-top rounded shadow p-3">
-          <p class="p-0 m-0"><b> Profile Perangkat Daerah </b></p>
+          <p class="p-0 m-0"><b> Profile </b></p>
           <hr />
           <div class="row">
             <div class="col-md-4">
