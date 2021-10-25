@@ -333,8 +333,13 @@ export default {
         });
     },
     getDocumentsType() {
+      var params = {
+        sorttype: "desc",
+        sortby: "id",
+        row: 100,
+      };
       this.$store
-        .dispatch("docs/getDocumentsType")
+        .dispatch("docs/getDocumentsType", params)
         .then((resp) => {
           this.docTypes = resp.data.data;
         })
