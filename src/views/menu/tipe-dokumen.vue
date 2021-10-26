@@ -10,11 +10,14 @@
               <label class="m-1 ml-3" for="">Search : </label>
               <input
                 type="text"
+                v-model="params.keyword"
                 style="max-width: 200px"
                 class="form-control form-control-sm mx-2"
                 placeholder="Ketik disini"
               />
-              <button class="btn btn-sm btn-success">Cari</button>
+              <button @click="search()" class="btn btn-sm btn-success">
+                Cari
+              </button>
             </div>
           </div>
           <div class="col-md-5 ml-auto">
@@ -49,6 +52,16 @@
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="row" v-if="isSearching">
+          <div class="col">
+            <h3>
+              <span class="badge bg-primary text-light text-bor my-auto">
+                {{searchOn}}&nbsp;&nbsp;
+                <span @click="searchOff" class="badge bg-light text-dark text-center" style="cursor: pointer">X</span>
+              </span>
+            </h3>
           </div>
         </div>
         <CDataTable
@@ -135,10 +148,28 @@ export default {
         sortby: "id",
         row: 5,
         page: 1,
+        keyword: "",
       },
+      isSearching: false,
+      searchOn: ''
     };
   },
   methods: {
+    search() {
+      if (this.params.keyword != "") {
+        this.isSearching = true;
+        this.getDocumentsType();
+        this.searchOn = this.params.keyword;
+        this.params.keyword = '';
+      } else {
+        this.$toast.error("Inputan tidak boleh kosong !!");
+      }
+    },
+
+    searchOff(){
+      this.isSearching = false;
+      this.getDocumentsType();
+    },
     submit() {
       var loading = this.$loading.show();
       this.$store

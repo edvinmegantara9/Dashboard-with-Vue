@@ -51,6 +51,16 @@
             </div>
           </div>
         </div>
+        <div class="row" v-if="isSearching">
+          <div class="col">
+            <h3>
+              <span class="badge bg-primary text-light text-bor my-auto">
+                {{searchOn}}&nbsp;&nbsp;
+                <span @click="searchOff" class="badge bg-light text-dark text-center" style="cursor: pointer">X</span>
+              </span>
+            </h3>
+          </div>
+        </div>
         <CDataTable
           class="table-striped"
           :items="computedItems.filter((n) => n)"
@@ -191,6 +201,8 @@ export default {
         page: 1,
         keyword: "",
       },
+      isSearching: false,
+      searchOn: ''
     };
   },
   methods: {
@@ -210,10 +222,18 @@ export default {
     },
     search() {
       if (this.params.keyword != "") {
+        this.isSearching = true;
         this.getDocuments();
+        this.searchOn = this.params.keyword;
+        this.params.keyword = '';
       } else {
         this.$toast.error("Inputan tidak boleh kosong !!");
       }
+    },
+
+    searchOff(){
+      this.isSearching = false;
+      this.getDocuments();
     },
 
     submit() {
