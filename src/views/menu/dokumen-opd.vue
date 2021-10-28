@@ -109,7 +109,7 @@
           v-if="total > 5"
           v-model="page"
           :records="total"
-          :per-page="5"
+          :per-page="params.row"
           @paginate="pagination"
         />
       </CCardBody>
