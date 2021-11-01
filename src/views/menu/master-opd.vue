@@ -5,22 +5,7 @@
     <CCard>
       <CCardBody>
         <div class="row">
-          <div class="col-md-5">
-            <div class="row mb-3">
-              <label class="m-1 ml-3" for="">Search : </label>
-              <input
-                type="text"
-                v-model="params.keyword"
-                style="max-width: 200px"
-                class="form-control form-control-sm mx-2"
-                placeholder="Ketik disini"
-              />
-              <button @click="search()" class="btn btn-sm btn-success">
-                Cari
-              </button>
-            </div>
-          </div>
-          <div class="col-md-5 ml-auto">
+          <div class="col-md-5 offset-md-5 ml-auto">
             <div class="row">
               <div class="col">
                 <div class="input-group input-group-sm mb-3">

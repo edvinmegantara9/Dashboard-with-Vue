@@ -174,6 +174,14 @@
             disabled
           />
         </div>
+        <div class="col">
+          <CSelect
+            :value.sync="form.sub_document_type"
+            label="Tipe"
+            placeholder="Pilih"
+            :options="computedTypes"
+          />
+        </div>
       </div>
       <template slot="footer">
         <div>
@@ -207,6 +215,7 @@ export default {
         role: { is_opd: null, name: "" },
       },
       items: [],
+      docTypes: [],
       opd_list: [],
       page: 1,
       total: 0,
@@ -285,6 +294,7 @@ export default {
       this.createModal = false;
     },
     update() {
+      this.form.document_type = 1;
       var loading = this.$loading.show();
       delete this.form.updated_at;
       this.$store
@@ -335,6 +345,21 @@ export default {
           loading.hide();
         });
     },
+    getDocumentsType() {
+      var params = {
+        sorttype: "desc",
+        sortby: "id",
+        row: 100,
+      };
+      this.$store
+        .dispatch("docs/getDocumentsType", params)
+        .then((resp) => {
+          this.docTypes = resp.data.data;
+        })
+        .catch((e) => {
+          this.$toast.error("gagal mengambil data tipe dokumen \n", e);
+        });
+    },
     addPubDocuments() {
       this.isUpdate = false;
       this.createModal = true;
@@ -365,8 +390,17 @@ export default {
       return this.items.map((item) => {
         return {
           ...item,
+          document_type: item.document_type.name,
           created_at: item.created_at.slice(0, 10),
           updated_at: item.updated_at.slice(0, 10),
+        };
+      });
+    },
+    computedTypes() {
+      return this.docTypes.map((item) => {
+        return {
+          value: item.id,
+          label: item.name,
         };
       });
     },
@@ -374,6 +408,7 @@ export default {
   mounted() {
     this.getUserFromLocal();
     this.getPubDocuments();
+    this.getDocumentsType();
   },
 };
 </script>
