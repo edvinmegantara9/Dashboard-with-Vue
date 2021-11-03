@@ -261,11 +261,11 @@ export const not_opd = [
         to: '/data/dokumen-opd',
 
       },
-      {
-        name: 'Tipe Dokumen',
-        to: '/data/tipe-dokumen',
+      // {
+      //   name: 'Tipe Dokumen',
+      //   to: '/data/tipe-dokumen',
 
-      },
+      // },
       {
         name: 'Dokumen Peraturan',
         to: '/data/peraturan'
