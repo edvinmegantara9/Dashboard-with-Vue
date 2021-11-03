@@ -27,6 +27,7 @@
                     >
                     <br />
                     {{ agenda.content.slice(0, 75) + "...." }}
+                    <p class="float-right text-muted mb-0 mt-n1"><small>{{ agenda.start_date }} - {{ agenda.end_date }}</small></p>
                   </div>
                 </div>
               </CListGroupItem>
@@ -92,6 +93,20 @@
               v-model="form.content"
               label="Deskripsi"
               placeholder="Deskripsi..."
+              v-bind:readonly="isShow"
+            />
+            <CInput
+              v-model="form.start_date"
+              label="Tanggal Mulai"
+              placeholder="mm/dd/yyyy"
+              type="date"
+              v-bind:readonly="isShow"
+            />
+            <CInput
+              v-model="form.end_date"
+              label="Tanggal Berakhir"
+              placeholder="mm/dd/yyyy"
+              type="date"
               v-bind:readonly="isShow"
             />
           </CCol>
@@ -362,7 +377,23 @@ export default {
     },
   },
   computed: {
-    //
+    // computedAgendas() {
+    //   if (this.agendas.length > 0) {
+    //     return this.agendas.map((item) => {
+    //       var now = new Date();
+    //       var end_date = item.end_date != null ? Date(item.end_date) : new Date();
+    //       if (end_date >= now) {
+    //         return {
+    //           ...item,
+    //           start_date: item.start_date,
+    //           end_date: item.end_date
+    //         };
+    //       }
+    //     }).filter((item) => {return item !== undefined});
+    //   } else {
+    //     return [];
+    //   }
+    // }
   },
   mounted() {
     this.getData();

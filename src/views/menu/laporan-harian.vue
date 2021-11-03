@@ -19,7 +19,8 @@
                   Cari
                 </button>
               </div>
-            </div><div class="col-md-5 ml-auto">
+            </div>
+          <div class="col-md-7 ml-auto">
             <div class="row">
               <div class="col">
                 <div class="input-group input-group-sm mb-3">
@@ -43,8 +44,23 @@
                 </div>
               </div>
               <div class="col">
-                <button class="btn btn-sm btn-primary" @click="create">
+                <button class="btn btn-sm btn-primary mr-2" @click="create">
+                  <CIcon
+                    name="cil-plus"
+                  />
                   Tambah Laporan Harian
+                </button>
+                <button class="btn btn-sm btn-info mr-2">
+                  <CIcon
+                    name="cil-spreadsheet"
+                  />
+                  Export Excel
+                </button>
+                <button class="btn btn-sm btn-danger">
+                  <CIcon
+                    name="cib-adobe-acrobat-reader"
+                  />
+                  Export PDF
                 </button>
               </div>
             </div>
