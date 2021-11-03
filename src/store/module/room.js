@@ -29,9 +29,9 @@ export default {
             });
         },
 
-        endRoom(_, { id, data }) {
+        endRoom(_, { id, }) {
             return new Promise((resolve, reject) => {
-                axios.put('/chat/endchat/' + id, data).then(resp => {
+                axios.put('/chat/endchat/' + id).then(resp => {
                     resolve(resp);
                 }).catch(e => {
                     reject(e)

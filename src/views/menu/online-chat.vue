@@ -18,6 +18,16 @@
                 >
                   Akhiri Layanan
                 </button>
+                <button
+                  v-if="
+                    showRoom.created_by != user.role.id &&
+                    showRoom.end_chat != null
+                  "
+                  class="btn btn-sucess btn-sm pull-right"
+                  @click="endModal = true"
+                >
+                  Beri Rating
+                </button>
               </div>
             </div>
           </div>
@@ -144,7 +154,7 @@
             </div>
           </div>
           <div class="card-footer bg-primary">
-            <div class="row">
+            <div class="row" v-if="showRoom.end_chat == null">
               <div class="col-md-9">
                 <input
                   v-model="formChat.chat"
@@ -250,43 +260,28 @@
       </template>
     </CModal>
     <CModal
-      size="md"
-      title="Penilaian layanan online chat"
+      size="sm"
+      title="Akhiri layanan online chat"
       centered
-      color="primary"
+      color="danger"
       :show.sync="endModal"
     >
       <div class="row">
-        <div class="col-md-10 mx-auto text-center">
+        <div class="col-md-10 mx-auto text-center text-uppercase">
           <p>
-            Terima kasih telah menghubungi kami <br />
-            jika masih adakeluhan yang belum terselesaikan jangan ragu untuk
-            menghubungi kami kembali.
+            <b> Apakah anda yakin akan mengakhiri layanan ini ? </b>
           </p>
-          <hr />
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-10 mx-auto text-center">
-          <b>Beri Rating</b> <br />
-          <select v-model="rating" class="form-control mt-2" name="" id="">
-            <option value="0" selected disabled>Pilih</option>
-            <option value="1">Tidak Baik</option>
-            <option value="2">Kurang Baik</option>
-            <option value="3">Cukup Baik</option>
-            <option value="4">Baik</option>
-            <option value="5">Sangat Baik</option>
-          </select>
-        </div>
-      </div>
+
       <template slot="footer">
         <div>
           <button @click="endModal = false" class="btn btn-secondary mr-3">
             Batal
           </button>
 
-          <button @click="endChat" class="btn btn-primary">
-            Berikan review
+          <button @click="endChat" class="btn btn-danger">
+            Akhiri Layanan
           </button>
         </div>
       </template>
@@ -371,18 +366,17 @@ export default {
       this.$store
         .dispatch("room/endRoom", {
           id: this.showRoom.id,
-          data: { rating: this.rating },
         })
         .then(() => {
           loading.hide();
           this.chats = [];
           this.selectedRoom = null;
           this.getRooms();
-          this.$toast.success("Berhasil memberi penilaian");
+          this.$toast.success("Berhasil mengakhiri layanan");
         })
         .catch((e) => {
           loading.hide();
-          this.$toast.error("Gagar memberi penilaian | " + e);
+          this.$toast.error("Gagar mengakhiri layanan | " + e);
         });
     },
     submit() {
@@ -502,7 +496,11 @@ export default {
   computed: {
     generateRooms() {
       return this.rooms.map((e) => {
-        if (e.end_chat == null) {
+        if (e.created_by != this.user.role.id) {
+          return { 
+            ...e,
+          };
+        } else if (e.end_chat == null) {
           return {
             ...e,
           };

@@ -2,16 +2,33 @@
   <div>
     <div class="row">
       <div class="col-md-6">
-        <div class="card border-top rounded shadow p-3">
+        <div class="card border-top rounded shadow p-3" style="height: 300px">
           <p class="p-0 m-0"><b> Agenda Bappeda </b></p>
           <hr />
           <div class="card-body p-0">
             <center v-if="agenda.length == 0">
               <p>Tidak ada agenda</p>
             </center>
-            <table
+            <div class="scroll" v-if="agenda.length != 0">
+              <div class="row" v-for="item in agenda" :key="item.id">
+                <div class="col-md-1">
+                  <CIcon
+                    name="cil-bookmark"
+                    size="custom-size"
+                    class="mr-3"
+                    :height="35"
+                  />
+                </div>
+                <div class="col-md-11">
+                  <b> {{ item.title }} <br /> </b>
+                  {{ item.content.slice(0, 15) + "...." }}
+                  <hr />
+                </div>
+              </div>
+            </div>
+            <!-- <table
               v-if="agenda.length != 0"
-              class="table table-sm table-striped"
+              class="table table-sm table-striped dytable"
             >
               <tbody>
                 <tr v-for="item in agenda" :key="item.id">
@@ -29,7 +46,7 @@
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </table> -->
           </div>
 
           <div class="card-footer py-1 px-0">
@@ -97,7 +114,7 @@
             </center>
             <table
               v-if="rooms.length != 0"
-              class="table table-sm table-striped"
+              class="table table-sm table-striped dytable"
             >
               <tbody>
                 <tr v-for="item in rooms.slice(0, 3)" :key="item.id">
@@ -136,7 +153,7 @@
             <center v-if="inbox.length == 0"><p>Tidak ada pesan</p></center>
             <table
               v-if="inbox.length != 0"
-              class="table table-sm table-striped"
+              class="table table-sm table-striped dytable"
             >
               <tbody>
                 <tr v-for="item in inbox" :key="item.id">
@@ -267,6 +284,11 @@ export default {
   display: block;
   min-width: 100%;
   overflow-x: auto;
+}
+
+.scroll {
+  overflow-y: auto;
+  height: 150px;
 }
 </style>
 
