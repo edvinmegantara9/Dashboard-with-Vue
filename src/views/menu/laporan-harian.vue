@@ -50,7 +50,7 @@
                   />
                   Tambah Laporan Harian
                 </button>
-                <button class="btn btn-sm btn-info mr-2">
+                <button class="btn btn-sm btn-success mr-2">
                   <CIcon
                     name="cil-spreadsheet"
                   />
