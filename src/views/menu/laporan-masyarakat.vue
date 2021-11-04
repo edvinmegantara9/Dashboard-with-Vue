@@ -52,8 +52,13 @@
           <div class="col">
             <h3>
               <span class="badge bg-primary text-light text-bor my-auto">
-                {{searchOn}}&nbsp;&nbsp;
-                <span @click="searchOff" class="badge bg-light text-dark text-center" style="cursor: pointer">X</span>
+                {{ searchOn }}&nbsp;&nbsp;
+                <span
+                  @click="searchOff"
+                  class="badge bg-light text-dark text-center"
+                  style="cursor: pointer"
+                  >X</span
+                >
               </span>
             </h3>
           </div>
@@ -66,11 +71,15 @@
         >
           <template #action="{ item }">
             <td class="py-2">
+              <CButton @click="view(item)" color="info" square size="sm">
+                Detail
+              </CButton>
               <CButton
                 @click="destroy(item.id)"
                 color="danger"
                 square
                 size="sm"
+                class="ml-2"
               >
                 Delete
               </CButton>
@@ -87,6 +96,46 @@
         />
       </CCardBody>
     </CCard>
+    <CModal
+      size="lg"
+      title="Detail laporan"
+      centered
+      color="primary"
+      :show.sync="detailModal"
+    >
+      <div class="row">
+        <div class="col text-center">
+          <div
+            class="card border d-flex justify-content-center"
+            style="height: 250px"
+          >
+            <img
+              v-if="!modalData.file"
+              src="@/assets/no-image-post.png"
+              class="align-self-center mb-4"
+              width="45%"
+              alt=""
+            />
+
+            <div v-if="modalData.file" class="align-self-center">
+              <img
+                :src="modalData.file"
+                style="width: 100%; height: 230px; object-fit: cover"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <CInput v-model="modalData.name" label="Nama" readonly />
+          <CInput v-model="modalData.address" label="Alamat" readonly />
+          <CInput v-model="modalData.phone_number" label="No HP" readonly />
+          <CInput v-model="modalData.report" label="Isi Laporan" readonly />
+        </div>
+      </div>
+    </CModal>
   </div>
 </template>
 
@@ -97,7 +146,7 @@ import * as data from "../../model/report-citizen";
 export default {
   data() {
     return {
-      createModal: false,
+      detailModal: false,
       fields: data.fields,
       isUpdate: false,
       items: [],
@@ -106,6 +155,8 @@ export default {
       page: 1,
       total: 0,
       form: {},
+
+      modalData: {},
       params: {
         sorttype: "desc",
         sortby: "id",
@@ -114,7 +165,7 @@ export default {
         keyword: "",
       },
       isSearching: false,
-      searchOn: ''
+      searchOn: "",
     };
   },
   methods: {
@@ -123,13 +174,16 @@ export default {
         this.isSearching = true;
         this.getData();
         this.searchOn = this.params.keyword;
-        this.params.keyword = '';
+        this.params.keyword = "";
       } else {
         this.$toast.error("Inputan tidak boleh kosong !!");
       }
     },
-
-    searchOff(){
+    view(item) {
+      this.modalData = item;
+      this.detailModal = true;
+    },
+    searchOff() {
       this.isSearching = false;
       this.getData();
     },
