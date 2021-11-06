@@ -12,14 +12,14 @@
     />
     <CHeaderBrand class="mx-auto d-lg-none" to="/">
       <!-- <CIcon name="logo" height="48" alt="Logo" /> -->
-      <img src="@/assets/logo/logo.png" alt="" />
+      <img src="@/assets/logo/logo.png" class="img-banner" alt="" />
     </CHeaderBrand>
     <CHeaderNav class="d-md-down-none mr-auto">
       <CHeaderNavItem class="px-3">
         <CHeaderNavLink to="/dashboard"> Dashboard </CHeaderNavLink>
       </CHeaderNavItem>
     </CHeaderNav>
-    <CHeaderNav class="mr-4">
+    <CHeaderNav class="mr-4 ml-sm-auto">
       <TheHeaderDropdownAccnt />
     </CHeaderNav>
     <CSubheader class="px-3">
@@ -38,3 +38,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.img-banner {
+  width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .img-banner {
+    width: 45% !important;
+  }
+}
+</style>

@@ -4,7 +4,7 @@
       <p class="p-1 m-0"><b> Jadwal Perencanaan | APBD Induk </b></p>
       <br />
       <div class="card-body p-0">
-        <table class="table table-striped">
+        <table class="table table-striped table-responsive">
           <thead>
             <tr>
               <th>Jadwal</th>
@@ -28,7 +28,7 @@
       <p class="p-1 m-0"><b> Jadwal Perencanaan | APBD Perubahan </b></p>
       <br />
       <div class="card-body p-0">
-        <table class="table table-striped">
+        <table class="table table-striped table-responsive">
           <thead>
             <tr>
               <th>Jadwal</th>

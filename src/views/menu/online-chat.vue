@@ -11,20 +11,23 @@
               <div class="col-md-3 ml-auto text-right">
                 <button
                   v-if="
-                    selectedRoom != null && showRoom.created_by == user.role.id
+                    selectedRoom != null &&
+                    showRoom.created_by == user.role.id &&
+                    showRoom.end_chat == null
                   "
                   class="btn btn-danger btn-sm pull-right"
                   @click="endModal = true"
                 >
                   Akhiri Layanan
                 </button>
+
                 <button
                   v-if="
                     showRoom.created_by != user.role.id &&
                     showRoom.end_chat != null
                   "
-                  class="btn btn-sucess btn-sm pull-right"
-                  @click="endModal = true"
+                  class="btn btn-success btn-sm pull-right"
+                  @click="ratingModal = true"
                 >
                   Beri Rating
                 </button>
@@ -148,13 +151,34 @@
                   </div>
                 </div>
               </div>
+              <center>
+                <span
+                  class="badge badge-info text-center"
+                  v-if="showRoom.end_chat != null"
+                >
+                  Layanan sudah berakhir
+                </span>
+              </center>
             </div>
             <div v-if="chats.length == 0">
               <center>Belum ada chat</center>
+              <center>
+                <span
+                  class="badge badge-info text-center"
+                  v-if="showRoom.end_chat != null"
+                >
+                  Layanan sudah berakhir
+                </span>
+              </center>
             </div>
           </div>
           <div class="card-footer bg-primary">
-            <div class="row" v-if="showRoom.end_chat == null">
+            <div
+              class="row"
+              v-if="
+                showRoom.end_chat == null && showRoom.room_name != 'NAMA ROOM'
+              "
+            >
               <div class="col-md-9">
                 <input
                   v-model="formChat.chat"
@@ -286,6 +310,39 @@
         </div>
       </template>
     </CModal>
+    <CModal
+      size="md"
+      title="Beri rating layanan online chat"
+      centered
+      color="success"
+      :show.sync="ratingModal"
+    >
+      <div class="row">
+        <div class="col-md-10 mx-auto ">
+          <select name="" class="form-control" v-model="rating" id="">
+            <option value="0" disabled >PILIH</option>
+            <option value="1">Tidak Baik</option>
+            <option value="2">Kurang Baik</option>
+            <option value="3">Cukup Baik</option>
+            <option value="4">Baik</option>
+            <option value="5">Sangat Baik</option>
+
+          </select>
+        </div>
+      </div>
+
+      <template slot="footer">
+        <div>
+          <button @click="ratingModal = false" class="btn btn-secondary mr-3">
+            Batal
+          </button>
+
+          <button @click="postRating" class="btn btn-success">
+            Berikan Rating
+          </button>
+        </div>
+      </template>
+    </CModal>
     <input type="file" @change="selectFile" name="" ref="upload" hidden id="" />
   </div>
 </template>
@@ -300,8 +357,10 @@ export default {
   data() {
     return {
       form: {},
+      
       createModal: false,
       endModal: false,
+      ratingModal: false,
       selectedRoom: null,
       formChat: {},
       file: null,
@@ -322,6 +381,30 @@ export default {
   },
 
   methods: {
+    postRating() {
+       var loading = this.$loading.show();
+      this.ratingModal = false;
+
+      this.$store
+        .dispatch("room/rateRoom", {
+          id: this.showRoom.id,
+          data: {
+            role_id: this.user.role.id,
+            rating: this.rating,
+          }
+        })
+        .then(() => {
+          loading.hide();
+          this.chats = [];
+          this.selectedRoom = null;
+          this.getRooms();
+          this.$toast.success("Berhasil memberi rating");
+        })
+        .catch((e) => {
+          loading.hide();
+          this.$toast.error("Gagal rating | " + e);
+        });
+    },
     selectFile(event) {
       this.file = event.target.files[0];
       var loading = this.$loading.show();
@@ -478,6 +561,7 @@ export default {
         .dispatch("room/getRoom", params)
         .then((resp) => {
           this.rooms = resp.data;
+          console.log("room", this.rooms);
           this.chats = [];
           this.selectedRoom = null;
           loading.hide();
@@ -496,11 +580,11 @@ export default {
   computed: {
     generateRooms() {
       return this.rooms.map((e) => {
-        if (e.created_by != this.user.role.id) {
-          return { 
+        if (e.created_by == this.user.role.id) {
+          return {
             ...e,
           };
-        } else if (e.end_chat == null) {
+        } else {
           return {
             ...e,
           };

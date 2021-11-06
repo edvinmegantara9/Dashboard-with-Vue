@@ -37,6 +37,16 @@ export default {
                     reject(e)
                 })
             })
+        },
+
+        rateRoom(_, { id, data }) {
+            return new Promise((resolve, reject) => {
+                axios.put('/chat/ratechat/' + id, data).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e);
+                })
+            })
         }
 
 
