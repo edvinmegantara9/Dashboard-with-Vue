@@ -172,6 +172,7 @@ export default {
         .dispatch("history_chat/getHistory", this.params)
         .then((resp) => {
           this.items = resp.data.data;
+          this.items.filter((e) => e);
           this.total = resp.data.total;
           loading.hide();
           console.log("items", this.items);
@@ -247,14 +248,20 @@ export default {
       if (this.items.length != 0) {
         return this.items.map((item) => {
           const start_chat = new Date(item.start_chat);
+          const total = item.room_receivers.length;
+          var rating = 0;
           const end_chat = new Date(item.end_chat);
           var diff = end_chat - start_chat;
           var hour = Math.floor(diff / 3600000);
           var minutes = Math.floor((diff - hour * 3600000) / 60000);
+          item.room_receivers.map((e) => {
+            rating += e.rating;
+          });
+          console.log(rating / total);
           return {
             ...item,
             duration: hour + " jam" + " " + minutes + " menit",
-            rating: this.getRating(item.rating),
+            rating: this.getRating(Math.round(rating / total)),
           };
         });
       } else {

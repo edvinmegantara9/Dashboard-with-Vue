@@ -52,7 +52,7 @@
           <div class="card-footer py-1 px-0">
             <router-link
               to="/agenda"
-              style="width: 25%"
+              style="width: 30%"
               class="btn btn-sm btn-primary mt-2 mb-0"
             >
               Selengkapnya
@@ -69,7 +69,7 @@
               <img src="@/assets/logo/pagaralam.png" alt="" srcset="" />
             </div>
             <div class="col">
-              <table class="table table-sm table-striped dytable">
+              <table class="table table-sm table-striped table-responsive">
                 <tbody>
                   <tr>
                     <td>Nama</td>
@@ -137,7 +137,7 @@
           <div class="card-footer py-1 px-0">
             <router-link
               to="/komunikasi/online-chat"
-              style="width: 25%"
+              style="width: 30%"
               class="btn btn-sm btn-primary mt-2 mb-0"
             >
               Selengkapnya
@@ -175,7 +175,7 @@
           <div class="card-footer py-1 px-0">
             <router-link
               to="/komunikasi/pesan"
-              style="width: 25%"
+              style="width: 30%"
               class="btn btn-sm btn-primary mt-2 mb-0"
             >
               Selengkapnya
@@ -280,11 +280,11 @@ export default {
   border-top: 3px solid #1d4374 !important;
 }
 
-.dytable {
+/* .dytable {
   display: block;
   min-width: 100%;
   overflow-x: auto;
-}
+} */
 
 .scroll {
   overflow-y: auto;
