@@ -248,7 +248,9 @@ export default {
       if (this.items.length != 0) {
         return this.items.map((item) => {
           const start_chat = new Date(item.start_chat);
-          const total = item.room_receivers.length;
+          const total = item.room_receivers.filter(
+            (r) => r.rating != null
+          ).length;
           var rating = 0;
           const end_chat = new Date(item.end_chat);
           var diff = end_chat - start_chat;
@@ -257,7 +259,7 @@ export default {
           item.room_receivers.map((e) => {
             rating += e.rating;
           });
-          console.log(rating / total);
+          console.log(Math.round(rating / total));
           return {
             ...item,
             duration: hour + " jam" + " " + minutes + " menit",

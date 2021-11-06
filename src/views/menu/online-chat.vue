@@ -24,7 +24,8 @@
                 <button
                   v-if="
                     showRoom.created_by != user.role.id &&
-                    showRoom.end_chat != null
+                    showRoom.end_chat != null &&
+                    selectedRoom != null
                   "
                   class="btn btn-success btn-sm pull-right"
                   @click="ratingModal = true"
@@ -318,15 +319,14 @@
       :show.sync="ratingModal"
     >
       <div class="row">
-        <div class="col-md-10 mx-auto ">
+        <div class="col-md-10 mx-auto">
           <select name="" class="form-control" v-model="rating" id="">
-            <option value="0" disabled >PILIH</option>
+            <option value="0" disabled>PILIH</option>
             <option value="1">Tidak Baik</option>
             <option value="2">Kurang Baik</option>
             <option value="3">Cukup Baik</option>
             <option value="4">Baik</option>
             <option value="5">Sangat Baik</option>
-
           </select>
         </div>
       </div>
@@ -357,7 +357,7 @@ export default {
   data() {
     return {
       form: {},
-      
+
       createModal: false,
       endModal: false,
       ratingModal: false,
@@ -382,7 +382,7 @@ export default {
 
   methods: {
     postRating() {
-       var loading = this.$loading.show();
+      var loading = this.$loading.show();
       this.ratingModal = false;
 
       this.$store
@@ -391,7 +391,7 @@ export default {
           data: {
             role_id: this.user.role.id,
             rating: this.rating,
-          }
+          },
         })
         .then(() => {
           loading.hide();
