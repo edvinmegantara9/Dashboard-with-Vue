@@ -49,8 +49,13 @@
           <div class="col">
             <h3>
               <span class="badge bg-primary text-light text-bor my-auto">
-                {{searchOn}}&nbsp;&nbsp;
-                <span @click="searchOff" class="badge bg-light text-dark text-center" style="cursor: pointer">X</span>
+                {{ searchOn }}&nbsp;&nbsp;
+                <span
+                  @click="searchOff"
+                  class="badge bg-light text-dark text-center"
+                  style="cursor: pointer"
+                  >X</span
+                >
               </span>
             </h3>
           </div>
@@ -151,10 +156,10 @@ export default {
         page: 1,
         role_id: 0,
         row: 5,
-        keyword: ""
+        keyword: "",
       },
       isSearching: false,
-      searchOn: ''
+      searchOn: "",
     };
   },
   methods: {
@@ -221,13 +226,13 @@ export default {
         this.isSearching = true;
         this.getData();
         this.searchOn = this.params.keyword;
-        this.params.keyword = '';
+        this.params.keyword = "";
       } else {
         this.$toast.error("Inputan tidak boleh kosong !!");
       }
     },
 
-    searchOff(){
+    searchOff() {
       this.isSearching = false;
       this.getData();
     },
