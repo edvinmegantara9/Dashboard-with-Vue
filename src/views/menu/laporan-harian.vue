@@ -5,23 +5,23 @@
     <CCard>
       <CCardBody>
         <div class="row">
-          <div class="col-md-5">
-              <div class="row mb-3">
-                <label class="m-1 ml-3" for="">Search : </label>
-                <input
-                  type="text"
-                  v-model="params.keyword"
-                  style="max-width: 200px"
-                  class="form-control form-control-sm mx-2"
-                  placeholder="Ketik disini"
-                />
-                <button @click="search()" class="btn btn-sm btn-success">
-                  Cari
-                </button>
+          <div class="col-md-6">
+            <div class="row mb-3">
+              <div class="col">
+                <div class="row">
+                  <label class="m-1 ml-3" for="">Search : </label>
+                  <input
+                    type="text"
+                    v-model="params.keyword"
+                    style="max-width: 125px"
+                    class="form-control form-control-sm mx-2"
+                    placeholder="Ketik disini"
+                  />
+                  <button @click="search()" class="btn btn-sm btn-success">
+                    Cari
+                  </button>
+                </div>
               </div>
-            </div>
-          <div class="col-md-7 ml-auto">
-            <div class="row">
               <div class="col">
                 <div class="input-group input-group-sm mb-3">
                   <div class="input-group-prepend">
@@ -31,7 +31,7 @@
                   </div>
                   <select
                     class="custom-select"
-                    style="max-width: 100px"
+                    style="max-width: 75px"
                     id="inputGroupSelect01"
                     v-model="params.row"
                     @change="getData"
@@ -43,23 +43,24 @@
                   </select>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="col-md-6 ml-auto">
+            <div class="row">
               <div class="col">
                 <button class="btn btn-sm btn-primary mr-2" @click="create">
-                  <CIcon
-                    name="cil-plus"
-                  />
+                  <CIcon name="cil-plus" />
                   Tambah Laporan Harian
                 </button>
-                <button class="btn btn-sm btn-success mr-2">
-                  <CIcon
-                    name="cil-spreadsheet"
-                  />
+                <button
+                  @click="exportExcelModal = true"
+                  class="btn btn-sm btn-success mr-2"
+                >
+                  <CIcon name="cil-spreadsheet" />
                   Export Excel
                 </button>
                 <button class="btn btn-sm btn-danger">
-                  <CIcon
-                    name="cib-adobe-acrobat-reader"
-                  />
+                  <CIcon name="cib-adobe-acrobat-reader" />
                   Export PDF
                 </button>
               </div>
@@ -70,8 +71,13 @@
           <div class="col">
             <h3>
               <span class="badge bg-primary text-light text-bor my-auto">
-                {{searchOn}}&nbsp;&nbsp;
-                <span @click="searchOff" class="badge bg-light text-dark text-center" style="cursor: pointer">X</span>
+                {{ searchOn }}&nbsp;&nbsp;
+                <span
+                  @click="searchOff"
+                  class="badge bg-light text-dark text-center"
+                  style="cursor: pointer"
+                  >X</span
+                >
               </span>
             </h3>
           </div>
@@ -188,6 +194,40 @@
         </div>
       </template>
     </CModal>
+    <CModal
+      title="Export data"
+      color="success"
+      size="md"
+      :show.sync="exportExcelModal"
+    >
+      <CRow>
+        <CCol sm="6">
+          <CInput
+            v-model="exportDataParams.firstdate"
+            label="Dari"
+            type="date"
+          />
+        </CCol>
+        <CCol sm="6">
+          <CInput
+            v-model="exportDataParams.lastdate"
+            label="Sampai"
+            type="date"
+          />
+        </CCol>
+      </CRow>
+      <template slot="footer">
+        <div class="row">
+          <button @click="closeModal" class="btn btn-secondary mr-3">
+            Batal
+          </button>
+
+          <button @click="exportExcel" class="btn btn-success">
+            Export data
+          </button>
+        </div>
+      </template>
+    </CModal>
   </div>
 </template>
 
@@ -195,12 +235,16 @@
 
 <script>
 import * as data from "../../model/report";
+import FileSaver from "file-saver";
+
 export default {
   data() {
     return {
       createModal: false,
+      exportExcelModal: false,
       fields: data.fields,
       isUpdate: false,
+      exportDataParams: {},
       items: [],
       roles: [],
       user: JSON.parse(localStorage.getItem("user")),
@@ -213,33 +257,54 @@ export default {
         row: 5,
         page: 1,
         role_id: 0,
-        keyword: ''
+        keyword: "",
       },
       isSearching: false,
-      searchOn: ''
-
+      searchOn: "",
     };
   },
   methods: {
     search() {
-      if (this.params.keyword != "") {
+      if (this.params.keywordexportExcel != "") {
         this.isSearching = true;
         this.getData();
         this.searchOn = this.params.keyword;
-        this.params.keyword = '';
+        this.params.keyword = "";
       } else {
         this.$toast.error("Inputan tidak boleh kosong !!");
       }
     },
 
-    searchOff(){
+    exportExcel() {
+      var loading = this.$loading.show();
+      this.$store
+        .dispatch("report/exportReport", this.exportDataParams)
+        .then((resp) => {
+          loading.hide();
+          FileSaver.saveAs(
+            resp.data,
+            "Laporan_Harian_" +
+              this.exportDataParams.firstdate +
+              "-" +
+              this.exportDataParams.lastdate
+          );
+          this.exportExcelModal = false;
+          this.exportDataParams = {};
+        })
+        .catch((e) => {
+          this.$toast.error(e);
+          loading.hide();
+        });
+    },
+
+    searchOff() {
       this.isSearching = false;
       this.getData();
     },
     getData() {
       var loading = this.$loading.show();
       if (this.user.role_id != null) {
-        this.params.role_id = this.user.role_id
+        this.params.role_id = this.user.role_id;
       }
       this.$store
         .dispatch("report/getReport", this.params)
@@ -354,7 +419,7 @@ export default {
             ...item,
             role: item.role,
           };
-        } 
+        }
         if (this.user.role.is_opd == 0) {
           if (item.role == this.user.role.name) {
             return {

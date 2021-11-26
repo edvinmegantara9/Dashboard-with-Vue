@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 
+
 export default {
     namespaced: true,
     state: {},
@@ -10,7 +11,7 @@ export default {
 
         getReport(_, _params) {
             return new Promise((resolve, reject) => {
-                axios.get('/daily_report', {params: _params}).then(resp => {
+                axios.get('/daily_report', { params: _params }).then(resp => {
                     resolve(resp.data);
                 }).catch(e => {
                     reject(e);
@@ -46,6 +47,16 @@ export default {
                     reject(e);
                 })
             });
+        },
+
+        exportReport(_, _params) {
+            return new Promise((resolve, reject) => {
+                axios.get('/daily_report/download', { params: _params, responseType: 'blob' }).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e)
+                })
+            })
         }
     },
     getters: {
