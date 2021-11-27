@@ -16,7 +16,7 @@
         </header>
         <section>
             <table id="content-table">
-                <thead style="text-align: center; border-">
+                <thead style="text-align: center;">
                     <th>Tanggal</th>
                     <th>Jam</th>
                     <th>Nama</th>
