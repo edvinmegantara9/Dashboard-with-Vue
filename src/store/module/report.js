@@ -57,6 +57,16 @@ export default {
                     reject(e)
                 })
             })
+        },
+
+        ReportByDate(_, _params) {
+            return new Promise((resolve, reject) => {
+                axios.get('/daily_report/get_by_date', { params: _params }).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e)
+                })
+            })
         }
     },
     getters: {

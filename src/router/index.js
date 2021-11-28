@@ -1,4 +1,4 @@
-import Vue from 'vue'
+ import Vue from 'vue'
 import Router from 'vue-router'
 
 // Containers
@@ -28,6 +28,7 @@ const Page404 = () => import('@/views/pages/Page404')
 const Page500 = () => import('@/views/pages/Page500')
 const Login = () => import('@/views/pages/Login')
 const Register = () => import('@/views/pages/Register')
+const ExportPDF = () => import('@/views/menu/components/daily-report-pdf')
 
 // Users
 const Users = () => import('@/views/users/Users')
@@ -112,6 +113,11 @@ function configRoutes() {
           path: 'laporan-harian',
           name: 'Laporan Harian',
           component: LaporanHarian
+        },
+        {
+          path: 'export-file-pdf',
+          name: 'ExportPDF',
+          component: ExportPDF
         },
         {
           path: 'laporan-masyarakat',
@@ -239,7 +245,7 @@ function configRoutes() {
           path: 'register',
           name: 'Register',
           component: Register
-        }
+        },
       ]
     }
   ]

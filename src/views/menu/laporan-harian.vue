@@ -53,13 +53,15 @@
                   Tambah Laporan Harian
                 </button>
                 <button
-                  @click="exportExcelModal = true"
+                  @click="openModalExcel"
                   class="btn btn-sm btn-success mr-2"
                 >
                   <CIcon name="cil-spreadsheet" />
                   Export Excel
                 </button>
-                <button class="btn btn-sm btn-danger">
+                <button 
+                  @click="openModalPDF"
+                  class="btn btn-sm btn-danger">
                   <CIcon name="cib-adobe-acrobat-reader" />
                   Export PDF
                 </button>
@@ -81,6 +83,7 @@
               </span>
             </h3>
           </div>
+          
         </div>
         <CDataTable
           class="table-striped"
@@ -195,10 +198,10 @@
       </template>
     </CModal>
     <CModal
-      title="Export data"
-      color="success"
+      :title="exportType"
+      :color="[exportType == 'Export Excel' ? 'success':'danger']"
       size="md"
-      :show.sync="exportExcelModal"
+      :show.sync="exportModal"
     >
       <CRow>
         <CCol sm="6">
@@ -218,12 +221,20 @@
       </CRow>
       <template slot="footer">
         <div class="row">
-          <button @click="closeModal" class="btn btn-secondary mr-3">
+          <button @click="exportModal = false" class="btn btn-secondary mr-3">
             Batal
           </button>
 
-          <button @click="exportExcel" class="btn btn-success">
-            Export data
+          <button
+            v-if="exportType == 'Export Excel'" 
+            @click="exportExcel" class="btn btn-success">
+            Export
+          </button>
+          
+          <button
+            v-if="exportType == 'Export PDF'" 
+            @click="exportPDF" class="btn btn-danger">
+            Export
           </button>
         </div>
       </template>
@@ -241,7 +252,8 @@ export default {
   data() {
     return {
       createModal: false,
-      exportExcelModal: false,
+      exportModal: false,
+      exportType: '',
       fields: data.fields,
       isUpdate: false,
       exportDataParams: {},
@@ -274,7 +286,15 @@ export default {
         this.$toast.error("Inputan tidak boleh kosong !!");
       }
     },
+    openModalExcel() {
+      this.exportModal = true;
+      this.exportType = "Export Excel"
+    },
 
+    openModalPDF() {
+      this.exportModal = true;
+      this.exportType = "Export PDF"
+    },
     exportExcel() {
       var loading = this.$loading.show();
       this.$store
@@ -288,13 +308,17 @@ export default {
               "-" +
               this.exportDataParams.lastdate
           );
-          this.exportExcelModal = false;
+          this.exportModal = false;
           this.exportDataParams = {};
         })
         .catch((e) => {
           this.$toast.error(e);
           loading.hide();
         });
+    },
+
+    exportPDF() {
+      this.$router.push({ name: 'ExportPDF', query: this.exportDataParams});
     },
 
     searchOff() {
