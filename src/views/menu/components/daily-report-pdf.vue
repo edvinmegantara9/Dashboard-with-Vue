@@ -1,7 +1,24 @@
 <style>
-    #content-table table, #content-table th, #content-table td {
-        border: 1px solid black;
+    #pdf-content {
+        width: 380pt;
+        margin: 28pt 32pt 28pt 32pt;
+        word-spacing: 1pt;
+        word-break: page-break;
+    }
+    #content-table {
+        font-size: 8pt;
+        border-top: 1pt solid black;
+        border-left: 1pt solid black;
         border-collapse: collapse;
+    }
+    #content-table th, #content-table td {
+        border-right: 1pt solid black;
+        border-bottom: 1pt solid black;
+        padding-left: 3pt;
+        padding-right: 3pt;
+    }
+    #footer {
+        font-size: 8pt;
     }
 </style>
 <template>
@@ -31,16 +48,16 @@
         </div>
         <div id="pdf-content">
             <header>
-                <table style="width: 100%">
+                <table id="header" style="width: 100%;">
                     <tr>
-                        <td><img src="@/assets/logo/pagaralam.png" height="75px"></td>
-                        <td style="text-align: center"><h4><b>LAPORAN KINERJA HARIAN ASN BAPPEDA KOTA PAGAR ALAM</b></h4></td>
+                        <td><img src="@/assets/logo/pagaralam.png" height="50pt"></td>
+                        <td style="text-align: center;font-size: 11pt;"><b>LAPORAN KINERJA HARIAN ASN BAPPEDA<br/>KOTA PAGAR ALAM</b></td>
                     </tr>
                 </table>
             </header>
             <section>
                 <br>
-                <table id="content-table">
+                <table id="content-table" style="width: 100%;">
                     <thead style="text-align: center;">
                         <th>Tanggal</th>
                         <th>Jam</th>
@@ -66,9 +83,9 @@
             <br/>
             <br/>
             <footer>
-                <table>
+                <table id="footer" style="width: 100%">
                     <tr>
-                        <td style="width: 30%; text-align: center">
+                        <td style="width: 50%; text-align: center;">
                             Mengetahui<br/>
                             KEPALA BAPPEDA KOTA PAGAR ALAM<br/>
                             <br/>
@@ -79,8 +96,7 @@
                             Pembina TK. I<br/>
                             NIP. 197711052003121004
                         </td>
-                        <td style="width: 30%"></td>
-                        <td style="width: 30%; text-align: center">
+                        <td style="width: 50%; text-align: center;">
                             Pagar Alam, ................................ 2021<br/>
                             KEPALA SUB BAGIAN UMUM DAN KEPEGAWAIAN<br/>
                             <br/>
@@ -113,8 +129,8 @@ export default {
         exportPDF(id){
             var loading = this.$loading.show();
             window.html2canvas = html2canvas;
-            var doc =new jsPDF("p", "pt", "a4");
-            doc.html(document.querySelector("#pdf-content"), {
+            var doc = new jsPDF("p", "pt", "a4");
+            doc.html(document.getElementById('pdf-content'), {
                 callback: function(pdf) {
                     pdf.save("Laporan_Harian_" +
                         id.firstdate +
