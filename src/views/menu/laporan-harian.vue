@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col-md-6">
             <div class="row mb-3">
-              <div class="col">
+              <div class="col-md-7">
                 <div class="row">
                   <label class="m-1 ml-3" for="">Search : </label>
                   <input
@@ -59,9 +59,7 @@
                   <CIcon name="cil-spreadsheet" />
                   Export Excel
                 </button>
-                <button 
-                  @click="openModalPDF"
-                  class="btn btn-sm btn-danger">
+                <button @click="openModalPDF" class="btn btn-sm btn-danger">
                   <CIcon name="cib-adobe-acrobat-reader" />
                   Export PDF
                 </button>
@@ -83,7 +81,6 @@
               </span>
             </h3>
           </div>
-          
         </div>
         <CDataTable
           class="table-striped"
@@ -199,7 +196,7 @@
     </CModal>
     <CModal
       :title="exportType"
-      :color="[exportType == 'Export Excel' ? 'success':'danger']"
+      :color="[exportType == 'Export Excel' ? 'success' : 'danger']"
       size="md"
       :show.sync="exportModal"
     >
@@ -226,14 +223,18 @@
           </button>
 
           <button
-            v-if="exportType == 'Export Excel'" 
-            @click="exportExcel" class="btn btn-success">
+            v-if="exportType == 'Export Excel'"
+            @click="exportExcel"
+            class="btn btn-success"
+          >
             Export
           </button>
-          
+
           <button
-            v-if="exportType == 'Export PDF'" 
-            @click="exportPDF" class="btn btn-danger">
+            v-if="exportType == 'Export PDF'"
+            @click="exportPDF"
+            class="btn btn-danger"
+          >
             Export
           </button>
         </div>
@@ -253,7 +254,7 @@ export default {
     return {
       createModal: false,
       exportModal: false,
-      exportType: '',
+      exportType: "",
       fields: data.fields,
       isUpdate: false,
       exportDataParams: {},
@@ -288,12 +289,12 @@ export default {
     },
     openModalExcel() {
       this.exportModal = true;
-      this.exportType = "Export Excel"
+      this.exportType = "Export Excel";
     },
 
     openModalPDF() {
       this.exportModal = true;
-      this.exportType = "Export PDF"
+      this.exportType = "Export PDF";
     },
     exportExcel() {
       var loading = this.$loading.show();
@@ -318,7 +319,7 @@ export default {
     },
 
     exportPDF() {
-      this.$router.push({ name: 'ExportPDF', query: this.exportDataParams});
+      this.$router.push({ name: "ExportPDF", query: this.exportDataParams });
     },
 
     searchOff() {
