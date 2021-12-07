@@ -1,6 +1,6 @@
 <style>
     #pdf-content {
-        width: 380pt;
+        width: 580pt;
         margin: 28pt 32pt 28pt 32pt;
         word-spacing: 1pt;
         word-break: page-break;
@@ -19,6 +19,9 @@
     }
     #footer {
         font-size: 8pt;
+    }
+    table {
+        white-space: normal !important;
     }
 </style>
 <template>
@@ -59,7 +62,7 @@
                 <br>
                 <table id="content-table" style="width: 100%;">
                     <thead style="text-align: center;">
-                        <th>Tanggal</th>
+                        <th style="width: 60px">Tanggal</th>
                         <th>Jam</th>
                         <th>Nama</th>
                         <th>NIP</th>
@@ -129,7 +132,7 @@ export default {
         exportPDF(id){
             var loading = this.$loading.show();
             window.html2canvas = html2canvas;
-            var doc = new jsPDF("p", "pt", "a4");
+            var doc = new jsPDF("l", "pt", "a4");
             doc.html(document.getElementById('pdf-content'), {
                 callback: function(pdf) {
                     pdf.save("Laporan_Harian_" +
