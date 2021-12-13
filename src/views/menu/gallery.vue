@@ -14,14 +14,18 @@
         <CCol md="4" sm="6" v-for="glr in gallery" :key="glr.id">
           <CCard class="rounded shadow">
             <CCardHeader class="p-0">
-              <CCardLink :href="glr.file" target="_blank" class="">
-                <CCardImg
-                  :src="glr.file"
-                  style="object-fit: cover"
-                  height="400px"
-                  variant="full"
-                />
-              </CCardLink>
+              <carousel :per-page="1">
+                <slide v-for="item in extractGallery(glr.file)" :key="item">
+                  <CCardLink :href="item" target="_blank" class="">
+                    <CCardImg
+                      :src="item"
+                      style="object-fit: cover"
+                      height="350px"
+                      variant="full"
+                    />
+                  </CCardLink>
+                </slide>
+              </carousel>
             </CCardHeader>
             <CCardBody>
               <h5 class="font-weight-bold">{{ glr.title }}</h5>
@@ -29,17 +33,15 @@
             </CCardBody>
             <CCardFooter>
               <div class="row">
-                <div class="col-6 ml-auto">
-                  <button
-                    class="btn btn-sm btn-warning mr-1 ml-3"
-                    @click="edit(glr)"
-                  >
-                    Edit
-                  </button>
-                  <button @click="hapus(glr)" class="btn btn-sm btn-danger">
-                    Delete
-                  </button>
-                </div>
+                <button
+                  class="btn btn-sm btn-warning mr-1 ml-3"
+                  @click="edit(glr)"
+                >
+                  Edit
+                </button>
+                <button @click="hapus(glr)" class="btn btn-sm btn-danger">
+                  Delete
+                </button>
               </div>
             </CCardFooter>
           </CCard>
@@ -66,45 +68,51 @@
       <div class="row">
         <div class="col text-center">
           <div
+            v-if="imageList.length <= 3"
             class="card border d-flex justify-content-center"
             style="height: 250px"
           >
-            <img
-              v-if="!preview"
-              src="@/assets/upload.png"
-              class="align-self-center mb-4"
-              height="35%"
-              width="15%"
-              alt=""
-            />
+            <div class="align-self-center mb-3">
+              (MAKS 4)
+              <br />
+              <img src="@/assets/upload.png" width="100px" alt="" />
+            </div>
             <button
-              v-if="!preview"
               class="btn btn-sm btn-primary align-self-center"
               style="width: 15%"
               @click="upload"
             >
               Upload Disini
             </button>
-
-            <div v-if="preview" class="align-self-center">
-              <img
-                :src="preview"
-                style="width: 100%; height: 230px; object-fit: cover"
-                alt=""
-              />
-            </div>
           </div>
-          <center>
-            <button
-              class="btn btn-sm btn-primary"
-              @click="upload"
-              v-if="preview && isUpdate"
-            >
-              Ubah Foto
-            </button>
-          </center>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-3" v-for="(item, index) in imageList" :key="item">
+          <!-- <img
+            :src="item"
+            class="align-self-center mb-4"
+            style="width: 100%; height: 230px; object-fit: cover"
+          /> -->
+          <CCardLink :href="item" target="_blank" class="">
+            <CCardImg
+              :src="item"
+              style="object-fit: cover"
+              height="250px"
+              variant="full"
+            />
+          </CCardLink>
+
+          <button
+            class="btn btn-danger btn-sm btn-block mt-2"
+            @click="deleteImage('create', index)"
+          >
+            Hapus
+          </button>
+          <br />
+        </div>
+      </div>
+
       <div class="row">
         <div class="col">
           <CInput
@@ -131,7 +139,10 @@
       <div class="row">
         <div class="col">
           <label for="">Deskripsi</label>
-          <vue-editor v-model="form.description" placeholder="Ketik disini..."></vue-editor>
+          <vue-editor
+            v-model="form.description"
+            placeholder="Ketik disini..."
+          ></vue-editor>
         </div>
       </div>
       <template slot="footer">
@@ -147,6 +158,106 @@
         </div>
       </template>
     </CModal>
+
+    <!-- form update -->
+
+    <CModal
+      size="lg"
+      title="Edit Gallery"
+      centered
+      color="success"
+      :show.sync="updateModal"
+    >
+      <div class="row">
+        <div class="col text-center">
+          <div
+            v-if="extractGallery(form.file).length <= 3"
+            class="card border d-flex justify-content-center"
+            style="height: 250px"
+          >
+            <div class="align-self-center mb-3">
+              (MAKS 4)
+              <br />
+              <img src="@/assets/upload.png" width="100px" alt="" />
+            </div>
+            <button
+              class="btn btn-sm btn-primary align-self-center"
+              style="width: 15%"
+              @click="upload"
+            >
+              Upload Disini
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3" v-for="(item, index) in imageList" :key="item">
+          <!-- <img
+            :src="item"
+            class="align-self-center mb-4"
+            style="width: 100%; height: 230px; object-fit: cover"
+          /> -->
+          <CCardLink :href="item" target="_blank" class="">
+            <CCardImg
+              :src="item"
+              style="object-fit: cover"
+              height="250px"
+              variant="full"
+            />
+          </CCardLink>
+
+          <button
+            class="btn btn-danger btn-sm btn-block mt-2"
+            @click="deleteImage('update', index)"
+          >
+            Hapus
+          </button>
+          <br />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <CInput
+            v-model="form.title"
+            label="Judul"
+            placeholder="ketik disini"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="div">
+            <!-- <label class="form-label" for="newData.file">Upload File</label> -->
+            <input
+              hidden
+              type="file"
+              class="form-control"
+              ref="uploadField"
+              @change="selectFile"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="">Deskripsi</label>
+          <vue-editor
+            v-model="form.description"
+            placeholder="Ketik disini..."
+          ></vue-editor>
+        </div>
+      </div>
+      <template slot="footer">
+        <div>
+          <button @click="cancel" class="btn btn-secondary mr-3">Batal</button>
+
+          <button @click="update" v-if="isUpdate" class="btn btn-primary">
+            Update Gallery
+          </button>
+        </div>
+      </template>
+    </CModal>
   </div>
 </template>
 
@@ -154,20 +265,27 @@
 <script>
 import { uploadImage } from "@/utils/fileUpload";
 import { VueEditor } from "vue2-editor";
+import { Carousel, Slide } from "vue-carousel";
 
 export default {
   components: {
-    VueEditor
+    VueEditor,
+    Carousel,
+    Slide,
   },
 
   data() {
     return {
       gallery: [],
       page: 1,
+      updateModal: false,
+      imageList: [],
       last_page: 1,
       preview: "",
       total: 0,
-      form: {},
+      form: {
+        file: "",
+      },
       params: {
         sorttype: "desc",
         sortby: "id",
@@ -195,6 +313,9 @@ export default {
           loading.hide();
         });
     },
+    extractGallery(item) {
+      return item.split(",");
+    },
     upload() {
       this.$refs.uploadField.click();
     },
@@ -216,14 +337,16 @@ export default {
           });
       }
     },
+    deleteImage(state, index) {
+      this.imageList.splice(index, 1);
+    },
     selectFile(event) {
       console.log(event);
       this.file = event.target.files[0];
       var loading = this.$loading.show();
       uploadImage(this.file)
         .then((resp) => {
-          this.form.file = resp;
-          this.preview = resp;
+          this.imageList.push(resp);
           loading.hide();
           alert("File berhasil diupload !!");
         })
@@ -238,13 +361,15 @@ export default {
     },
     submit() {
       var loading = this.$loading.show();
+      this.form.file = this.imageList.join(",");
       this.$store
         .dispatch("gallery/addGallery", this.form)
         .then(() => {
           loading.hide();
           this.$toast.success("Berhasil menambah gallery");
-          this.form = {};
+          this.form = { file: "" };
           this.createModal = false;
+          this.imageList = [];
           this.getData();
         })
         .catch((e) => {
@@ -253,15 +378,16 @@ export default {
         });
     },
     edit(item) {
-      this.preview = item.file;
       this.form.title = item.title;
       this.form.id = item.id;
       this.form.description = item.description;
+      this.imageList = this.extractGallery(item.file);
       this.isUpdate = true;
-      this.createModal = true;
+      this.updateModal = true;
     },
     update() {
       var loading = this.$loading.show();
+      this.form.file = this.imageList.join(",");
       this.$store
         .dispatch("gallery/updateGallery", {
           data: this.form,
@@ -270,8 +396,10 @@ export default {
         .then(() => {
           loading.hide();
           this.$toast.success("Berhasil merubah gallery");
-          this.form = {};
-          this.createModal = false;
+          this.form = { file: "" };
+
+          this.updateModal = false;
+          this.imageList = [];
           this.getData();
         })
         .catch((e) => {
