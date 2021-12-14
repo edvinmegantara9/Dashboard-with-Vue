@@ -75,6 +75,10 @@
                 Detail
               </CButton>
               <CButton
+                v-if="
+                  user.role.name.toLowerCase() == 'admin' ||
+                  user.role.isOpd == 0
+                "
                 @click="destroy(item.id)"
                 color="danger"
                 square
@@ -232,14 +236,9 @@ export default {
   computed: {
     computedItems() {
       return this.items.map((item) => {
-        if (
-          this.user.role.name.toLowerCase() == "admin" ||
-          this.user.role.isOpd == 0
-        ) {
-          return {
-            ...item,
-          };
-        }
+        return {
+          ...item,
+        };
       });
     },
   },
