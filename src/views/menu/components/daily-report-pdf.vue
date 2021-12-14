@@ -1,9 +1,10 @@
 <style>
     #pdf-content {
-        width: 580pt;
-        margin: 28pt 32pt 28pt 32pt;
+        width: calc(29.7cm - 2cm * 2);
+        /* margin: 28pt 32pt 28pt 32pt;
         word-spacing: 1pt;
-        word-break: page-break;
+        word-break: page-break; */
+        color: #000!important;
     }
     #content-table {
         font-size: 8pt;
@@ -117,9 +118,12 @@
     </section>
 </template>
 
+<script src=""></script>
+
 <script>
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf"
+// import html2canvas from "html2canvas";
+// import jsPDF from "jspdf"
+import html2pdf from 'html2pdf.js';
 
 export default {
     data() {
@@ -129,20 +133,17 @@ export default {
         }
     },
     methods: {
-        exportPDF(id){
-            var loading = this.$loading.show();
-            window.html2canvas = html2canvas;
-            var doc = new jsPDF("l", "pt", "a4");
-            doc.html(document.getElementById('pdf-content'), {
-                callback: function(pdf) {
-                    pdf.save("Laporan_Harian_" +
-                        id.firstdate +
-                        "-" +
-                        id.lastdate + ".pdf")
-                    loading.hide();
-                }
-            }).then(() => this.$router.push('laporan-harian'));
-        },
+        exportPDF(id) {
+            var opt = {
+                margin: 2,
+                filename: "Laporan_Harian_" + id.firstdate + "-" + id.lastdate + ".pdf",
+                image:        { type: 'jpeg', quality: 1 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'cm', format: 'a4', orientation: 'l' }
+            };
+            var element = document.getElementById('pdf-content');
+            html2pdf().set(opt).from(element).save();
+        }
     },
     created() {
         this.id = this.$route.query;
