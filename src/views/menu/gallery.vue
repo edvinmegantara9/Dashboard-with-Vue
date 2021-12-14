@@ -411,7 +411,7 @@ export default {
       this.isUpdate = false;
       this.createModal = true;
       this.preview = "";
-      this.form = {};
+      this.form = { file: "" };
     },
 
     pagination(page) {
