@@ -45,8 +45,17 @@ export default {
                     reject(e)
                 })
             })
-        }
+        },
 
+        changePassword(_, {id, password}) {
+            return new Promise((resolve, reject) => {
+                axios.put('user/change-password/' + id, {password: password}).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        }
     },
     getters: {
 

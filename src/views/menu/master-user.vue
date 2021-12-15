@@ -78,6 +78,15 @@
                 Edit
               </CButton>
               <CButton
+                @click="changePassword(item)"
+                class="mr-2"
+                color="info"
+                square
+                size="sm"
+              >
+                Change Password
+              </CButton>
+              <CButton
                 v-if="item.id != user.id"
                 @click="hapus(item)"
                 color="danger"
@@ -167,6 +176,54 @@
         </div>
       </template>
     </CModal>
+    <CModal
+      size="lg"
+      title="Change Password"
+      centered
+      color="primary"
+      :show.sync="modalPassword"
+    >
+      <div class="row">
+        <div class="col-12">
+          <CInput
+            v-model="form.full_name"
+            label="Nama User"
+            placeholder="nama"
+            disabled
+          />
+        </div>
+        <div class="col-12">
+          <CInput
+            v-model="form.password"
+            label="Password"
+            type='password'
+            placeholder="ketik disini"
+            :is-valid="isPasswordValid"
+            @update:value="inputPassword()"
+            :lazy="false"
+          />
+        </div>
+        <div class="col-12">
+          <CInput
+            v-model="form.confirm_password"
+            label="Konfirmasi Password"
+            type='password'
+            placeholder="ketik disini"
+          />
+        </div>
+      </div>
+      <template slot="footer">
+        <div>
+          <button @click="closeModalPassword" class="btn btn-secondary mr-3">
+            Batal
+          </button>
+
+          <button @click="updatePassword" class="btn btn-primary">
+            Update Password
+          </button>
+        </div>
+      </template>
+    </CModal>
   </div>
 </template>
 
@@ -194,7 +251,10 @@ export default {
         keyword: "",
       },
       isSearching: false,
-      searchOn: ''
+      searchOn: '',
+      modalPassword: false,
+      isPasswordValid: null, //null/boolean
+      invalidPassword: ''
     };
   },
   methods: {
@@ -300,6 +360,56 @@ export default {
       this.isUpdate = false;
       this.form = {};
       this.createModal = true;
+    },
+    changePassword(item) {
+      this.modalPassword = true
+      this.form.id = item.id
+      this.form.full_name = item.full_name
+    },
+    inputPassword(){
+      this.invalidPassword = '';
+      this.isPasswordValid = null;
+    },
+    validatePassword(item) {
+      if (item.password.length < 6) {
+        this.invalidPassword = 'Password kurang dari 6 karakter!!';
+        this.isPasswordValid = false;
+        return false;
+      } else if (item.password != item.confirm_password) {
+        this.invalidPassword = 'Konfirmasi password tidak sama!!';
+        this.isPasswordValid = false;
+        return false;
+      } else {
+        this.invalidPassword = '';
+        this.isPasswordValid = null;
+        return true;
+      }
+    },
+    updatePassword() {
+      if (this.validatePassword(this.form)) {
+        var loading = this.$loading.show();
+        this.$store
+          .dispatch("user/changePassword", { id: this.form.id, password: this.form.password })
+          .then(() => {
+            this.$toast.success("Berhasil merubah password user");
+            loading.hide();
+            this.modalPassword = false;
+            this.form = {};
+            this.getData();
+          })
+          .catch((e) => {
+            this.$toast.error(e);
+            loading.hide();
+          });
+      } else {
+        this.$toast.error(this.invalidPassword);
+      }
+    },
+    closeModalPassword (){
+      this.form = {};
+      this.invalidPassword = '';
+      this.isPasswordValid = null;
+      this.modalPassword = false;
     },
     pagination(page) {
       this.page = page;
