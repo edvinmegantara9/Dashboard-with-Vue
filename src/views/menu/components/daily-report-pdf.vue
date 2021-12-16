@@ -1,31 +1,30 @@
 <style>
-
-    #pdf-content {
-        width: calc(29.7cm - 2cm * 2);
-        /* margin: 28pt 32pt 28pt 32pt;
+#pdf-content {
+  width: calc(29.7cm - 2cm * 2);
+  /* margin: 28pt 32pt 28pt 32pt;
         word-spacing: 1pt;
         word-break: page-break; */
-        color: #000!important;
-    }
-    #content-table {
-        font-size: 8pt;
-        border-top: 1pt solid black;
-        border-left: 1pt solid black;
-        border-collapse: collapse;
-    }
-    #content-table th, #content-table td {
-        border-right: 1pt solid black;
-        border-bottom: 1pt solid black;
-        padding-left: 3pt;
-        padding-right: 3pt;
-    }
-    #footer {
-        font-size: 8pt;
-    }
-    table {
-        white-space: normal !important;
-    }
-
+  color: #000 !important;
+}
+#content-table {
+  font-size: 8pt;
+  border-top: 1pt solid black;
+  border-left: 1pt solid black;
+  border-collapse: collapse;
+}
+#content-table th,
+#content-table td {
+  border-right: 1pt solid black;
+  border-bottom: 1pt solid black;
+  padding-left: 3pt;
+  padding-right: 3pt;
+}
+#footer {
+  font-size: 8pt;
+}
+table {
+  white-space: normal !important;
+}
 </style>
 <template>
   <section>
@@ -120,47 +119,28 @@
 <script src=""></script>
 
 <script>
-
 // import html2canvas from "html2canvas";
 // import jsPDF from "jspdf"
-import html2pdf from 'html2pdf.js';
+import html2pdf from "html2pdf.js";
 
 export default {
-    data() {
-        return {
-            id : null,
-            data: null
-        }
-    },
-    methods: {
-        exportPDF(id) {
-            var opt = {
-                margin: 2,
-                filename: "Laporan_Harian_" + id.firstdate + "-" + id.lastdate + ".pdf",
-                image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'cm', format: 'a4', orientation: 'l' }
-            };
-            var element = document.getElementById('pdf-content');
-            html2pdf().set(opt).from(element).save();
-        }
-    },
-    created() {
-        this.id = this.$route.query;
-    },
-    mounted() {
-        var loading = this.$loading.show();
-        this.$store
-        .dispatch("report/ReportByDate", this.id)
-        .then((resp) => {
-          loading.hide();
-          this.data = resp.data.data;
-          this.data.forEach(element => {
-              element.updated_at = element.updated_at.slice(11, 16);
-          });
-
-        })
-        .then(() => this.$router.push("laporan-harian"));
+  data() {
+    return {
+      id: null,
+      data: null,
+    };
+  },
+  methods: {
+    exportPDF(id) {
+      var opt = {
+        margin: 2,
+        filename: "Laporan_Harian_" + id.firstdate + "-" + id.lastdate + ".pdf",
+        image: { type: "jpeg", quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "cm", format: "a4", orientation: "l" },
+      };
+      var element = document.getElementById("pdf-content");
+      html2pdf().set(opt).from(element).save();
     },
   },
   created() {
@@ -177,10 +157,7 @@ export default {
           element.updated_at = element.updated_at.slice(11, 16);
         });
       })
-      .catch((e) => {
-        loading.hide();
-        this.$toast.error(e);
-      });
+      .then(() => this.$router.push("laporan-harian"));
   },
 };
 </script>
