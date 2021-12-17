@@ -62,7 +62,7 @@
             <section>
                 <br>
                 <table id="content-table" style="width: 100%;">
-                    <thead style="text-align: center;">
+                    <thead style="text-align: center;" class="p-2">
                         <th style="width: 60px">Tanggal</th>
                         <th>Jam</th>
                         <th>Nama</th>
@@ -71,7 +71,7 @@
                         <th>Jabatan</th>
                         <th>Laporan</th>
                     </thead>
-                    <tbody v-for="item in data" :key="item.id" class="p-1">
+                    <tbody v-for="item in data" :key="item.id" class="p-2">
                         <tr>
                             <td>{{item.date}}</td>
                             <td>{{item.updated_at}}</td>
