@@ -335,8 +335,8 @@ export default {
         .dispatch("report/getReport", this.params)
         .then((resp) => {
           this.items = resp.data.data;
-         this.items.forEach(element => {
-              element.created_at = element.created_at.slice(11, 16);
+          this.items.forEach((element) => {
+            element.created_at = element.created_at.slice(11, 16);
           });
           this.total = resp.data.total;
           loading.hide();
@@ -446,6 +446,7 @@ export default {
           return {
             ...item,
             role: item.role,
+            group: item.user.group,
           };
         }
         if (this.user.role.is_opd == 0) {
@@ -453,6 +454,7 @@ export default {
             return {
               ...item,
               role: item.role,
+              group: item.user.group,
             };
           }
         }
