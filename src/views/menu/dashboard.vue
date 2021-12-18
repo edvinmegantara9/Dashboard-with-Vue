@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-md-6">
-        <div class="card border-top rounded shadow p-3" style="height: 300px">
+        <div class="card border-top rounded shadow p-3" style="height: 325px">
           <p class="p-0 m-0"><b> Agenda Bappeda </b></p>
           <hr />
           <div class="card-body p-0">
@@ -63,6 +63,7 @@
       <div class="col-md-6">
         <div class="card border-top rounded shadow p-3">
           <p class="p-0 m-0"><b> Profile </b></p>
+
           <hr />
           <div class="row">
             <div class="col-md-4">
@@ -100,6 +101,13 @@
               </table>
             </div>
           </div>
+          <button
+            class="btn btn-sm btn-primary"
+            @click="editUser"
+            style="width: 100px"
+          >
+            Edit Profile
+          </button>
         </div>
       </div>
     </div>
@@ -189,6 +197,72 @@
         <schedule-table />
       </div>
     </div>
+    <CModal
+      size="lg"
+      title="Edit User"
+      centered
+      color="primary"
+      :show.sync="updateModal"
+    >
+      <div class="row">
+        <div class="col">
+          <CInput
+            v-model="form.full_name"
+            label="Nama Lengkap"
+            placeholder="ketik disini"
+          />
+          <CInput
+            v-model="form.nip"
+            :readonly="isUpdate"
+            label="NIP"
+            type="number"
+            placeholder="12345678"
+          />
+          <CInput
+            v-model="form.email"
+            label="Email"
+            type="email"
+            placeholder="test@email.com"
+          />
+          <CInput
+            v-model="form.password"
+            label="Password"
+            type="text"
+            placeholder="*******"
+          />
+          <small class="text-danger"
+            >Kosongkan password jika tidak ingin mengubah</small
+          >
+        </div>
+        <div class="col">
+          <CInput
+            v-model="form.position"
+            label="Jabatan"
+            placeholder="ketik disini"
+          />
+          <CInput
+            v-model="form.group"
+            label="Golongan"
+            placeholder="ketik disini"
+          />
+          <CSelect
+            :value.sync="form.role_id"
+            label="Role"
+            placeholder="Pilih Role"
+            :options="computedRole"
+          />
+        </div>
+      </div>
+      <template slot="footer">
+        <div>
+          <button @click="updateModal = false" class="btn btn-secondary mr-3">
+            Batal
+          </button>
+
+          <button @click="update" class="btn btn-primary">Update User</button>
+        </div>
+      </template>
+    </CModal>
   </div>
 </template>
 
@@ -204,7 +278,10 @@ export default {
   data() {
     return {
       user: {},
+      updateModal: false,
+      form: {},
       agenda: [],
+      roles: [],
       rooms: [],
       inbox: [],
       params: {
@@ -227,6 +304,69 @@ export default {
         .catch((e) => {
           this.$toast.error(e);
           loading.hide();
+        });
+    },
+    editUser() {
+      this.form = this.user;
+      this.updateModal = true;
+    },
+    update() {
+      var loading = this.$loading.show();
+      if (this.form.password == null) {
+        this.$store
+          .dispatch("user/updateUser", { id: this.form.id, data: this.form })
+          .then(() => {
+            this.$toast.success("Berhasil merubah data user");
+            loading.hide();
+            this.updateModal = false;
+            this.form = {};
+            this.getMe();
+          })
+          .catch((e) => {
+            this.$toast.error(e);
+            this.updateModal = false;
+            loading.hide();
+          });
+      } else {
+        this.$store
+          .dispatch("user/changePassword", {
+            id: this.form.id,
+            password: this.form.password,
+          })
+          .then(() => {
+            this.$store
+              .dispatch("user/updateUser", {
+                id: this.form.id,
+                data: this.form,
+              })
+              .then(() => {
+                this.$toast.success("Berhasil merubah data user");
+                loading.hide();
+                this.updateModal = false;
+                this.form = {};
+                this.getMe();
+              })
+              .catch((e) => {
+                this.$toast.error(e);
+                this.updateModal = false;
+                loading.hide();
+              });
+          })
+          .catch((e) => {
+            this.$toast.error(e);
+            this.updateModal = false;
+            loading.hide();
+          });
+      }
+    },
+    getMe() {
+      this.$store
+        .dispatch("auth/me")
+        .then((resp) => {
+          this.user = resp.data;
+        })
+        .catch((e) => {
+          this.$toast.error(e);
         });
     },
     getRooms() {
@@ -263,14 +403,40 @@ export default {
           this.$toast.error(e);
         });
     },
+    getRole() {
+      let _params = {
+        sorttype: "asc",
+        sortby: "id",
+        row: 100,
+      };
+      this.$store
+        .dispatch("role/getRole", _params)
+        .then((resp) => {
+          this.roles = resp.data.data;
+          console.log(this.roles);
+        })
+        .catch((e) => {
+          this.$toast.error("gagal mengambil data role \n", e);
+        });
+    },
   },
   mounted() {
+    this.getMe();
     this.getData();
+    this.getRole();
     this.getRooms();
     this.getInbox();
   },
-  created() {
-    this.user = JSON.parse(localStorage.getItem("user"));
+
+  computed: {
+    computedRole() {
+      return this.roles.map((item) => {
+        return {
+          value: item.id,
+          label: item.name,
+        };
+      });
+    },
   },
 };
 </script>
