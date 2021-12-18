@@ -13,8 +13,11 @@
         border-collapse: collapse;
     }
     #content-table th, #content-table td {
-        border-right: 1pt solid black;
-        border-bottom: 1pt solid black;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+        /* border-top: 1px solid black;
+        border-left: 1px solid black; */
+        /* border: 1px solid black; */
         padding-left: 3pt;
         padding-right: 3pt;
     }
@@ -59,12 +62,12 @@
                     </tr>
                 </table>
             </header>
-            <section>
+            <section class="table-responsive">
                 <br>
                 <table id="content-table" style="width: 100%;">
                     <thead style="text-align: center;">
-                        <th style="width: 60px">Tanggal</th>
-                        <th>Jam</th>
+                        <th style="width: 70px;">Tanggal</th>
+                        <th style="width: 20px;">Jam</th>
                         <th>Nama</th>
                         <th>NIP</th>
                         <th>Golongan</th>
@@ -73,7 +76,7 @@
                     </thead>
                     <tbody v-for="item in data" :key="item.id" class="p-1">
                         <tr>
-                            <td>{{item.date}}</td>
+                            <td st>{{item.date}}</td>
                             <td>{{item.updated_at}}</td>
                             <td>{{item.name}}</td>
                             <td>{{item.nip}}</td>
@@ -81,6 +84,8 @@
                             <td>{{item.role}}</td>
                             <td>{{item.report}}</td>
                         </tr>
+                        <!-- <tr v-if="index > 8 && index != data.length-1 && (index % 7 == 0)" class="html2pdf__page-break"></tr> -->
+                        <!-- <tr v-if="index != 0 && index == data.length-1 && (index % 7 >= 0 && index % 7 < 3)" class="html2pdf__page-break"></tr> -->
                     </tbody>
                 </table>
             </section>
@@ -129,7 +134,8 @@ export default {
     data() {
         return {
             id : null,
-            data: null
+            data: null,
+            counter: 0
         }
     },
     methods: {
@@ -137,9 +143,10 @@ export default {
             var opt = {
                 margin: 2,
                 filename: "Laporan_Harian_" + id.firstdate + "-" + id.lastdate + ".pdf",
-                image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { scale: 2 },
-                jsPDF:        { unit: 'cm', format: 'a4', orientation: 'l' }
+                image:          { type: 'jpeg', quality: 1 },
+                html2canvas:    { scale: 2 },
+                jsPDF:          { unit: 'cm', format: 'a4', orientation: 'l' },
+                pagebreak:      {avoid: 'tr'}
             };
             var element = document.getElementById('pdf-content');
             html2pdf().set(opt).from(element).save();
