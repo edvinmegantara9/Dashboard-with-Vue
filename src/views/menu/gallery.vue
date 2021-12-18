@@ -34,9 +34,12 @@
             <CCardFooter>
               <div class="row">
                 <button
-                  class="btn btn-sm btn-warning mr-1 ml-3"
-                  @click="edit(glr)"
+                  class="btn btn-sm btn-info mr-1 ml-3"
+                  @click="openDetail(glr)"
                 >
+                  Detail
+                </button>
+                <button class="btn btn-sm btn-warning mr-1" @click="edit(glr)">
                   Edit
                 </button>
                 <button @click="hapus(glr)" class="btn btn-sm btn-danger">
@@ -258,6 +261,38 @@
         </div>
       </template>
     </CModal>
+    <!-- bottom sheet -->
+    <vue-bottom-sheet
+      v-if="selectedGallery != { file: '' }"
+      :is-full-screen="true"
+      max-width="100%"
+      max-height="95%"
+      ref="myBottomSheet"
+    >
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <h4>
+            <strong>{{ selectedGallery.title }}</strong>
+          </h4>
+          <span>{{
+            selectedGallery.created_at | moment("dddd, Do MMMM  YYYY")
+          }}</span>
+
+          <hr />
+
+          <carousel :per-page="1" class="text-center mt-3 mb-3">
+            <slide
+              v-for="item in extractGallery(selectedGallery.file)"
+              :key="item"
+            >
+              <img :src="item" style="object-fit: cover" width="100%" />
+            </slide>
+          </carousel>
+          <hr />
+          <div class="text-justify" v-html="selectedGallery.description"></div>
+        </div>
+      </div>
+    </vue-bottom-sheet>
   </div>
 </template>
 
@@ -266,17 +301,22 @@
 import { uploadImage } from "@/utils/fileUpload";
 import { VueEditor } from "vue2-editor";
 import { Carousel, Slide } from "vue-carousel";
+import VueBottomSheet from "@webzlodimir/vue-bottom-sheet";
 
 export default {
   components: {
     VueEditor,
     Carousel,
     Slide,
+    VueBottomSheet,
   },
 
   data() {
     return {
       gallery: [],
+      selectedGallery: {
+        file: "",
+      },
       page: 1,
       updateModal: false,
       imageList: [],
@@ -298,6 +338,13 @@ export default {
     };
   },
   methods: {
+    openDetail(data) {
+      this.selectedGallery = data;
+      this.$refs.myBottomSheet.open();
+    },
+    closeDetail() {
+      this.$refs.myBottomSheet.close();
+    },
     getData() {
       var loading = this.$loading.show();
       this.$store
@@ -357,7 +404,10 @@ export default {
     },
     cancel() {
       this.createModal = false;
-      this.form = {};
+      this.updateModal = false;
+      this.form = {
+        file: "",
+      };
     },
     submit() {
       var loading = this.$loading.show();
