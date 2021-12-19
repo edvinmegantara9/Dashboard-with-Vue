@@ -75,15 +75,13 @@ table {
           <tbody v-for="item in data" :key="item.id" class="p-1">
             <tr>
               <td st>{{ item.date }}</td>
-              <td>{{ item.updated_at }}</td>
+              <td>{{ item.updated_at | moment('HH:mm') }}</td>
               <td>{{ item.name }}</td>
               <td>{{ item.nip }}</td>
               <td>{{ item.position }}</td>
               <td>{{ item.role }}</td>
               <td>{{ item.report }}</td>
             </tr>
-            <!-- <tr v-if="index > 8 && index != data.length-1 && (index % 7 == 0)" class="html2pdf__page-break"></tr> -->
-            <!-- <tr v-if="index != 0 && index == data.length-1 && (index % 7 >= 0 && index % 7 < 3)" class="html2pdf__page-break"></tr> -->
           </tbody>
         </table>
       </section>
@@ -127,6 +125,7 @@ table {
 // import html2canvas from "html2canvas";
 // import jsPDF from "jspdf"
 import html2pdf from "html2pdf.js";
+import VueMoment from 'vue-moment';
 
 export default {
   data() {
@@ -147,7 +146,7 @@ export default {
         pagebreak: { avoid: "tr" },
       };
       var element = document.getElementById("pdf-content");
-      html2pdf().set(opt).from(element).save();
+      html2pdf().set(opt).from(element).save().then(() => this.$router.push("laporan-harian"));
     },
   },
 
@@ -161,11 +160,7 @@ export default {
       .then((resp) => {
         loading.hide();
         this.data = resp.data.data;
-        this.data.forEach((element) => {
-          element.updated_at = element.updated_at.slice(11, 16);
-        });
-      })
-      .then(() => this.$router.push("laporan-harian"));
+      });
   },
 };
 </script>
