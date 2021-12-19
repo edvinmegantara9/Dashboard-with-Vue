@@ -8,17 +8,15 @@
 }
 #content-table {
   font-size: 8pt;
-  border-top: 1pt solid black;
-  border-left: 1pt solid black;
+  /* border-top: 1pt solid black;
+  border-left: 1pt solid black; */
   border-collapse: collapse;
 }
 #content-table th,
 #content-table td {
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
-  /* border-top: 1px solid black;
-        border-left: 1px solid black; */
-  /* border: 1px solid black; */
+  /* border-right: 1px solid black;
+  border-bottom: 1px solid black; */
+  border: 1px solid black;
   padding-left: 3pt;
   padding-right: 3pt;
 }
