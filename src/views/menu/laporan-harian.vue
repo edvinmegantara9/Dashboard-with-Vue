@@ -447,6 +447,9 @@ export default {
             ...item,
             role: item.role,
             group: item.user.group,
+            updated_at: this.$moment(item.updated_at).format(
+              "dddd, Do MMMM  YYYY, hh:mm"
+            ),
           };
         }
         if (this.user.role.is_opd == 0) {
@@ -455,6 +458,9 @@ export default {
               ...item,
               role: item.role,
               group: item.user.group,
+              updated_at: this.$moment(item.updated_at).format(
+                "dddd, Do MMMM  YYYY, hh:mm"
+              ),
             };
           }
         }

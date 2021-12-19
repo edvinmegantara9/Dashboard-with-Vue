@@ -165,16 +165,17 @@
             >
               <tbody>
                 <tr v-for="item in inbox" :key="item.id">
-                  <td width="20px">
+                  <td style="vertical-align: center" width="20px">
                     <CIcon
-                      name="cil-envelope"
+                      name="cil-envelope-closed"
                       size="custom-size"
-                      class="mr-3"
+                      class="mr-3 pb-1"
                       :height="25"
                     />
                   </td>
                   <td class="font-weight-bold">
-                    {{ item.title }}
+                    {{ item.message.title }}
+                    <small> - dari : {{ item.message.sender.name }}</small>
                   </td>
                 </tr>
               </tbody>
@@ -213,7 +214,7 @@
           />
           <CInput
             v-model="form.nip"
-            :readonly="isUpdate"
+            :readonly="true"
             label="NIP"
             type="number"
             placeholder="12345678"
@@ -248,6 +249,7 @@
           <CSelect
             :value.sync="form.role_id"
             label="Role"
+            disabled
             placeholder="Pilih Role"
             :options="computedRole"
           />
@@ -364,6 +366,7 @@ export default {
         .dispatch("auth/me")
         .then((resp) => {
           this.user = resp.data;
+          this.getInbox();
         })
         .catch((e) => {
           this.$toast.error(e);
@@ -386,15 +389,15 @@ export default {
         });
     },
     getInbox() {
-      var params = {
+      var _params = {
         sortby: "id",
         sorttype: "desc",
         row: 3,
       };
       this.$store
         .dispatch("message/getInbox", {
-          id: this.user.role_id,
-          params: params,
+          id: this.user.role.id,
+          params: _params,
         })
         .then((resp) => {
           this.inbox = resp.data.data;
@@ -425,7 +428,6 @@ export default {
     this.getData();
     this.getRole();
     this.getRooms();
-    this.getInbox();
   },
 
   computed: {

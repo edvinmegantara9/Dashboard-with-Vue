@@ -165,7 +165,7 @@ export default {
           element.updated_at = element.updated_at.slice(11, 16);
         });
       })
-      .then(() => this.$router.push("laporan-harian"));
+      .catch((e) => alert(e));
   },
 };
 </script>
