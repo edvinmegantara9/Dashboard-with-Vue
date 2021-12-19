@@ -367,6 +367,7 @@ export default {
         .then((resp) => {
           this.user = resp.data;
           this.getInbox();
+          this.getRooms();
         })
         .catch((e) => {
           this.$toast.error(e);
@@ -382,7 +383,9 @@ export default {
       this.$store
         .dispatch("room/getRoom", params)
         .then((resp) => {
+
           this.rooms = resp.data;
+          console.log("room", this.rooms);
         })
         .catch((e) => {
           this.$toast.error(e);
@@ -427,7 +430,7 @@ export default {
     this.getMe();
     this.getData();
     this.getRole();
-    this.getRooms();
+    
   },
 
   computed: {
