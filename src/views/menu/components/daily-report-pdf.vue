@@ -70,14 +70,14 @@ table {
             <th>Jabatan</th>
             <th>Laporan</th>
           </thead>
-          <tbody v-for="item in data" :key="item.id" class="p-1">
+          <tbody v-for="item in computedData" :key="item.id" class="p-1">
             <tr>
-              <td st>{{ item.date }}</td>
+              <td>{{ item.date }}</td>
               <td>{{ item.updated_at | moment("HH:mm") }}</td>
               <td>{{ item.name }}</td>
               <td>{{ item.nip }}</td>
+              <td>{{ item.group }}</td>
               <td>{{ item.position }}</td>
-              <td>{{ item.role }}</td>
               <td>{{ item.report }}</td>
             </tr>
           </tbody>
@@ -129,7 +129,7 @@ export default {
   data() {
     return {
       id: null,
-      data: null,
+      data: [],
       counter: 0,
     };
   },
@@ -151,7 +151,16 @@ export default {
         .then(() => this.$router.push("laporan-harian"));
     },
   },
-
+  computed: {
+    computedData() {
+      return this.data.map((item) => {
+        return {
+          ...item,
+          group: item.user != null ? item.user.group : ''
+        }
+      });
+    }
+  },
   created() {
     this.id = this.$route.query;
   },
