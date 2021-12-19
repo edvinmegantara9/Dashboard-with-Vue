@@ -215,11 +215,12 @@ export const opd = [
     to: '/laporan-masyarakat',
     icon: 'cil-pencil'
   },
-
-
-
-
-
+  {
+    _name: 'CSidebarNavItem',
+    name: 'Gallery',
+    to: '/gallery',
+    icon: 'cil-puzzle'
+  },
 ]
 
 export const not_opd = [

@@ -5,7 +5,7 @@
     <CContainer class="pr-md-5" fluid>
       <CRow class="mb-3">
         <CCol sm="12" class="text-right">
-          <button @click="addData" class="btn btn-sm btn-primary">
+          <button v-if="user.role.is_opd != 1" @click="addData" class="btn btn-sm btn-primary">
             Tambah Gallery
           </button>
         </CCol>
@@ -39,10 +39,10 @@
                 >
                   Detail
                 </button>
-                <button class="btn btn-sm btn-warning mr-1" @click="edit(glr)">
+                <button v-if="user.role.is_opd != 1" class="btn btn-sm btn-warning mr-1" @click="edit(glr)">
                   Edit
                 </button>
-                <button @click="hapus(glr)" class="btn btn-sm btn-danger">
+                <button v-if="user.role.is_opd != 1" @click="hapus(glr)" class="btn btn-sm btn-danger">
                   Delete
                 </button>
               </div>
@@ -62,6 +62,7 @@
       />
     </CContainer>
     <CModal
+      v-if="user.role.is_opd != 1"
       size="lg"
       :title="isUpdate ? 'Edit Gallery' : 'Tambah Gallery'"
       centered
@@ -165,6 +166,7 @@
     <!-- form update -->
 
     <CModal
+      v-if="user.role.is_opd != 1"
       size="lg"
       title="Edit Gallery"
       centered
@@ -335,6 +337,7 @@ export default {
       createModal: false,
       isUpdate: false,
       isShow: false,
+      user: JSON.parse(localStorage.getItem("user"))
     };
   },
   methods: {
@@ -472,6 +475,7 @@ export default {
   },
   mounted() {
     this.getData();
+    console.log(this.user.role);
   },
 };
 </script>
