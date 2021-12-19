@@ -84,7 +84,7 @@
         </div>
         <CDataTable
           class="table-striped"
-          :items="computedItems.filter((n) => n)"
+          :items="computedItems"
           :itemsPerPage="5"
           :fields="fields"
           sorter
@@ -111,13 +111,13 @@
             </td>
           </template>
         </CDataTable>
-        <!-- <pagination
+        <pagination
           v-if="total > 5"
           v-model="page"
           :records="total"
           :per-page="5"
           @paginate="pagination"
-        /> -->
+        />
       </CCardBody>
     </CCard>
     <CModal
@@ -196,7 +196,7 @@
     </CModal>
     <CModal
       :title="exportType"
-      :color="[exportType == 'Export Excel' ? 'success' : 'danger']"
+      :color="exportType == 'Export Excel' ? 'success' : 'danger'"
       size="md"
       :show.sync="exportModal"
     >
@@ -442,22 +442,10 @@ export default {
   computed: {
     computedItems() {
       return this.items.map((item) => {
-        if (this.user.role.name.toLowerCase() == "admin") {
-          return {
-            ...item,
-            role: item.role,
-            group: item.user.group,
-          };
-        }
-        if (this.user.role.is_opd == 0) {
-          if (item.role == this.user.role.name) {
-            return {
-              ...item,
-              role: item.role,
-              group: item.user.group,
-            };
-          }
-        }
+        return {
+          ...item,
+          group: item.user != null ? item.user.group : '',
+        };
       });
     },
   },
