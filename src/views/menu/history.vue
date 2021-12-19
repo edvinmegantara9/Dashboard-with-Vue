@@ -63,7 +63,7 @@
         <CDataTable
           class="table-striped table-wrapped"
           :fields="fields"
-          :items="computedItems"
+          :items="computedItems || []"
         >
           <template #action="{ item }">
             <td class="py-2">
@@ -186,7 +186,7 @@ export default {
       this.$store
         .dispatch("history_chat/getHistory", this.params)
         .then((resp) => {
-          this.items = resp.data.data;
+          this.items = resp.data.data || [];
           // this.items.filter((e) => e);
           this.total = resp.data.total;
           loading.hide();
