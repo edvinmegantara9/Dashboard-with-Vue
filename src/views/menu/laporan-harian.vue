@@ -84,7 +84,7 @@
         </div>
         <CDataTable
           class="table-striped"
-          :items="computedItems.filter((n) => n)"
+          :items="computedItems"
           :itemsPerPage="5"
           :fields="fields"
           sorter
@@ -111,13 +111,13 @@
             </td>
           </template>
         </CDataTable>
-        <!-- <pagination
+        <pagination
           v-if="total > 5"
           v-model="page"
           :records="total"
           :per-page="5"
           @paginate="pagination"
-        /> -->
+        />
       </CCardBody>
     </CCard>
     <CModal
@@ -196,7 +196,7 @@
     </CModal>
     <CModal
       :title="exportType"
-      :color="[exportType == 'Export Excel' ? 'success' : 'danger']"
+      :color="exportType == 'Export Excel' ? 'success' : 'danger'"
       size="md"
       :show.sync="exportModal"
     >
@@ -335,9 +335,7 @@ export default {
         .dispatch("report/getReport", this.params)
         .then((resp) => {
           this.items = resp.data.data;
-          this.items.forEach((element) => {
-            element.created_at = element.created_at.slice(11, 16);
-          });
+
           this.total = resp.data.total;
           loading.hide();
         })
@@ -442,28 +440,15 @@ export default {
   computed: {
     computedItems() {
       return this.items.map((item) => {
-        if (this.user.role.name.toLowerCase() == "admin") {
-          return {
-            ...item,
-            role: item.role,
-            group: item.user.group,
-            updated_at: this.$moment(item.updated_at).format(
-              "dddd, Do MMMM  YYYY, hh:mm"
-            ),
-          };
-        }
-        if (this.user.role.is_opd == 0) {
-          if (item.role == this.user.role.name) {
-            return {
-              ...item,
-              role: item.role,
-              group: item.user.group,
-              updated_at: this.$moment(item.updated_at).format(
-                "dddd, Do MMMM  YYYY, hh:mm"
-              ),
-            };
-          }
-        }
+        return {
+          ...item,
+          group: item.user != null ? item.user.group : "",
+          updated_at: this.$moment(item.updated_at).format(
+            "dddd, Do MMMM  YYYY, hh:mm"
+          ),
+          date: this.$moment(item.created_at).format("dddd, Do MMMM YYYY"),
+          created_at: this.$moment(item.created_at).format("hh:mm"),
+        };
       });
     },
   },
