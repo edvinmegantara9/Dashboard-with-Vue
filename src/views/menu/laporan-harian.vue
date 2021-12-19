@@ -89,6 +89,19 @@
           :fields="fields"
           sorter
         >
+          <template #report="item">
+            <div>
+              <td
+                style="
+                  min-width: 450px;
+                  max-width: 500px !important;
+                  white-space: normal;
+                "
+              >
+                {{ item.item.report }}
+              </td>
+            </div>
+          </template>
           <template #action="{ item }">
             <td class="py-2">
               <CButton

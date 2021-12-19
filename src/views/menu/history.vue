@@ -61,7 +61,7 @@
           </div>
         </div>
         <CDataTable
-          class="table-striped"
+          class="table-striped table-wrapped"
           :fields="fields"
           :items="computedItems"
         >
@@ -187,10 +187,9 @@ export default {
         .dispatch("history_chat/getHistory", this.params)
         .then((resp) => {
           this.items = resp.data.data;
-          this.items.filter((e) => e);
+          // this.items.filter((e) => e);
           this.total = resp.data.total;
           loading.hide();
-          console.log("items", this.items);
         })
         .catch((e) => {
           this.$toast.error(e);
