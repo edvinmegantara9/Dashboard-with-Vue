@@ -67,8 +67,23 @@
         >
           <template #action="{ item }">
             <td class="py-2">
-              <CButton @click="show(item)" color="primary" square size="sm">
+              <CButton
+                @click="show(item)"
+                class="mr-2"
+                color="primary"
+                square
+                size="sm"
+              >
                 Show
+              </CButton>
+              <CButton
+                v-if="user.role.name.toLowerCase() == 'admin'"
+                @click="deleteRoom(item)"
+                color="danger"
+                square
+                size="sm"
+              >
+                Delete
               </CButton>
             </td>
           </template>
@@ -200,6 +215,26 @@ export default {
       };
 
       this.createModal = false;
+    },
+    deleteRoom(item) {
+      if (
+        confirm("Data akan dihapus secara permanen! yakin menghapus data??")
+      ) {
+        var loading = this.$loading.show();
+
+        this.$store
+          .dispatch("room/deleteRoom", { id: item.id })
+          .then(() => {
+            loading.hide();
+            this.getData();
+            this.$toast.success("Berhasil menghapus history layanan !!");
+          })
+          .catch((e) => {
+            loading.hide();
+
+            this.$toast.error("Gagal menghapus history layanan | " + e);
+          });
+      }
     },
     getRating(item) {
       switch (item) {

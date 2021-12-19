@@ -47,9 +47,17 @@ export default {
                     reject(e);
                 })
             })
-        }
+        },
 
-
+        deleteRoom(_, { id, }) {
+            return new Promise((resolve, reject) => {
+                axios.delete('/chat/delete/' + id).then(resp => {
+                    resolve(resp);
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
 
 
     },
