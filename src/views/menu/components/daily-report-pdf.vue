@@ -8,14 +8,15 @@
 }
 #content-table {
   font-size: 8pt;
-  border-top: 1pt solid black;
-  border-left: 1pt solid black;
+  /* border-top: 1pt solid black;
+  border-left: 1pt solid black; */
   border-collapse: collapse;
 }
 #content-table th,
 #content-table td {
-  border-right: 1pt solid black;
-  border-bottom: 1pt solid black;
+  /* border-right: 1px solid black;
+  border-bottom: 1px solid black; */
+  border: 1px solid black;
   padding-left: 3pt;
   padding-right: 3pt;
 }
@@ -57,25 +58,25 @@ table {
           </tr>
         </table>
       </header>
-      <section>
+      <section class="table-responsive">
         <br />
         <table id="content-table" style="width: 100%">
           <thead style="text-align: center">
-            <th style="width: 60px">Tanggal</th>
-            <th>Jam</th>
+            <th style="width: 70px">Tanggal</th>
+            <th style="width: 20px">Jam</th>
             <th>Nama</th>
             <th>NIP</th>
             <th>Golongan</th>
             <th>Jabatan</th>
             <th>Laporan</th>
           </thead>
-          <tbody v-for="item in data" :key="item.id" class="p-1">
+          <tbody v-for="item in computedData" :key="item.id" class="p-1">
             <tr>
               <td>{{ item.date }}</td>
-              <td>{{ item.updated_at }}</td>
+              <td>{{ item.updated_at | moment("HH:mm") }}</td>
               <td>{{ item.name }}</td>
               <td>{{ item.nip }}</td>
-              <td>{{ item.user.group }}</td>
+              <td>{{ item.group }}</td>
               <td>{{ item.position }}</td>
               <td>{{ item.report }}</td>
             </tr>
@@ -122,12 +123,14 @@ table {
 // import html2canvas from "html2canvas";
 // import jsPDF from "jspdf"
 import html2pdf from "html2pdf.js";
+import VueMoment from "vue-moment";
 
 export default {
   data() {
     return {
       id: null,
-      data: null,
+      data: [],
+      counter: 0,
     };
   },
   methods: {
@@ -138,26 +141,35 @@ export default {
         image: { type: "jpeg", quality: 1 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: "cm", format: "a4", orientation: "l" },
+        pagebreak: { avoid: "tr" },
       };
       var element = document.getElementById("pdf-content");
-      html2pdf().set(opt).from(element).save();
+      html2pdf()
+        .set(opt)
+        .from(element)
+        .save()
+        .then(() => this.$router.push("laporan-harian"));
     },
+  },
+  computed: {
+    computedData() {
+      return this.data.map((item) => {
+        return {
+          ...item,
+          group: item.user != null ? item.user.group : ''
+        }
+      });
+    }
   },
   created() {
     this.id = this.$route.query;
   },
   mounted() {
     var loading = this.$loading.show();
-    this.$store
-      .dispatch("report/ReportByDate", this.id)
-      .then((resp) => {
-        loading.hide();
-        this.data = resp.data.data;
-        this.data.forEach((element) => {
-          element.updated_at = element.updated_at.slice(11, 16);
-        });
-      })
-      .then(() => this.$router.push("laporan-harian"));
+    this.$store.dispatch("report/ReportByDate", this.id).then((resp) => {
+      loading.hide();
+      this.data = resp.data.data;
+    });
   },
 };
 </script>

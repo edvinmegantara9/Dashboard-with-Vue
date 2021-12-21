@@ -80,15 +80,20 @@
           <div class="col">
             <h3>
               <span class="badge bg-primary text-light text-bor my-auto">
-                {{searchOn}}&nbsp;&nbsp;
-                <span @click="searchOff" class="badge bg-light text-dark text-center" style="cursor: pointer">X</span>
+                {{ searchOn }}&nbsp;&nbsp;
+                <span
+                  @click="searchOff"
+                  class="badge bg-light text-dark text-center"
+                  style="cursor: pointer"
+                  >X</span
+                >
               </span>
             </h3>
           </div>
         </div>
         <CDataTable
           class="table-striped"
-          :items="computedItems"
+          :items="computedItems || []"
           :fields="fields"
         >
           <template #action="{ item }">
@@ -229,7 +234,7 @@ export default {
         keyword: "",
       },
       isSearching: false,
-      searchOn: ''
+      searchOn: "",
     };
   },
   methods: {
@@ -238,13 +243,13 @@ export default {
         this.isSearching = true;
         this.getPubDocuments();
         this.searchOn = this.params.keyword;
-        this.params.keyword = '';
+        this.params.keyword = "";
       } else {
         this.$toast.error("Inputan tidak boleh kosong !!");
       }
     },
 
-    searchOff(){
+    searchOff() {
       this.isSearching = false;
       this.getPubDocuments();
     },
@@ -336,7 +341,7 @@ export default {
       this.$store
         .dispatch("docs/getPubDocuments", this.params)
         .then((resp) => {
-          this.items = resp.data.data;
+          this.items = resp.data.data || [];
           this.total = resp.data.total;
           loading.hide();
         })
@@ -354,7 +359,7 @@ export default {
       this.$store
         .dispatch("docs/getDocumentsType", params)
         .then((resp) => {
-          this.docTypes = resp.data.data;
+          this.docTypes = resp.data.data || [];
         })
         .catch((e) => {
           this.$toast.error("gagal mengambil data tipe dokumen \n", e);
@@ -382,27 +387,32 @@ export default {
       });
     },
   },
-  watch: {
-    computedItems(val) {},
-  },
+
   computed: {
     computedItems() {
-      return this.items.map((item) => {
-        return {
-          ...item,
-          document_type: item.document_type.name,
-          created_at: item.created_at.slice(0, 10),
-          updated_at: item.updated_at.slice(0, 10),
-        };
-      });
+      return this.items.length != 0
+        ? this.items.map((item) => {
+            return {
+              ...item,
+              document_type:
+                item.document_type != null ? item.document_type.name : "-",
+              created_at: item.created_at.slice(0, 10),
+              updated_at: item.updated_at.slice(0, 10),
+            };
+          })
+        : [];
     },
     computedTypes() {
-      return this.docTypes.map((item) => {
-        return {
-          value: item.id,
-          label: item.name,
-        };
-      });
+      if (this.docTypes.length == 0) {
+        return [];
+      } else {
+        return this.docTypes.map((item) => {
+          return {
+            value: item.id,
+            label: item.name,
+          };
+        });
+      }
     },
   },
   mounted() {
