@@ -100,7 +100,7 @@ table {
               NIP. 197711052003121004
             </td>
             <td style="width: 50%; text-align: center">
-              Pagar Alam, ................................ 2021<br />
+              Pagar Alam, {{ $moment().format("Do MMMM YYYY") }}<br />
               KEPALA SUB BAGIAN UMUM DAN KEPEGAWAIAN<br />
               <br />
               <br />
@@ -131,6 +131,7 @@ export default {
       id: null,
       data: [],
       counter: 0,
+      thisTIme: null
     };
   },
   methods: {
