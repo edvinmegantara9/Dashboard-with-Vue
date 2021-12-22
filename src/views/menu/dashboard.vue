@@ -159,27 +159,29 @@
           <hr />
           <div class="card-body p-0">
             <center v-if="inbox.length == 0"><p>Tidak ada pesan</p></center>
-            <table
-              v-if="inbox.length != 0"
-              class="table table-sm table-striped dytable"
-            >
-              <tbody>
-                <tr v-for="item in inbox" :key="item.id">
-                  <td style="vertical-align: center" width="20px">
-                    <CIcon
-                      name="cil-envelope-closed"
-                      size="custom-size"
-                      class="mr-3 pb-1"
-                      :height="25"
-                    />
-                  </td>
-                  <td class="font-weight-bold">
-                    {{ item.message.title }}
-                    <small> - dari : {{ item.message.sender.name }}</small>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table
+                v-if="inbox.length != 0"
+                class="table table-sm table-striped dytable"
+              >
+                <tbody>
+                  <tr v-for="item in inbox" :key="item.id">
+                    <td style="vertical-align: center" width="20px">
+                      <CIcon
+                        name="cil-envelope-closed"
+                        size="custom-size"
+                        class="mr-3 pb-1"
+                        :height="25"
+                      />
+                    </td>
+                    <td class="font-weight-bold">
+                      {{ item.message.title }}
+                      <small> - dari : {{ item.message.sender.name }}</small>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="card-footer py-1 px-0">
             <router-link
