@@ -36,6 +36,15 @@
             >
               Lihat
             </CButton>
+            <CButton
+              @click="hapus(item)"
+              class="mr-2"
+              color="danger"
+              square
+              size="sm"
+            >
+              Delete
+            </CButton>
           </td>
         </template>
       </CDataTable>
@@ -162,7 +171,27 @@ export default {
           alert(e);
         });
     },
-    hapus() {},
+    hapus(item) {
+      if (confirm('Yakin akan menghapus pesan ini?')) {
+        var loading = this.$loading.show();
+        var params = {
+          sender_id: item.sender_id
+        };
+        this.$store
+          .dispatch("message/deleteOutbox", {
+            id: item.id, 
+            params: params
+          })
+          .then(() => {
+            this.$toast.success('Berhasil menghapus pesan!!');
+            this.getOutbox();
+            loading.hide();
+          }).catch(e => {
+            this.$toast.error(e);
+            loading.hide();
+          });
+      }
+    },
     view(item) {
       this.details = item;
       this.detailModal = true;
