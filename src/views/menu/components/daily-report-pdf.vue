@@ -95,9 +95,9 @@ table {
               <br />
               <br />
               <br />
-              <b>NOVI APRIYADI, SE,MM</b><br />
+              <b>{{ signer.bappeda != null ? signer.bappeda.full_name : '' }}</b><br />
               Pembina TK. I<br />
-              NIP. 197711052003121004
+              NIP. {{signer.bappeda != null ? signer.bappeda.nip : '' }}
             </td>
             <td style="width: 50%; text-align: center">
               Pagar Alam, ................................ 2021<br />
@@ -106,9 +106,9 @@ table {
               <br />
               <br />
               <br />
-              <b>WARDALENA, SE</b><br />
+              <b>{{ signer.kepegawaian != null ? signer.kepegawaian.full_name : '' }}</b><br />
               PENATA TK. I<br />
-              NIP. 197611042007012013
+              NIP. {{ signer.kepegawaian != null ? signer.kepegawaian.nip : '' }}
             </td>
           </tr>
         </table>
@@ -131,6 +131,10 @@ export default {
       id: null,
       data: [],
       counter: 0,
+      signer: {
+        bappeda: null,
+        kepegawaian: null
+      }
     };
   },
   methods: {
@@ -150,6 +154,28 @@ export default {
         .save()
         .then(() => this.$router.push("laporan-harian"));
     },
+    getSigner() {
+      var param = {
+        sorttype: "asc",
+        sortby: "id",
+        row: 1,
+        page: 1,
+        keyword: "Kepala Bappeda",
+      }
+      this.$store.dispatch("user/getUser", param)
+        .then((resp) => {
+          this.signer.bappeda = (resp.data.data[0] != null) ? resp.data.data[0] : null
+        }).catch(e => {
+          this.$toast.error('Tidak dapat mengambil data Kepala Bappeda');
+        });
+      param.keyword = "KEPALA SUB BAGIAN KEPEGAWAIAN"
+      this.$store.dispatch("user/getUser", param)
+        .then((resp) => {
+          this.signer.kepegawaian = (resp.data.data[0] != null) ? resp.data.data[0] : null
+        }).catch(e => {
+          this.$toast.error('Tidak dapat mengambil data Kepala Sub Bagian Umum dan Kepegawaian');
+        });
+    }
   },
   computed: {
     computedData() {
@@ -169,7 +195,11 @@ export default {
     this.$store.dispatch("report/ReportByDate", this.id).then((resp) => {
       loading.hide();
       this.data = resp.data.data;
+    }).catch(e => {
+      this.$toast.error(e);
+      loading.hide();
     });
+    this.getSigner();
   },
 };
 </script>
