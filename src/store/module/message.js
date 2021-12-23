@@ -66,8 +66,27 @@ export default {
                     reject(e)
                 })
             })
-        }
+        },
 
+        deleteInbox(_, { id, params}){
+            return new Promise((resolve, reject) => {
+                axios.delete('/message/delete_inbox/' + id, { params }).then(resp => {
+                    resolve(resp)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
+
+        deleteOutbox(_, { id, params }) {
+            return new Promise((resolve, reject) => {
+                axios.put('/message/delete_outbox/' + id, { sender_id: params.sender_id }).then(resp => {
+                    resolve(resp)
+                }).catch(e => {
+                    reject(e)
+                })
+            })
+        },
 
 
     },
