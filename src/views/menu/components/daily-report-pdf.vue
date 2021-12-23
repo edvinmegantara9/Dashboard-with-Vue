@@ -100,7 +100,7 @@ table {
               NIP. {{signer.bappeda != null ? signer.bappeda.nip : '' }}
             </td>
             <td style="width: 50%; text-align: center">
-              Pagar Alam, ................................ 2021<br />
+              Pagar Alam, {{ $moment().format("Do MMMM YYYY") }}<br />
               KEPALA SUB BAGIAN UMUM DAN KEPEGAWAIAN<br />
               <br />
               <br />

@@ -457,10 +457,10 @@ export default {
           ...item,
           group: item.user != null ? item.user.group : "",
           updated_at: this.$moment(item.updated_at).format(
-            "dddd, Do MMMM  YYYY, hh:mm"
+            "dddd, Do MMMM  YYYY, HH:mm"
           ),
           date: this.$moment(item.created_at).format("dddd, Do MMMM YYYY"),
-          created_at: this.$moment(item.created_at).format("hh:mm"),
+          created_at: this.$moment(item.created_at).format("HH:mm"),
         };
       });
     },
