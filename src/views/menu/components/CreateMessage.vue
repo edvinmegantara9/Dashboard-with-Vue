@@ -2,6 +2,8 @@
   <div>
     <div class="card mt-2 p-3">
       <CInput v-model="form.title" placeholder="Judul Pesan" />
+      <input type="checkbox" id="vehicle1" name="vehicle1" v-model="checked" @change="check(checked)"> Pilih semua penerima
+      <br /><br />
       <v-select
         class="mb-3"
         v-model="form.receivers"
@@ -78,8 +80,10 @@ export default {
   props: [],
   data() {
     return {
+      checked: false,
       form: {
         attachments: [],
+        receivers: []
       },
       user: {},
 
@@ -87,6 +91,25 @@ export default {
     };
   },
   methods: {
+    check(checked) {
+      if (checked) {
+        this.receivers.forEach(element => {
+          const isAvailable = this.form.receivers.find(item => {
+            return item.value == element.id
+          })
+
+          if (!isAvailable) {
+            this.form.receivers.push({
+              value: element.id,
+              label: element.name
+            })
+          }
+        });
+      } else {
+        this.form.receivers = [];
+      }
+      console.log(checked, "event", this.form.receivers, this.receivers);
+    },
     upload() {
       this.$refs.upload.click();
     },
@@ -143,9 +166,11 @@ export default {
         .then(() => {
           this.form = {
             attachments: [],
+            receivers: []
           };
           loading.hide();
           this.$toast.success("Berhasil mengirim pesan");
+          this.checked = false;
         })
         .catch((e) => {
           loading.hide();
