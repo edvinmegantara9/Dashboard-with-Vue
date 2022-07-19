@@ -96,6 +96,11 @@
           :items="computedItems || []"
           :fields="fields"
         >
+          <template #image="{ item }">
+            <td class="py-2">
+              <img :src="item.image" width="100%" />
+            </td>
+          </template>
           <template #action="{ item }">
             <td class="py-2">
               <CButton
@@ -157,6 +162,33 @@
             v-model="form.title"
             label="Nama Dokumen"
             placeholder="ketik disini"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="div" v-if="!isUpdate">
+            <label class="form-label" for="newData.image">Upload Image</label>
+            <input
+              type="file"
+              class="form-control"
+              id="newData.image"
+              @change="selectImage"
+            />
+          </div>
+          <CInput
+            v-if="isUpdate"
+            v-model="form.image"
+            label="Image"
+            type="text"
+            disabled
+          />
+        </div>
+        <div class="col">
+          <CInput
+            v-model="form.tahun"
+            label="tahun"
+            type="text"
           />
         </div>
       </div>
@@ -259,7 +291,7 @@ export default {
       var loading = this.$loading.show();
       uploadFile(this.file)
         .then((resp) => {
-          this.form.file = resp;
+          this.form.file = resp; 
           loading.hide();
           alert("File berhasil diupload !!");
         })
@@ -268,7 +300,21 @@ export default {
           alert("Terjadi kesalahan !! | " + e);
         });
     },
-
+    selectImage(event) {
+      console.log(event);
+      this.file = event.target.files[0];
+      var loading = this.$loading.show();
+      uploadFile(this.file)
+        .then((resp) => {
+          this.form.image = resp;  
+          loading.hide();
+          alert("File berhasil diupload !!");
+        })
+        .catch((e) => {
+          loading.hide();
+          alert("Terjadi kesalahan !! | " + e);
+        });
+    },
     submit() {
       this.form.document_type = 1;
       var loading = this.$loading.show();

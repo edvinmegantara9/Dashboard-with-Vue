@@ -13,7 +13,7 @@ import report_citizen from './module/report-citizen'
 import history_chat from './module/history-chat'
 import schedule from './module/schedule'
 import paket_pekerjaan from './module/paket-pekerjaan'
-
+import potensi_pasar from './module/potensi-pasar'
 
 
 Vue.use(Vuex)
@@ -52,7 +52,8 @@ export default new Vuex.Store({
     report_citizen,
     history_chat,
     schedule,
-    paket_pekerjaan
+    paket_pekerjaan,
+    potensi_pasar
   },
   mutations
 })

@@ -32,29 +32,26 @@ export const admin = [
     route: '/data',
     icon: 'cil-file',
     items: [
-      {
-        name: 'Dokumen OPD',
-        to: '/data/dokumen-opd',
-
-      },
+      // {
+      //   name: 'Dokumen OPD',
+      //   to: '/data/dokumen-opd',
+      // },
       {
         name: 'Tipe Dokumen',
         to: '/data/tipe-dokumen',
-
       },
       {
         name: 'Dokumen Peraturan',
         to: '/data/peraturan'
       },
-      {
-        name: 'Dokumen Kota',
-        to: '/data/kota'
-      },
-      {
-        name: 'Jadwal Perencanaan',
-        to: '/data/jadwal-perencanaan'
-      },
-
+      // {
+      //   name: 'Dokumen Kota',
+      //   to: '/data/kota'
+      // },
+      // {
+      //   name: 'Jadwal Perencanaan',
+      //   to: '/data/jadwal-perencanaan'
+      // },
     ]
   },
   {
@@ -62,7 +59,6 @@ export const admin = [
     name: 'Komunikasi',
     route: '/komunikasi',
     icon: 'cil-comment-square',
-
     items: [
       {
         name: 'Pesan',
@@ -73,7 +69,6 @@ export const admin = [
         name: 'Online Chat',
         to: '/komunikasi/online-chat'
       },
-
     ]
   },
 
@@ -83,18 +78,18 @@ export const admin = [
     to: '/history',
     icon: 'cil-grid'
   },
-  {
-    _name: 'CSidebarNavItem',
-    name: 'Laporan Harian',
-    to: '/laporan-harian',
-    icon: 'cil-pencil'
-  },
-  {
-    _name: 'CSidebarNavItem',
-    name: 'Laporan Masyarakat',
-    to: '/laporan-masyarakat',
-    icon: 'cil-pencil'
-  },
+  // {
+  //   _name: 'CSidebarNavItem',
+  //   name: 'Laporan Harian',
+  //   to: '/laporan-harian',
+  //   icon: 'cil-pencil'
+  // },
+  // {
+  //   _name: 'CSidebarNavItem',
+  //   name: 'Laporan Masyarakat',
+  //   to: '/laporan-masyarakat',
+  //   icon: 'cil-pencil'
+  // },
   {
     _name: 'CSidebarNavItem',
     name: 'Gallery',
@@ -105,6 +100,12 @@ export const admin = [
     _name: 'CSidebarNavItem',
     name: 'Paket Pekerjaan',
     to: '/paket-pekerjaan',
+    icon: 'cil-pencil'
+  },
+  {
+    _name: 'CSidebarNavItem',
+    name: 'Potensi Pasar',
+    to: '/potensi-pasar',
     icon: 'cil-pencil'
   },
   {

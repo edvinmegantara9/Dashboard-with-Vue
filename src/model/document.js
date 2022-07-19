@@ -1,5 +1,6 @@
 export const fields = [
-
+    { key: 'image', label: "Cover", _style:'min-width:100px' },
+    { key: 'tahun', label: "Tahun", _style:'min-width:100px' },
     { key: 'title', label: "Nama Dokumen", _style:'min-width:100px' },
     { key: "document_type", label: "Tipe Dokumen", _style:'min-width:50px'},
     { key: 'upload_by', label: "Pengunggah", _style:'min-width:100px;' },
@@ -14,7 +15,8 @@ export const fieldsType = [
     { key: "action", label: 'Aksi', _style: 'min-width:75px'}
 ]
 export const fieldsPublic = [
-
+    { key: 'image', label: "Cover", _style:'min-width:100px' },
+    { key: 'tahun', label: "Tahun", _style:'min-width:100px' },
     { key: 'title', label: "Nama Dokumen", _style:'min-width:100px' },
     { key: 'document_type', label: "Tipe Dokumen", _style:'min-width:50px' },
     { key: 'created_at', label: "Tanggal Dibuat", _style:'min-width:100px;' },
