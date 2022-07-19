@@ -12,7 +12,7 @@ import room from './module/room'
 import report_citizen from './module/report-citizen'
 import history_chat from './module/history-chat'
 import schedule from './module/schedule'
-
+import paket_pekerjaan from './module/paket-pekerjaan'
 
 
 
@@ -51,7 +51,8 @@ export default new Vuex.Store({
     room,
     report_citizen,
     history_chat,
-    schedule
+    schedule,
+    paket_pekerjaan
   },
   mutations
 })

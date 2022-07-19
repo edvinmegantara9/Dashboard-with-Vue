@@ -1,6 +1,6 @@
 <template>
   <CSidebar class="bg-main" fixed :minimize="minimize" :show.sync="show">
-    <CSidebarBrand class="d-md-down-none mb-2 p-2" to="/">
+    <CSidebarBrand class="d-md-down-none mb-2" to="/">
       <!-- <CIcon 
         class="c-sidebar-brand-full" 
         name="logo" 
@@ -94,6 +94,11 @@ export default {
 
 <style>
 .bg-main {
-  background: #24548c !important;
+  background: #085848 !important;
+}
+
+.c-sidebar .c-sidebar-brand {
+    color: #fff;
+    background: #fff !important;
 }
 </style>

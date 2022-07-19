@@ -22,6 +22,7 @@ const DokumenKota = () => import('@/views/menu/dokumen-kota')
 const LaporanHarian = () => import('@/views/menu/laporan-harian')
 const LaporanMasyarakat = () => import('@/views/menu/laporan-masyarakat')
 const JadwalPerencanaan = () => import('@/views/menu/jadwal-perencanaan')
+const PaketPekerjaan = () => import('@/views/menu/paket-pekerjaan')
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
@@ -215,7 +216,11 @@ function configRoutes() {
           ]
         },
 
-
+        {
+          path: 'paket-pekerjaan',
+          name: 'Paket Pekerjaan',
+          component: PaketPekerjaan
+        },
       ]
     },
     {

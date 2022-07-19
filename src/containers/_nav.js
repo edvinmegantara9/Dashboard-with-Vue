@@ -101,7 +101,12 @@ export const admin = [
     to: '/gallery',
     icon: 'cil-puzzle'
   },
-
+  {
+    _name: 'CSidebarNavItem',
+    name: 'Paket Pekerjaan',
+    to: '/paket-pekerjaan',
+    icon: 'cil-pencil'
+  },
   {
     _name: 'CSidebarNavDropdown',
     name: 'Master User',
@@ -113,11 +118,10 @@ export const admin = [
         to: '/master-user/user',
 
       },
-      {
-        name: 'Kelola OPD',
-        to: '/master-user/opd'
-      },
-
+      // {
+      //   name: 'Kelola OPD',
+      //   to: '/master-user/opd'
+      // },
       {
         name: 'Kelola Role',
         to: '/master-user/role'
