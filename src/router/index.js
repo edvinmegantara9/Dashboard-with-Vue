@@ -25,6 +25,8 @@ const JadwalPerencanaan = () => import('@/views/menu/jadwal-perencanaan')
 const PaketPekerjaan = () => import('@/views/menu/paket-pekerjaan')
 const PotensiPasar = () => import('@/views/menu/potensi-pasar')
 const Quarry = () => import('@/views/menu/quarry')
+const Lab = () => import('@/views/menu/lab')
+const AlatKontruksi = () => import('@/views/menu/alat-kontruksi')
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
@@ -232,6 +234,16 @@ function configRoutes() {
           path: 'quarry',
           name: 'Quarry',
           component: Quarry
+        },
+        {
+          path: 'lab',
+          name: 'Lab',
+          component: Lab
+        },
+        {
+          path: 'alat-kontruksi',
+          name: 'Sewa Alat Kontruksi',
+          component: AlatKontruksi
         },
       ]
     },

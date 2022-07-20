@@ -115,6 +115,18 @@ export const admin = [
     icon: 'cil-pencil'
   },
   {
+    _name: 'CSidebarNavItem',
+    name: 'Data Lab',
+    to: '/lab',
+    icon: 'cil-pencil'
+  },
+  {
+    _name: 'CSidebarNavItem',
+    name: 'Data Sewa Alat Kontruksi',
+    to: '/alat-kontruksi',
+    icon: 'cil-pencil'
+  },
+  {
     _name: 'CSidebarNavDropdown',
     name: 'Master User',
     route: '/master-user',

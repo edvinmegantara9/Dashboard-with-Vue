@@ -15,6 +15,8 @@ import schedule from './module/schedule'
 import paket_pekerjaan from './module/paket-pekerjaan'
 import potensi_pasar from './module/potensi-pasar'
 import quarry from './module/quarry'
+import lab from './module/lab'
+import alat_kontruksi from './module/alat-kontruksi'
 
 Vue.use(Vuex)
 
@@ -54,7 +56,9 @@ export default new Vuex.Store({
     schedule,
     paket_pekerjaan,
     potensi_pasar,
-    quarry
+    quarry,
+    lab,
+    alat_kontruksi
   },
   mutations
 })
