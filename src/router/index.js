@@ -24,6 +24,7 @@ const LaporanMasyarakat = () => import('@/views/menu/laporan-masyarakat')
 const JadwalPerencanaan = () => import('@/views/menu/jadwal-perencanaan')
 const PaketPekerjaan = () => import('@/views/menu/paket-pekerjaan')
 const PotensiPasar = () => import('@/views/menu/potensi-pasar')
+const Quarry = () => import('@/views/menu/quarry')
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
@@ -226,6 +227,11 @@ function configRoutes() {
           path: 'potensi-pasar',
           name: 'Potensi Pasar',
           component: PotensiPasar
+        },
+        {
+          path: 'quarry',
+          name: 'Quarry',
+          component: Quarry
         },
       ]
     },

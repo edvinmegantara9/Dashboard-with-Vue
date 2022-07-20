@@ -109,6 +109,12 @@ export const admin = [
     icon: 'cil-pencil'
   },
   {
+    _name: 'CSidebarNavItem',
+    name: 'Data Quarry',
+    to: '/quarry',
+    icon: 'cil-pencil'
+  },
+  {
     _name: 'CSidebarNavDropdown',
     name: 'Master User',
     route: '/master-user',

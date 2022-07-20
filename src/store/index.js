@@ -14,7 +14,7 @@ import history_chat from './module/history-chat'
 import schedule from './module/schedule'
 import paket_pekerjaan from './module/paket-pekerjaan'
 import potensi_pasar from './module/potensi-pasar'
-
+import quarry from './module/quarry'
 
 Vue.use(Vuex)
 
@@ -53,7 +53,8 @@ export default new Vuex.Store({
     history_chat,
     schedule,
     paket_pekerjaan,
-    potensi_pasar
+    potensi_pasar,
+    quarry
   },
   mutations
 })
