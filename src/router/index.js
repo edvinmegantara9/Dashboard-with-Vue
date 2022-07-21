@@ -29,6 +29,7 @@ const Lab = () => import('@/views/menu/lab')
 const AlatKontruksi = () => import('@/views/menu/alat-kontruksi')
 const Sbu = () => import('@/views/menu/sbu')
 const Ska = () => import('@/views/menu/ska')
+const Skt = () => import('@/views/menu/skt')
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
@@ -256,6 +257,11 @@ function configRoutes() {
           path: 'ska',
           name: 'Ska',
           component: Ska
+        },
+        {
+          path: 'skt',
+          name: 'Skt',
+          component: Skt
         },
       ]
     },

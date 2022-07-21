@@ -19,6 +19,7 @@ import lab from './module/lab'
 import alat_kontruksi from './module/alat-kontruksi'
 import sbu from './module/sbu'
 import ska from './module/ska'
+import skt from './module/skt'
 
 Vue.use(Vuex)
 
@@ -62,7 +63,8 @@ export default new Vuex.Store({
     lab,
     alat_kontruksi,
     sbu,
-    ska
+    ska,
+    skt
   },
   mutations
 })
