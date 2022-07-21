@@ -17,6 +17,8 @@ import potensi_pasar from './module/potensi-pasar'
 import quarry from './module/quarry'
 import lab from './module/lab'
 import alat_kontruksi from './module/alat-kontruksi'
+import sbu from './module/sbu'
+import ska from './module/ska'
 
 Vue.use(Vuex)
 
@@ -58,7 +60,9 @@ export default new Vuex.Store({
     potensi_pasar,
     quarry,
     lab,
-    alat_kontruksi
+    alat_kontruksi,
+    sbu,
+    ska
   },
   mutations
 })

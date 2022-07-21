@@ -27,6 +27,8 @@ const PotensiPasar = () => import('@/views/menu/potensi-pasar')
 const Quarry = () => import('@/views/menu/quarry')
 const Lab = () => import('@/views/menu/lab')
 const AlatKontruksi = () => import('@/views/menu/alat-kontruksi')
+const Sbu = () => import('@/views/menu/sbu')
+const Ska = () => import('@/views/menu/ska')
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
@@ -244,6 +246,16 @@ function configRoutes() {
           path: 'alat-kontruksi',
           name: 'Sewa Alat Kontruksi',
           component: AlatKontruksi
+        },
+        {
+          path: 'sbu',
+          name: 'Sbu',
+          component: Sbu
+        },
+        {
+          path: 'ska',
+          name: 'Ska',
+          component: Ska
         },
       ]
     },
