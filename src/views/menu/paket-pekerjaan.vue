@@ -125,6 +125,7 @@
             <option value="Drainase">Drainase</option>
             <option value="Gedung">Gedung</option>
             <option value="Gedung">Taman</option>
+            <option value="Irigasi">Irigasi</option>
             <option value="Gedung">Lainnya</option>
           </select>
           <label for="">Sumber Dana</label>
@@ -166,7 +167,7 @@
             <option value="Soreang">Soreang</option>
           </select>
 
-          <label for="">Status Pekerjaan</label>
+          <label for="">Progress Pekerjaan</label>
           <select
             name=""
             v-model="form.status_pekerjaan"
@@ -185,16 +186,19 @@
             <option value="81-90%">81-90%</option>
             <option value="91-100%">91-100%</option>
           </select>
+
           <CInput
             v-model="form.tahun_anggaran"
             label="Tahun Anggaran"
             placeholder="ketik disini"
           />
+
           <CInput
             v-model="form.longitude"
             label="Longitude"
             placeholder="ketik disini"
           />
+
            <CInput
             v-model="form.latitude"
             label="Latitude"
@@ -202,6 +206,183 @@
           />
         </div>
       </div>
+      <!-- bagian upload -->
+      <div class="row">
+        <div class="col text-center">
+          <label for="">Upload Foto Sebelum : </label>
+          <div
+            v-if="imageListBefore.length <= 3"
+            class="card border d-flex justify-content-center"
+            style="height: 250px"
+          >
+            <div class="align-self-center mb-3">
+              (MAKS 4)
+              <br />
+              <img src="@/assets/upload.png" width="100px" alt="" />
+            </div>
+            <button
+              class="btn btn-sm btn-primary align-self-center"
+              style="width: 15%"
+              @click="uploadBefore"
+            >
+              Upload Disini
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="div">
+            <input
+              hidden
+              type="file"
+              class="form-control"
+              ref="uploadFieldBefore"
+              @change="selectFileBefore"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3" v-for="(item, index) in imageListBefore" :key="item">
+          <CCardLink :href="item" target="_blank" class="">
+            <CCardImg
+              :src="item"
+              style="object-fit: cover"
+              height="auto"
+              variant="full"
+            />
+          </CCardLink>
+
+          <button
+            class="btn btn-danger btn-sm btn-block mt-2"
+            @click="deleteImageBefore('update', index)"
+          >
+            Hapus
+          </button>
+          <br />
+        </div>
+      </div>
+      <!-- bagian upload -->
+
+      <!-- bagian upload -->
+      <div class="row">
+        <div class="col text-center">
+          <label for="">Upload Foto Proses : </label>
+          <div
+            v-if="imageListProcess.length <= 3"
+            class="card border d-flex justify-content-center"
+            style="height: 250px"
+          >
+            <div class="align-self-center mb-3">
+              (MAKS 4)
+              <br />
+              <img src="@/assets/upload.png" width="100px" alt="" />
+            </div>
+            <button
+              class="btn btn-sm btn-primary align-self-center"
+              style="width: 15%"
+              @click="uploadProcess"
+            >
+              Upload Disini
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="div">
+            <input
+              hidden
+              type="file"
+              class="form-control"
+              ref="uploadFieldProcess"
+              @change="selectFileProcess"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3" v-for="(item, index) in imageListProcess" :key="item">
+          <CCardLink :href="item" target="_blank" class="">
+            <CCardImg
+              :src="item"
+              style="object-fit: cover"
+              height="auto"
+              variant="full"
+            />
+          </CCardLink>
+
+          <button
+            class="btn btn-danger btn-sm btn-block mt-2"
+            @click="deleteImageProcess('update', index)"
+          >
+            Hapus
+          </button>
+          <br />
+        </div>
+      </div>
+      <!-- bagian upload -->
+
+      <!-- bagian upload -->
+      <div class="row">
+        <div class="col text-center">
+          <label for="">Upload Foto Sesudah : </label>
+          <div
+            v-if="imageListAfter.length <= 3"
+            class="card border d-flex justify-content-center"
+            style="height: 250px"
+          >
+            <div class="align-self-center mb-3">
+              (MAKS 4)
+              <br />
+              <img src="@/assets/upload.png" width="100px" alt="" />
+            </div>
+            <button
+              class="btn btn-sm btn-primary align-self-center"
+              style="width: 15%"
+              @click="uploadAfter"
+            >
+              Upload Disini
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="div">
+            <input
+              hidden
+              type="file"
+              class="form-control"
+              ref="uploadFieldAfter"
+              @change="selectFileAfter"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3" v-for="(item, index) in imageListAfter" :key="item">
+          <CCardLink :href="item" target="_blank" class="">
+            <CCardImg
+              :src="item"
+              style="object-fit: cover"
+              height="auto"
+              variant="full"
+            />
+          </CCardLink>
+
+          <button
+            class="btn btn-danger btn-sm btn-block mt-2"
+            @click="deleteImageAfter('update', index)"
+          >
+            Hapus
+          </button>
+          <br />
+        </div>
+      </div>
+      <!-- bagian upload -->
+
       <template slot="footer">
         <div>
           <button @click="cancel" class="btn btn-secondary mr-3">Batal</button>
@@ -222,6 +403,7 @@
 
 <script>
 import * as data from "../../model/paket-pekerjaan";
+import { uploadImage } from "@/utils/fileUpload";
 
 export default {
   data() {
@@ -230,7 +412,9 @@ export default {
       fields: [],
       isUpdate: false,
       items: [],
-
+      imageListAfter: [],
+      imageListProcess: [],
+      imageListBefore: [],
       page: 1,
       total: 0,
       form: {
@@ -266,6 +450,28 @@ export default {
       this.getData();
     },
     submit() {
+      this.form.paket_pekerjaan_befores = [];
+      this.form.paket_pekerjaan_processes = [];
+      this.form.paket_pekerjaan_afters = [];
+
+      this.imageListBefore.forEach(element => {
+        this.form.paket_pekerjaan_befores.push({
+          image: element
+        })
+      });
+      
+      this.imageListProcess.forEach(element => {
+        this.form.paket_pekerjaan_processes.push({
+          image: element
+        })
+      });
+      
+      this.imageListAfter.forEach(element => {
+        this.form.paket_pekerjaan_afters.push({
+          image: element
+        })
+      });
+
       this.form.user_id = JSON.parse(localStorage.getItem("user")).id;
       this.form.opd_id = JSON.parse(localStorage.getItem("user")).role_id;
       var loading = this.$loading.show();
@@ -288,6 +494,9 @@ export default {
       this.form = item;
       this.isUpdate = true;
       this.createModal = true;
+      this.imageListBefore = this.extractGallery(item.paket_pekerjaan_befores);
+      this.imageListProcess = this.extractGallery(item.paket_pekerjaan_processes);
+      this.imageListAfter = this.extractGallery(item.paket_pekerjaan_afters);
     },
     cancel() {
       this.form = {
@@ -361,6 +570,76 @@ export default {
       this.getData();
       // console.log(page);
     },
+    uploadAfter() {
+      this.$refs.uploadFieldAfter.click();
+    },
+    selectFileAfter(event) {
+      this.file = event.target.files[0];
+      var loading = this.$loading.show();
+      uploadImage(this.file)
+        .then((resp) => {
+          this.imageListAfter.push(resp);
+          loading.hide();
+          alert("File berhasil diupload !!");
+        })
+        .catch((e) => {
+          loading.hide();
+          alert("Terjadi kesalahan !! | " + e);
+        });
+    },
+    uploadProcess() {
+      this.$refs.uploadFieldProcess.click();
+    },
+    selectFileProcess(event) {
+      this.file = event.target.files[0];
+      var loading = this.$loading.show();
+      uploadImage(this.file)
+        .then((resp) => {
+          this.imageListProcess.push(resp);
+          loading.hide();
+          alert("File berhasil diupload !!");
+        })
+        .catch((e) => {
+          loading.hide();
+          alert("Terjadi kesalahan !! | " + e);
+        });
+    },
+    uploadBefore() {
+      this.$refs.uploadFieldBefore.click();
+    },
+    selectFileBefore(event) {
+      this.file = event.target.files[0];
+      var loading = this.$loading.show();
+      uploadImage(this.file)
+        .then((resp) => {
+          this.imageListBefore.push(resp);
+          loading.hide();
+          alert("File berhasil diupload !!");
+        })
+        .catch((e) => {
+          loading.hide();
+          alert("Terjadi kesalahan !! | " + e);
+        });
+    },
+    deleteImageBefore(state, index) {
+      this.imageListBefore.splice(index, 1);
+    },
+    deleteImageProcess(state, index) {
+      this.imageListProcess.splice(index, 1);
+    },
+    deleteImageAfter(state, index) {
+      this.imageListAfter.splice(index, 1);
+    },
+    extractGallery(item) {
+      let data = [];
+      item.forEach(element => {
+        data.push(element.image);
+      });
+      return data;
+    },
+    viewImage(item) {
+
+    }
   },
   computed: {
     computedItems() {

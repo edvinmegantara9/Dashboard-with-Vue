@@ -97,52 +97,60 @@ export const admin = [
     icon: 'cil-puzzle'
   },
   {
-    _name: 'CSidebarNavItem',
-    name: 'Paket Pekerjaan',
-    to: '/paket-pekerjaan',
-    icon: 'cil-pencil'
+    _name: 'CSidebarNavDropdown',
+    name: 'Object Monitoring',
+    route: '/object-monitoring',
+    icon: 'cil-file',
+    items: [
+      {
+        name: 'Paket Pekerjaan',
+        to: '/paket-pekerjaan',
+      },
+      {
+        name: 'Potensi Pasar',
+        to: '/potensi-pasar'
+      },
+    ]
   },
   {
-    _name: 'CSidebarNavItem',
-    name: 'Potensi Pasar',
-    to: '/potensi-pasar',
-    icon: 'cil-pencil'
+    _name: 'CSidebarNavDropdown',
+    name: 'Tenaga Kerja & Badan Usaha',
+    route: '/',
+    icon: 'cil-file',
+    items: [
+      {
+        name: 'Data SBU',
+        to: '/sbu',
+      },
+      {
+        name: 'Data SKT',
+        to: '/skt'
+      },
+      {
+        name: 'Data SKA',
+        to: '/ska'
+      },
+    ]
   },
   {
-    _name: 'CSidebarNavItem',
-    name: 'Data Quarry',
-    to: '/quarry',
-    icon: 'cil-pencil'
-  },
-  {
-    _name: 'CSidebarNavItem',
-    name: 'Data Lab',
-    to: '/lab',
-    icon: 'cil-pencil'
-  },
-  {
-    _name: 'CSidebarNavItem',
-    name: 'Data Sewa Alat Kontruksi',
-    to: '/alat-kontruksi',
-    icon: 'cil-pencil'
-  },
-  {
-    _name: 'CSidebarNavItem',
-    name: 'Data SBU',
-    to: '/sbu',
-    icon: 'cil-pencil'
-  },
-  {
-    _name: 'CSidebarNavItem',
-    name: 'Data SKA',
-    to: '/ska',
-    icon: 'cil-pencil'
-  },
-  {
-    _name: 'CSidebarNavItem',
-    name: 'Data SKT',
-    to: '/skt',
-    icon: 'cil-pencil'
+    _name: 'CSidebarNavDropdown',
+    name: 'Data Lainnya',
+    route: '/',
+    icon: 'cil-file',
+    items: [
+      {
+        name: 'Data Quarry',
+        to: '/quarry',
+      },
+      {
+        name: 'Data Lab',
+        to: '/lab',
+      },
+      {
+        name: 'Data Sewa Alat Kontruksi',
+        to: '/alat-kontruksi',
+      },
+    ]
   },
   {
     _name: 'CSidebarNavDropdown',

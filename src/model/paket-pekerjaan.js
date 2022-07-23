@@ -8,7 +8,7 @@ export const fields = [
     { key: 'nilai_kontrak', label: "Nilai Kontrak", _style:'min-width:100px;' },
     { key: 'alamat_pekerjaan', label: "Alamat", _style:'min-width:100px;' },
     { key: 'kecamatan', label: "Kecamatan", _style:'min-width:100px;' },
-    { key: 'status_pekerjaan', label: "Status Pekerjaan", _style:'min-width:100px;' },
+    { key: 'status_pekerjaan', label: "Progress Pekerjaan", _style:'min-width:100px;' },
     { key: 'tahun_anggaran', label: "Tahun", _style:'min-width:100px;' },
     { key: 'longitude', label: "Longitude", _style:'min-width:100px;' },
     { key: 'latitude', label: "Latitude", _style:'min-width:100px;' },
