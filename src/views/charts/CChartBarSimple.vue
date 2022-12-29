@@ -3,6 +3,7 @@
     :datasets="computedDatasets"
     :options="computedOptions"
     :labels="labels"
+    style="height:300px"
   />
 </template>
 
@@ -46,6 +47,7 @@ export default {
     defaultOptions () {
       return {
         maintainAspectRatio: false,
+        responsive: true,
         legend: {
           display: false
         },

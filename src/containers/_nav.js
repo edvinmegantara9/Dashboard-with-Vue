@@ -16,7 +16,7 @@ export const admin = [
 
   {
     _name: 'CSidebarNavItem',
-    name: 'Agenda Bappeda',
+    name: 'Agenda',
     to: '/agenda',
     icon: 'cil-calendar',
     // badge: {
@@ -72,12 +72,12 @@ export const admin = [
     ]
   },
 
-  {
-    _name: 'CSidebarNavItem',
-    name: 'History Layanan',
-    to: '/history',
-    icon: 'cil-grid'
-  },
+  // {
+  //   _name: 'CSidebarNavItem',
+  //   name: 'History Layanan',
+  //   to: '/history',
+  //   icon: 'cil-grid'
+  // },
   // {
   //   _name: 'CSidebarNavItem',
   //   name: 'Laporan Harian',
@@ -102,6 +102,10 @@ export const admin = [
     route: '/object-monitoring',
     icon: 'cil-file',
     items: [
+      {
+        name: 'Pengelolaan Category',
+        to: '/category',
+      },
       {
         name: 'Paket Pekerjaan',
         to: '/paket-pekerjaan',
@@ -149,6 +153,10 @@ export const admin = [
       {
         name: 'Data Sewa Alat Kontruksi',
         to: '/alat-kontruksi',
+      },
+      {
+        name: 'Data Batas Wilayah',
+        to: '/batas-wilayah',
       },
     ]
   },

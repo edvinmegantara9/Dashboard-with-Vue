@@ -54,13 +54,11 @@ export default {
     },
 
     computedSidebar() {
-      console.log("getrole", this.getRoleFromLocal.role);
+
       this.role = this.getRoles
         ? this.getRoles.role
         : this.getRoleFromLocal.role;
-      console.log("role", this.role);
       if (this.role.name.toLowerCase() == "admin") {
-        console.log("admin");
         return [
           {
             _name: "CSidebarNav",
@@ -68,8 +66,6 @@ export default {
           },
         ];
       } else if (this.role.is_opd == 1) {
-        console.log("isopd");
-
         return [
           {
             _name: "CSidebarNav",
@@ -77,8 +73,6 @@ export default {
           },
         ];
       } else {
-        console.log("notopd");
-
         return [
           {
             _name: "CSidebarNav",

@@ -1,8 +1,10 @@
 export const fields = [
-
+    { key: 'index', label: "No", _style:'min-width:50px'},
+    { key: 'select', label: "", _style:'min-width:50px' },
     { key: 'nama_pjbu', label: "Nama PJBU", _style:'min-width:100px' },
     { key: 'nama_badan_usaha', label: "Nama Badan Usaha", _style:'min-width:100px' },
     { key: "alamat", label: "Alamat", _style:'min-width:50px'},
+    { key: "kecamatan", label: "Kecamatan", _style:'min-width:100px'},
     { key: 'bentuk',label: "Bentuk Badan Usaha", _style:'min-width:100px;' },
     { key: 'asosiasi', label: "Asosiasi", _style:'min-width:100px;' },
     { key: 'sub_klasifikasi_kbli', label: "Sub Klasifikasi KBLI", _style:'min-width:100px;' },

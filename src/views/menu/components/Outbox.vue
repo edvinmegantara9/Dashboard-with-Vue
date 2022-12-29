@@ -165,6 +165,17 @@ export default {
         .then((resp) => {
           this.outbox = resp.data.data;
           this.total = resp.data.total;
+
+          // khusus untuk checkbox
+          this.selectedItems = [];
+          this.items.forEach(element => {
+            if (this.isSelectedAll) {
+              element.select = true;
+              this.selectedItems.push(element.id);
+            } else {
+              element.select = false;
+            }
+          });
           console.log(this.outbox);
         })
         .catch((e) => {

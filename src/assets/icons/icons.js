@@ -22,7 +22,8 @@ import {
   cibPaypal,
   cibGooglePay, 
   cibCcAmex,
-  cibAdobeAcrobatReader
+  cibAdobeAcrobatReader,
+  cilMedicalCross
 } from '@coreui/icons'
 import {
   cifUs,
@@ -81,7 +82,8 @@ import {
   cilUser,
   cilUserFemale,
   cilUserFollow,
-  cilXCircle
+  cilXCircle,
+  cilArrowThickToBottom
 
 } from '@coreui/icons'
 import { logo } from './logo'
@@ -138,7 +140,9 @@ export const iconsSet = Object.assign(
     cilUser,
     cilUserFemale,
     cilUserFollow,
-    cilXCircle
+    cilXCircle,
+    cilArrowThickToBottom,
+    cilMedicalCross
   },
   {
     cifUs,

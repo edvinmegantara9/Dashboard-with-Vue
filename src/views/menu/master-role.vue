@@ -37,9 +37,10 @@
                     @change="getData"
                   >
                     <!-- <option selected>Pilih...</option> -->
-                    <option selected value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
+                    <option selected value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="500">500</option><option value="1000">1000</option>
+<option value="2000">2000</option>
                   </select>
                 </div>
               </div>
@@ -91,7 +92,7 @@
           </template>
         </CDataTable>
         <pagination
-          v-if="total > 5"
+          v-if="total !== items.length"
           v-model="params.page"
           :records="total"
           :per-page="params.row"
@@ -166,7 +167,7 @@ export default {
       params: {
         sorttype: "desc",
         sortby: "id",
-        row: 5,
+        row: 50,
         page: 1,
         keyword: "",
       },
@@ -180,7 +181,7 @@ export default {
         this.isSearching = true;
         this.getData();
         this.searchOn = this.params.keyword;
-        this.params.keyword = '';
+        // this.params.keyword = '';
       } else {
         this.$toast.error("Inputan tidak boleh kosong !!");
       }
@@ -278,6 +279,17 @@ export default {
         .then((resp) => {
           this.items = resp.data.data;
           this.total = resp.data.total;
+
+          // khusus untuk checkbox
+          this.selectedItems = [];
+          this.items.forEach(element => {
+            if (this.isSelectedAll) {
+              element.select = true;
+              this.selectedItems.push(element.id);
+            } else {
+              element.select = false;
+            }
+          });
           loading.hide();
         })
         .catch((e) => {
@@ -317,7 +329,7 @@ export default {
   },
   computed: {
     computedItems() {
-      return this.items.map((item) => {
+      return this.items.map((item, index) => {
         return {
           id: item.id,
           name: item.name,

@@ -1,7 +1,9 @@
 export const fields = [
-
+    { key: 'index', label: "No", _style:'min-width:50px'},
+    { key: 'select', label: "", _style:'min-width:50px' },
     { key: 'nama', label: "Nama", _style:'min-width:100px' },
     { key: 'alamat', label: "Alamat", _style:'min-width:100px' },
+    { key: 'kecamatan', label: "Kecamatan", _style:'min-width:100px' },
     { key: "id_sub_bagian", label: "ID Sub Bagian", _style:'min-width:50px'},
     { key: 'deskripsi',label: "Deskripsi", _style:'min-width:100px;' },
     { key: 'id_kualifikasi_profesi', label: "ID Kualifikasi Profesi", _style:'min-width:100px;' },

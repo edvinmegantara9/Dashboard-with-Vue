@@ -36,9 +36,10 @@
                     @change="getData"
                   >
                     <!-- <option selected>Pilih...</option> -->
-                    <option selected value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
+                    <option selected value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="500">500</option><option value="1000">1000</option>
+<option value="2000">2000</option>
                   </select>
                 </div>
               </div>
@@ -89,7 +90,7 @@
           </template>
         </CDataTable>
         <pagination
-          v-if="total > 5"
+          v-if="total !== items.length"
           v-model="page"
           :records="total"
           :per-page="params.row"
@@ -170,7 +171,7 @@ export default {
         sorttype: "desc",
         page: 1,
         role_id: 0,
-        row: 5,
+        row: 50,
         keyword: "",
       },
       isSearching: false,
@@ -189,6 +190,17 @@ export default {
           this.items = resp.data.data || [];
           // this.items.filter((e) => e);
           this.total = resp.data.total;
+
+          // khusus untuk checkbox
+          this.selectedItems = [];
+          this.items.forEach(element => {
+            if (this.isSelectedAll) {
+              element.select = true;
+              this.selectedItems.push(element.id);
+            } else {
+              element.select = false;
+            }
+          });
           loading.hide();
         })
         .catch((e) => {
@@ -280,7 +292,7 @@ export default {
   computed: {
     computedItems() {
       if (this.items.length != 0) {
-        return this.items.map((item) => {
+        return this.items.map((item, index) => {
           const start_chat = new Date(item.start_chat);
           const total = item.room_receivers.filter(
             (r) => r.rating != null

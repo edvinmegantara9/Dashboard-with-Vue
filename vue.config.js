@@ -10,5 +10,5 @@ module.exports = {
   transpileDependencies: [
     '@coreui/utils',
     '@coreui/vue'
-  ]
+  ],
 }

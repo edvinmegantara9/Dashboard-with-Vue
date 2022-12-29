@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Agenda BAPPEDA</h3>
+    <h3>Agenda PEMBANGUNAN</h3>
     <hr />
     <div class="row">
       <div class="col-md-8">
@@ -38,7 +38,7 @@
               </CListGroupItem>
             </CListGroup>
             <CPagination
-              v-if="total > 5"
+              v-if="total !== items.length"
               :records="total"
               :per-page="params.row"
               :activePage.sync="page"
@@ -248,7 +248,7 @@ export default {
       params: {
         sorttype: "desc",
         sortby: "id",
-        row: 5,
+        row: 50,
         page: 1,
       },
       createModal: false,

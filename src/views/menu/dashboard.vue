@@ -1,9 +1,44 @@
 <template>
   <div>
+
+    <div class="row">
+      <!-- <div class="col-md-6">
+        <div class="card border-top rounded shadow p-3">
+          <p class="p-0 m-0"><b> Persentase Paket Pekerjaan (%)</b></p>
+          <hr />
+          <MainChartExample />
+        </div>
+      </div> -->
+      <div class="col-md-12">
+      <div class="card border-top rounded shadow p-3">
+          <p class="p-0 m-0"><b> Jumlah Paket Pekerjaan </b></p>
+          <hr />
+          <CChartBarExample />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card border-top rounded shadow p-3">
+          <p class="p-0 m-0"><b> Persentase Sumber Dana (%)</b></p>
+          <hr />
+          <SumberDanaChart />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card border-top rounded shadow p-3">
+          <p class="p-0 m-0"><b> Jumlah Quarry, Lab, Sewa Alat, Batas Wilayah  </b></p>
+          <hr />
+          <OtherChart />
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-md-6">
         <div class="card border-top rounded shadow p-3" style="height: 325px">
-          <p class="p-0 m-0"><b> Agenda Bappeda </b></p>
+          <p class="p-0 m-0"><b> Agenda Pembangunan </b></p>
           <hr />
           <div class="card-body p-0">
             <center v-if="agenda.length == 0">
@@ -67,7 +102,7 @@
           <hr />
           <div class="row">
             <div class="col-md-4">
-              <img src="@/assets/logo/pagaralam.png" alt="" srcset="" />
+              <img width="150px" src="@/assets/logo/pagaralam.png" alt="" srcset="" />
             </div>
             <div class="col">
               <table class="table table-sm table-striped table-responsive">
@@ -195,11 +230,11 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md">
         <schedule-table />
       </div>
-    </div>
+    </div> -->
     <CModal
       size="lg"
       title="Edit User"
@@ -275,9 +310,17 @@
 <script>
 import axios from "axios";
 import ScheduleTable from "./components/schedule-table.vue";
+import MainChartExample from "../charts/CChartDoughnutExample.vue";
+import CChartBarExample from "../charts/CChartBarExample.vue";
+import SumberDanaChart from "../charts/SumberDanaChart.vue";
+import OtherChart from "../charts/OtherChart.vue";
 export default {
   components: {
     ScheduleTable,
+    MainChartExample,
+    CChartBarExample,
+    SumberDanaChart,
+    OtherChart
   },
   data() {
     return {

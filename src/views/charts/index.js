@@ -6,6 +6,9 @@ import CChartDoughnutExample from './CChartDoughnutExample'
 import CChartRadarExample from './CChartRadarExample'
 import CChartPieExample from './CChartPieExample'
 import CChartPolarAreaExample from './CChartPolarAreaExample'
+import SumberDanaChart from './SumberDanaChart'
+import OtherChart from './OtherChart'
+
 
 export {
   CChartLineSimple,
@@ -15,5 +18,7 @@ export {
   CChartDoughnutExample,
   CChartRadarExample,
   CChartPieExample,
-  CChartPolarAreaExample
+  CChartPolarAreaExample,
+  SumberDanaChart,
+  OtherChart
 }

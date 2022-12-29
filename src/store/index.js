@@ -15,11 +15,13 @@ import schedule from './module/schedule'
 import paket_pekerjaan from './module/paket-pekerjaan'
 import potensi_pasar from './module/potensi-pasar'
 import quarry from './module/quarry'
+import batas_wilayah from './module/batas-wilayah'
 import lab from './module/lab'
 import alat_kontruksi from './module/alat-kontruksi'
 import sbu from './module/sbu'
 import ska from './module/ska'
 import skt from './module/skt'
+import category from './module/category'
 
 Vue.use(Vuex)
 
@@ -60,11 +62,13 @@ export default new Vuex.Store({
     paket_pekerjaan,
     potensi_pasar,
     quarry,
+    batas_wilayah,
     lab,
     alat_kontruksi,
     sbu,
     ska,
-    skt
+    skt,
+    category
   },
   mutations
 })

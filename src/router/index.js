@@ -25,6 +25,7 @@ const JadwalPerencanaan = () => import('@/views/menu/jadwal-perencanaan')
 const PaketPekerjaan = () => import('@/views/menu/paket-pekerjaan')
 const PotensiPasar = () => import('@/views/menu/potensi-pasar')
 const Quarry = () => import('@/views/menu/quarry')
+const BatasWilayah = () => import('@/views/menu/batas-wilayah')
 const Lab = () => import('@/views/menu/lab')
 const AlatKontruksi = () => import('@/views/menu/alat-kontruksi')
 const Sbu = () => import('@/views/menu/sbu')
@@ -37,6 +38,15 @@ const Page500 = () => import('@/views/pages/Page500')
 const Login = () => import('@/views/pages/Login')
 const Register = () => import('@/views/pages/Register')
 const ExportPDF = () => import('@/views/menu/components/daily-report-pdf')
+const PaketPekerjaanExportPDF = () => import('@/views/menu/components/paket-pekerjaan-pdf')
+const SbuExportPDF = () => import('@/views/menu/components/sbu-pdf')
+const SktExportPDF = () => import('@/views/menu/components/skt-pdf')
+const SkaExportPDF = () => import('@/views/menu/components/ska-pdf')
+const QuarryExportPDF = () => import('@/views/menu/components/quarry-pdf')
+const LabExportPDF = () => import('@/views/menu/components/lab-pdf')
+const AlatKontruksiExportPDF = () => import('@/views/menu/components/alat-kontruksi-pdf')
+const BatasWilayahExportPDF = () => import('@/views/menu/components/batas-wilayah-pdf')
+const Category = () => import('@/views/menu/category')
 
 // Users
 const Users = () => import('@/views/users/Users')
@@ -50,8 +60,6 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: configRoutes()
 })
-
-
 
 function configRoutes() {
   return [
@@ -128,6 +136,46 @@ function configRoutes() {
           component: ExportPDF
         },
         {
+          path: 'paket-pekerjaan-pdf',
+          name: 'PaketPekerjaanExportPDF',
+          component: PaketPekerjaanExportPDF
+        },
+        {
+          path: 'sbu-pdf',
+          name: 'SbuExportPDF',
+          component: SbuExportPDF
+        },
+        {
+          path: 'skt-pdf',
+          name: 'SktExportPDF',
+          component: SktExportPDF
+        },
+        {
+          path: 'ska-pdf',
+          name: 'SkaExportPDF',
+          component: SkaExportPDF
+        },
+        {
+          path: 'quarry-pdf',
+          name: 'QuarryExportPDF',
+          component: QuarryExportPDF
+        },
+        {
+          path: 'lab-pdf',
+          name: 'LabExportPDF',
+          component: LabExportPDF
+        },
+        {
+          path: 'alat-kontruksi-pdf',
+          name: 'AlatKontruksiExportPDF',
+          component: AlatKontruksiExportPDF
+        },
+        {
+          path: 'batas-wilayah-pdf',
+          name: 'BatasWilayahExportPDF',
+          component: BatasWilayahExportPDF
+        },
+        {
           path: 'laporan-masyarakat',
 
           name: 'Laporan Masyarakat',
@@ -138,6 +186,11 @@ function configRoutes() {
           path: 'gallery',
           name: 'Gallery',
           component: Gallery
+        },
+        {
+          path: 'category',
+          name: 'Pengelolaan Category',
+          component: Category
         },
         {
           path: 'data',
@@ -233,10 +286,15 @@ function configRoutes() {
           name: 'Potensi Pasar',
           component: PotensiPasar
         },
-        {
+        { 
           path: 'quarry',
           name: 'Quarry',
           component: Quarry
+        },
+        {
+          path: 'batas-wilayah',
+          name: 'Batas Wilayah',
+          component: BatasWilayah,
         },
         {
           path: 'lab',

@@ -1,7 +1,8 @@
 export const fields = [
-
+    { key: 'index', label: "No", _style:'min-width:50px'},
+    { key: 'select', label: "", _style:'min-width:50px' },
     { key: 'full_name', label: "User", _style:'min-width:100px' },
-    { key: 'opd', label: "Opd ID", _style:'min-width:100px' },
+    { key: 'opd', label: "OPD", _style:'min-width:100px' },
     { key: 'nama_paket', label: "Nama Paket", _style:'min-width:100px' },
     { key: "jenis_pekerjaan", label: "Jenis Pekerjaan", _style:'min-width:50px'},
     { key: 'sumber_dana',label: "Sumber Dana", _style:'min-width:100px;' },

@@ -4,8 +4,63 @@
     <br />
     <CCard>
       <CCardBody>
-        <div class="row">
-          <div class="col-md-5">
+        <div class="row justify-content-between">
+          <div class="col-10">
+            <div class="row mb-3">
+              <button
+                class="btn btn-sm btn-primary ml-2"
+                v-if="user.role.name.toLowerCase() == 'admin'"
+                @click="addModal()"
+              >
+                <CIcon name="cilMedicalCross" />
+                Tambah
+              </button>
+
+              <button
+                class="btn btn-sm btn-primary ml-2"
+                v-if="user.role.name.toLowerCase() == 'admin'"
+                @click="addModalImport()"
+              >
+                <CIcon name="cilArrowThickToBottom" />
+                Import
+              </button>
+            
+              <!-- <button
+                  class="btn btn-sm btn-success mr-2 ml-2"
+                >
+                  <CIcon name="cil-spreadsheet" />
+                  Export Excel
+              </button>
+              <button class="btn btn-sm btn-danger">
+                <CIcon name="cib-adobe-acrobat-reader" />
+                Export PDF
+              </button> -->
+             
+              <label class="m-1 ml-3" for="">Select All : </label>
+              <input
+                type="checkbox"
+                v-model="isSelectedAll"
+                @change="checkAll()"
+              />
+
+              <select v-if="selectedItems.length > 0"
+                  style="max-width: 200px"
+                  class="form-control form-control-sm mx-2"
+                  placeholder="Ketik disini"
+                  v-model="selectedAction"
+                  @change="changeActionSelected()"
+                >
+                <option value="0">Action Selected</option>
+                <option value="1">Delete Items Selected</option>
+                <option value="2">Export Excel Items Selected</option>
+                <option value="3">Export Pdf Items Selected</option>
+              </select>
+
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-between">
+          <div class="col-10">
             <div class="row mb-3">
               <label class="m-1 ml-3" for="">Search : </label>
               <input
@@ -18,11 +73,23 @@
               <button @click="search()" class="btn btn-sm btn-success">
                 Cari
               </button>
+
+              <select
+                  style="max-width: 200px"
+                  class="form-control form-control-sm mx-2"
+                  placeholder="Ketik disini"
+                >
+                <option>Semua Kecamatan</option>
+                <option>Ciparay</option>
+                <option>Soreang</option>
+                <option>Banjaran</option>
+              </select>
+
             </div>
           </div>
-          <div class="col-md-5 ml-auto">
+          <div class="col-2">
             <div class="row">
-              <div class="col">
+              <div class="col-12">
                 <div class="input-group input-group-sm mb-3">
                   <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01"
@@ -37,20 +104,12 @@
                     @change="getData()"
                   >
                     <!-- <option selected>Pilih...</option> -->
-                    <option selected value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
+                    <option selected value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="500">500</option><option value="1000">1000</option>
+<option value="2000">2000</option>
                   </select>
                 </div>
-              </div>
-              <div class="col">
-                <button
-                  class="btn btn-sm btn-primary"
-                  v-if="user.role.name.toLowerCase() == 'admin'"
-                  @click="addModal()"
-                >
-                  Tambah Paket Pekerjaan
-                </button>
               </div>
             </div>
           </div>
@@ -69,7 +128,17 @@
           class="table-striped"
           :items="computedItems"
           :fields="fields"
+          sorter
         >
+        <template #select="{ item }">
+          <td class="py-2">
+            <input 
+                type="checkbox"
+                @change="check(item)"
+                v-model="item.select"
+              />
+          </td>
+        </template>
           <template #action="{ item }">
             <td class="py-2">
               <CButton
@@ -88,10 +157,10 @@
           </template>
         </CDataTable>
         <pagination
-          v-if="total > 5"
+          v-if="total !== items.length"
           v-model="page"
           :records="total"
-          :per-page="5"
+          :per-page="50"
           @paginate="pagination"
         />
       </CCardBody>
@@ -112,21 +181,15 @@
             label="Nama Paket"
             placeholder="ketik disini"
           />
-          <label for="">Jenis Pekerjaan</label>
-          <select
-            name=""
-            v-model="form.jenis_pekerjaan"
-            class="form-control"
-            placeholder="Pilih"
-            id=""
-          >
-            <option value="Jalan">Jalan</option>
-            <option value="Jembatan">Jembatan</option>
-            <option value="Drainase">Drainase</option>
-            <option value="Gedung">Gedung</option>
-            <option value="Gedung">Taman</option>
-            <option value="Irigasi">Irigasi</option>
-            <option value="Gedung">Lainnya</option>
+           <label for="">Jenis Pekerjaan</label>
+            <select
+              name=""
+              v-model="form.jenis_pekerjaan"
+              class="form-control"
+              placeholder="Pilih"
+              id=""
+            >
+              <option v-for="category in category" :value="category.name" :key="category.name">{{ category.name }}</option>
           </select>
           <label for="">Sumber Dana</label>
           <select
@@ -142,6 +205,7 @@
             <option value="BANKEU">BANKEU</option>
             <option value="DAU">DAU</option>
             <option value="DID">DID</option>
+            <option value="BANGUB">BANGUB</option>
           </select>
           <CInput
             v-model="form.nilai_kontrak"
@@ -154,17 +218,16 @@
             placeholder="ketik disini"
           />
         </div>
-        <div class="col">
+        <div class="col">  
           <label for="">Kecamatan</label>
-          <select
-            name=""
-            v-model="form.kecamatan"
-            class="form-control"
-            placeholder="Pilih"
-            id=""
-          >
-            <option value="Ciparay">Ciparay</option>
-            <option value="Soreang">Soreang</option>
+            <select
+              name=""
+              v-model="form.kecamatan"
+              class="form-control"
+              placeholder="Pilih"
+              id=""
+            >
+              <option v-for="kecamatan in kecamatans" :value="kecamatan.name" :key="kecamatan.name">{{ kecamatan.name }}</option>
           </select>
 
           <label for="">Progress Pekerjaan</label>
@@ -209,7 +272,7 @@
       <!-- bagian upload -->
       <div class="row">
         <div class="col text-center">
-          <label for="">Upload Foto Sebelum : </label>
+          <label for="">Upload Foto Dokumen 1 : </label>
           <div
             v-if="imageListBefore.length <= 3"
             class="card border d-flex justify-content-center"
@@ -268,7 +331,7 @@
       <!-- bagian upload -->
       <div class="row">
         <div class="col text-center">
-          <label for="">Upload Foto Proses : </label>
+          <label for="">Upload Foto Dokumen 3 : </label>
           <div
             v-if="imageListProcess.length <= 3"
             class="card border d-flex justify-content-center"
@@ -327,7 +390,7 @@
       <!-- bagian upload -->
       <div class="row">
         <div class="col text-center">
-          <label for="">Upload Foto Sesudah : </label>
+          <label for="">Upload Foto Dokumen 2 : </label>
           <div
             v-if="imageListAfter.length <= 3"
             class="card border d-flex justify-content-center"
@@ -396,6 +459,26 @@
         </div>
       </template>
     </CModal>
+      <CModal
+          size="lg"
+          title="Import Data"
+          centered
+          color="primary"
+          :show.sync="createModalImport"
+        >
+        <div class="row">
+          <div class="col">
+            <div class="div">
+              <input
+                type="file"
+                class="form-control"
+                ref="importData"
+                @change="importData"
+              />
+            </div>
+          </div>
+        </div>
+      </CModal>
   </div>
 </template>
 
@@ -404,17 +487,24 @@
 <script>
 import * as data from "../../model/paket-pekerjaan";
 import { uploadImage } from "@/utils/fileUpload";
+import FileSaver from "file-saver";
 
 export default {
   data() {
     return {
+      kecamatans: [],
+      category: [],
       createModal: false,
+      createModalImport: false,
       fields: [],
       isUpdate: false,
       items: [],
       imageListAfter: [],
       imageListProcess: [],
       imageListBefore: [],
+      selectedItems: [],
+      isSelectedAll: false,
+      selectedAction: 0,
       page: 1,
       total: 0,
       form: {
@@ -424,7 +514,7 @@ export default {
       params: {
         sorttype: "desc",
         sortby: "id",
-        row: 5,
+        row: 50,
         page: 1,
         type: [0, 1],
         keyword: "",
@@ -434,12 +524,34 @@ export default {
     };
   },
   methods: {
+    getKecamatan() {
+      this.$store
+        .dispatch("sbu/getKecamatan", this.params)
+        .then((resp) => {
+          this.kecamatans = resp.data;
+          console.log(this.kecamatans, "kecamatan");
+        })
+        .catch((e) => {
+          this.$toast.error("gagal mengambil data  \n", e);
+        });
+    },
+    getCategory() {
+      this.$store
+        .dispatch("category/getCategory", this.params)
+        .then((resp) => {
+          this.category = resp.data.data;
+          console.log(this.category, "category");
+        })
+        .catch((e) => {
+          this.$toast.error("gagal mengambil data  \n", e);
+        });
+    },
     search() {
       if (this.params.keyword != "") {
         this.isSearching = true;
         this.getData();
         this.searchOn = this.params.keyword;
-        this.params.keyword = '';
+        // this.params.keyword = '';
       } else {
         this.$toast.error("Inputan tidak boleh kosong !!");
       }
@@ -447,6 +559,7 @@ export default {
 
     searchOff(){
       this.isSearching = false;
+      this.params.keyword = '';
       this.getData();
     },
     submit() {
@@ -553,6 +666,16 @@ export default {
           this.items = resp.data.data;
           this.total = resp.data.total;
 
+          // khusus untuk checkbox
+          this.selectedItems = [];
+          this.items.forEach(element => {
+            if (this.isSelectedAll) {
+              element.select = true;
+              this.selectedItems.push(element.id);
+            } else {
+              element.select = false;
+            }
+          });
           loading.hide();
         })
         .catch((e) => {
@@ -563,12 +686,17 @@ export default {
     addModal() {
       this.isUpdate = false;
       this.createModal = true;
+      this.imageList = [];
+      this.form = {};
+      this.getKecamatan();
+    },
+    addModalImport() {
+      this.createModalImport = true;
     },
     pagination(page) {
       this.page = page;
       this.params.page = page;
       this.getData();
-      // console.log(page);
     },
     uploadAfter() {
       this.$refs.uploadFieldAfter.click();
@@ -589,6 +717,12 @@ export default {
     },
     uploadProcess() {
       this.$refs.uploadFieldProcess.click();
+    },
+    importData($event) {
+      console.log($event, "event");
+      this.file = event.target.files[0];
+      var loading = this.$loading.show();
+      
     },
     selectFileProcess(event) {
       this.file = event.target.files[0];
@@ -637,26 +771,104 @@ export default {
       });
       return data;
     },
-    viewImage(item) {
-
-    }
+    check(item) {
+      if (item.select) {
+        this.selectedItems.push(item.id);
+      } else {
+        const index = this.selectedItems.indexOf(item.id);
+        this.selectedItems.splice(index, 1);
+      }
+    },
+    checkAll() {
+      this.getData();
+    },
+    changeActionSelected() {
+      console.log(this.selectedAction)
+      switch (Number(this.selectedAction)) {
+        case 1:
+          console.log('deleted')
+          this.deleteSelected('delete');
+          break;
+        case 2:
+          console.log('export excel')
+          this.exportExcel('export_excel');
+          break;
+        case 3:
+          console.log('export pdf')
+          this.exportPDF();
+          break;
+      }
+    },
+    deleteSelected(action) {
+      var loading = this.$loading.show();
+      this.$store
+        .dispatch("paket_pekerjaan/selectedAction", 
+        {
+          action: action,
+          data: this.selectedItems,
+        })
+        .then((resp) => {
+          this.$toast.success("Item Selected Berhasil diproses");
+          loading.hide();
+          this.createModal = false;
+          this.form = {
+          };
+          this.getData();
+        })
+        .catch((e) => {
+          this.$toast.error("gagal mengambil data  \n", e);
+          loading.hide();
+        });
+    },
+    openModalExcel() {
+      this.exportModal = true;
+      this.exportType = "Export Excel";
+    },
+    openModalPDF() {
+      this.exportModal = true;
+      this.exportType = "Export PDF";
+    },
+    exportExcel(action) {
+      var loading = this.$loading.show();
+      this.$store
+       .dispatch("paket_pekerjaan/exportReport", {
+          data: this.selectedItems,
+        })
+        .then((resp) => {
+          loading.hide();
+          FileSaver.saveAs(
+            resp.data,
+            "Laporan_Harian_"
+          );
+          this.exportModal = false;
+          this.exportDataParams = {};
+        })
+        .catch((e) => {
+          this.$toast.error(e);
+          loading.hide();
+        });
+    },
+    exportPDF() {
+      this.$router.push({ name: "PaketPekerjaanExportPDF", query: { data: this.selectedItems } });
+    },
   },
   computed: {
-    computedItems() {
-      return this.items.map((item) => {
+    computedItems() {  
+      return this.items.map((item, index) => {
         return {
+          index: index+1 + '.',
           ...item,
           nilai_kontrak: item.nilai_kontrak.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
           full_name: item.user != null ? item.user.full_name : "",
           opd: item.role != null ? item.role.name : "",
           created_at: item.created_at.slice(0, 10),
-          type: item.type == 0 ? "APBD Induk" : "APBD Perubahan",
         };
       });
     },
   },
   mounted() {
     this.getData();
+    this.getCategory();
   },
 
   created() {
