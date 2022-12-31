@@ -5,47 +5,6 @@
         <div class="row justify-content-between">
           <div class="col-10">
             <div class="row mb-3">
-              <button
-                class="btn btn-sm btn-primary ml-2"
-                @click="addModal()"
-              >
-                <CIcon name="cilMedicalCross" />
-                Tambah
-              </button>
-
-              <button
-                class="btn btn-sm btn-primary ml-2"
-                @click="addModalImport()"
-              >
-                <CIcon name="cilArrowThickToBottom" />
-                Import
-              </button>
-             
-              <label class="m-1 ml-3" for="">Select All : </label>
-              <input
-                type="checkbox"
-                v-model="isSelectedAll"
-                @change="checkAll()"
-              />
-
-              <select v-if="selectedItems.length > 0"
-                  style="max-width: 200px"
-                  class="form-control form-control-sm mx-2"
-                  placeholder="Ketik disini"
-                  v-model="selectedAction"
-                  @change="changeActionSelected()"
-                >
-                <option value="0">Action Selected</option>
-                <!-- <option value="1">Delete Items Selected</option> -->
-                <option value="2">Export Excel Items Selected</option>
-                <option value="3">Export Pdf Items Selected</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row justify-content-between">
-          <div class="col-10">
-            <div class="row mb-3">
               <label class="m-1 ml-3" for="">Search : </label>
               <input
                 type="text"
@@ -57,7 +16,23 @@
               <button @click="search()" class="btn btn-sm btn-success">
                 Cari
               </button>
-
+               <label class="m-1 ml-3" for="">Select All : </label>
+              <input
+                type="checkbox"
+                v-model="isSelectedAll"
+                @change="checkAll()"
+              />
+              <select v-if="selectedItems.length > 0"
+                  style="max-width: 200px"
+                  class="form-control form-control-sm mx-2"
+                  placeholder="Ketik disini"
+                  v-model="selectedAction"
+                  @change="changeActionSelected()"
+                >
+                <option value="0">Action Selected</option>
+                <option value="2">Export Excel Items Selected</option>
+                <option value="3">Export Pdf Items Selected</option>
+              </select>
             </div>
           </div>
           <div class="col-2">
@@ -77,9 +52,9 @@
                     @change="getData()"
                   >
                     <!-- <option selected>Pilih...</option> -->
+                    <option selected value="50">50</option>
                     <option value="100">100</option>
-                    <option value="500">500</option>
-                    <option value="1000">1000</option>
+                    <option value="500">500</option><option value="1000">1000</option>
                     <option value="2000">2000</option>
                   </select>
                 </div>
@@ -97,6 +72,7 @@
             </h3>
           </div>
         </div>
+
         <CDataTable
           class="table-striped"
           :items="computedItems"
@@ -133,7 +109,7 @@
           v-if="total !== items.length"
           v-model="page"
           :records="total"
-          :per-page="100"
+          :per-page="50"
           @paginate="pagination"
         />
       </CCardBody>
@@ -141,35 +117,15 @@
     <CModal
       size="lg"
       :title="
-        isUpdate ? 'Edit Category' : 'Tambah Category'
+        isUpdate ? 'Edit Data User' : 'Tambah Data User'
       "
       centered
       :color="isUpdate ? 'success' : 'primary'"
       :show.sync="createModal"
     >
       <div class="row">
-        <div class="col-12">
-          <CInput
-            v-model="form.name"
-            label="Nama Category"
-            placeholder="ketik disini"
-          />
-          <CInput
-            v-model="form.amount"
-            label="Harga"
-            placeholder="ketik disini"
-          />
-          <label for="">Aktiv</label>
-          <select
-            name=""
-            v-model="form.is_active"
-            class="form-control"
-            placeholder="Pilih"
-            id=""
-          >
-            <option value="1" selected>Aktiv</option>
-            <option value="0">Tidak Aktiv</option>
-          </select>
+        <div class="col">
+          
         </div>
       </div>
       <template slot="footer">
@@ -177,35 +133,10 @@
           <button @click="cancel" class="btn btn-secondary mr-3">Batal</button>
 
           <button @click="submit" v-if="!isUpdate" class="btn btn-primary">
-            Tambah Category
+            Tambah Data User
           </button>
           <button @click="update" v-if="isUpdate" class="btn btn-primary">
-            Update Category
-          </button>
-        </div>
-      </template>
-    </CModal>
-    <CModal
-      size="lg"
-      title="Import Data"
-      centered
-      color="primary"
-      :show.sync="createModalImport"
-    >
-        <a href="Category.xlsx" download class="btn btn-primary">Download format</a>
-        <br /><br />
-        <input
-            type="file"
-            class="form-control"
-            ref="uploadFieldBefore"
-            @change="selectFileImport"
-          />
-        <template slot="footer">
-        <div>
-          <button @click="cancelImport" class="btn btn-secondary mr-3">Batal</button>
-
-          <button @click="importData" class="btn btn-primary">
-            Proses Import
+            Update Data User
           </button>
         </div>
       </template>
@@ -214,41 +145,33 @@
 </template>
 
 <script>
-import * as data from "../../model/category";
-import { uploadImage } from "@/utils/fileUpload";
+import * as data from "../../model/user-register";
 import FileSaver from "file-saver";
 
 export default {
   data() {
     return {
-      file: null,
       createModal: false,
       createModalImport: false,
       fields: [],
       isUpdate: false,
       items: [],
-      kecamatans: [],
-      imageListAfter: [],
-      imageListProcess: [],
-      imageListBefore: [],
       selectedItems: [],
       isSelectedAll: false,
       selectedAction: 0,
       page: 1,
       total: 0,
-      to: 0,
       form: {
-        is_active: 1
+   
       },
       user: JSON.parse(localStorage.getItem("user")),
       params: {
         sorttype: "desc",
         sortby: "id",
-        row: 100,
+        row: 50,
         page: 1,
         type: [0, 1],
         keyword: "",
-        kecamatan: ""
       },
       isSearching: false,
       searchOn: ''
@@ -271,9 +194,11 @@ export default {
       this.getData();
     },
     submit() {
+      this.form.user_id = JSON.parse(localStorage.getItem("user")).id;
+      this.form.opd_id = JSON.parse(localStorage.getItem("user")).role_id;
       var loading = this.$loading.show();
       this.$store
-        .dispatch("category/addCategory", this.form)
+        .dispatch("user_register/addUser", this.form)
         .then(() => {
           this.$toast.success("Berhasil menambahkan data");
           loading.hide();
@@ -300,8 +225,9 @@ export default {
     update() {
       var loading = this.$loading.show();
       delete this.form.updated_at;
+      this.form.nilai_kontrak = parseInt(this.form.nilai_kontrak);
       this.$store
-        .dispatch("category/updateCategory", {
+        .dispatch("user_register/updateUser", {
           id: this.form.id,
           data: this.form,
         })
@@ -321,7 +247,7 @@ export default {
     hapus(item) {
       if (confirm("Data akan dihapus !!")) {
         this.$store
-          .dispatch("category/deleteCategory", item.id)
+          .dispatch("user_register/deleteUser", item.id)
           .then(() => {
             this.$toast.success("Berhasil menghapus data ");
 
@@ -339,11 +265,10 @@ export default {
     getData() {
       var loading = this.$loading.show();
       this.$store
-        .dispatch("category/getCategory", this.params)
+        .dispatch("user_register/getUser", this.params)
         .then((resp) => {
           this.items = resp.data.data;
           this.total = resp.data.total;
-          this.to = resp.data.to;
 
           // khusus untuk checkbox
           this.selectedItems = [];
@@ -355,6 +280,7 @@ export default {
               element.select = false;
             }
           });
+
           loading.hide();
         })
         .catch((e) => {
@@ -366,66 +292,34 @@ export default {
       this.isUpdate = false;
       this.createModal = true;
     },
-    addModalImport() {
-      this.createModalImport = true;
-    },
     pagination(page) {
       this.page = page;
       this.params.page = page;
       this.getData();
     },
-    uploadAfter() {
-      this.$refs.uploadFieldAfter.click();
-    },
-    selectFileAfter(event) {
+    selectFileImport(event) {
       this.file = event.target.files[0];
       var loading = this.$loading.show();
-      uploadImage(this.file)
-        .then((resp) => {
-          this.imageListAfter.push(resp);
+      this.$store
+        .dispatch("user_register/importUser", this.file)
+        .then((res) => {
+          this.$toast.success(res.data.message);
           loading.hide();
-          alert("File berhasil diupload !!");
+          this.createModalImport = false;
+          this.form = {
+          };
+          this.getData();
         })
         .catch((e) => {
+          console.log(e)
+          this.$toast.error(e);
           loading.hide();
-          alert("Terjadi kesalahan !! | " + e);
         });
     },
-    uploadProcess() {
-      this.$refs.uploadFieldProcess.click();
+    addModalImport() {
+      this.createModalImport = true;
     },
-    selectFileProcess(event) {
-      this.file = event.target.files[0];
-      var loading = this.$loading.show();
-      uploadImage(this.file)
-        .then((resp) => {
-          this.imageListProcess.push(resp);
-          loading.hide();
-          alert("File berhasil diupload !!");
-        })
-        .catch((e) => {
-          loading.hide();
-          alert("Terjadi kesalahan !! | " + e);
-        });
-    },
-    uploadBefore() {
-      this.$refs.uploadFieldBefore.click();
-    },
-    selectFileBefore(event) {
-      this.file = event.target.files[0];
-      var loading = this.$loading.show();
-      uploadImage(this.file)
-        .then((resp) => {
-          this.imageListBefore.push(resp);
-          loading.hide();
-          alert("File berhasil diupload !!");
-        })
-        .catch((e) => {
-          loading.hide();
-          alert("Terjadi kesalahan !! | " + e);
-        });
-    },
-    check(item) {
+     check(item) {
       if (item.select) {
         this.selectedItems.push(item.id);
       } else {
@@ -437,6 +331,7 @@ export default {
       this.getData();
     },
     changeActionSelected() {
+      console.log(this.selectedAction)
       switch (Number(this.selectedAction)) {
         case 1:
           console.log('deleted')
@@ -455,7 +350,7 @@ export default {
     deleteSelected(action) {
       var loading = this.$loading.show();
       this.$store
-        .dispatch("category/selectedAction", 
+        .dispatch("user_register/selectedAction", 
         {
           action: action,
           data: this.selectedItems,
@@ -469,7 +364,7 @@ export default {
           this.getData();
         })
         .catch((e) => {
-          this.$toast.error("gagal mengambil data  \n", e);
+          this.$toast.error("gagal menghapus data  \n", e);
           loading.hide();
         });
     },
@@ -484,66 +379,33 @@ export default {
     exportExcel(action) {
       var loading = this.$loading.show();
       this.$store
-       .dispatch("category/exportReport", {
+       .dispatch("user_register/exportReport", {
           data: this.selectedItems,
         })
         .then((resp) => {
           loading.hide();
           FileSaver.saveAs(
             resp.data,
-            "Category"
+            "user_register_"
           );
           this.exportModal = false;
           this.exportDataParams = {};
-        })
-        .catch((e) => {
-          loading.hide();
-        });
-    },
-    exportPDF() {
-      this.$router.push({ name: "CategoryExportPDF", query: { data: this.selectedItems } });
-    },
-    getKecamatan() {
-      this.$store
-        .dispatch("category/getKecamatan", this.params)
-        .then((resp) => {
-          this.kecamatans = resp.data;
-          console.log(this.kecamatans, "kecamatan");
-        })
-        .catch((e) => {
-          this.$toast.error("gagal mengambil data  \n", e);
-        });
-    },
-    selectFileImport(event) {
-      this.file = event.target.files[0];
-    },
-    cancelImport() {
-      this.file = null;
-    },
-    importData() {
-      var loading = this.$loading.show();
-      this.$store
-        .dispatch("category/importCategory", this.file)
-        .then((res) => {
-          this.$toast.success(res.data.message);
-          loading.hide();
-          this.createModalImport = false;
-          this.form = {
-          };
-          this.getData();
         })
         .catch((e) => {
           console.log(e)
           this.$toast.error(e);
           loading.hide();
         });
-    }
+    },
+    exportPDF() {
+      this.$router.push({ name: "UserExportPDF", query: { data: this.selectedItems } });
+    },
   },
   computed: {
-    computedItems() {  
+    computedItems() {
       return this.items.map((item, index) => {
         return {
-          index: (this.to - this.items.length) + index+1 + '.',
+          index: index+1 + '.',
           ...item,
           created_at: this.$moment(item.created_at).format("Do MMMM YYYY"),
           updated_at: this.$moment(item.updated_at).format("Do MMMM YYYY"),

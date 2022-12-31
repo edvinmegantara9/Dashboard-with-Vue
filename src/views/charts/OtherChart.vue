@@ -41,15 +41,15 @@ export default {
     }
   },
   mounted() {
-      this.$store.dispatch("paket_pekerjaan/other").then((resp) => {
-        resp.data.forEach(element => {
-          this.paket_pekerjaan.push(element.nama)
-          this.total.push(element.total)
-          this.colors.push(this.getRandomColor())
-        });
-      }).catch(e => {
-        this.$toast.error(e);
-      });
+      // this.$store.dispatch("paket_pekerjaan/other").then((resp) => {
+      //   resp.data.forEach(element => {
+      //     this.paket_pekerjaan.push(element.nama)
+      //     this.total.push(element.total)
+      //     this.colors.push(this.getRandomColor())
+      //   });
+      // }).catch(e => {
+      //   this.$toast.error(e);
+      // });
   },
 }
 </script>

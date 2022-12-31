@@ -53,16 +53,16 @@ export default {
     }
   },
   mounted() {
-      this.$store.dispatch("paket_pekerjaan/persentase").then((resp) => {
+      // this.$store.dispatch("paket_pekerjaan/persentase").then((resp) => {
 
-        resp.data.forEach(element => {
-          this.paket_pekerjaan.push(element.jenis_pekerjaan)
-          this.total.push(element.total)
-          this.colors.push(this.getRandomColor())
-        });
-      }).catch(e => {
-        this.$toast.error(e);
-      });
+      //   resp.data.forEach(element => {
+      //     this.paket_pekerjaan.push(element.jenis_pekerjaan)
+      //     this.total.push(element.total)
+      //     this.colors.push(this.getRandomColor())
+      //   });
+      // }).catch(e => {
+      //   this.$toast.error(e);
+      // });
   },
 }
 </script>

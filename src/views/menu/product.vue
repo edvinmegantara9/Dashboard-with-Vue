@@ -5,7 +5,7 @@
         <div class="row justify-content-between">
           <div class="col-10">
             <div class="row mb-3">
-              <button
+              <!-- <button
                 class="btn btn-sm btn-primary ml-2"
                 @click="addModal()"
               >
@@ -19,8 +19,24 @@
               >
                 <CIcon name="cilArrowThickToBottom" />
                 Import
+              </button> -->
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-between">
+          <div class="col-10">
+            <div class="row mb-3">
+              <label class="m-1 ml-3" for="">Search : </label>
+              <input
+                type="text"
+                v-model="params.keyword"
+                style="max-width: 200px"
+                class="form-control form-control-sm mx-2"
+                placeholder="Ketik disini"
+              />
+              <button @click="search()" class="btn btn-sm btn-success">
+                Cari
               </button>
-             
               <label class="m-1 ml-3" for="">Select All : </label>
               <input
                 type="checkbox"
@@ -42,24 +58,6 @@
               </select>
             </div>
           </div>
-        </div>
-        <div class="row justify-content-between">
-          <div class="col-10">
-            <div class="row mb-3">
-              <label class="m-1 ml-3" for="">Search : </label>
-              <input
-                type="text"
-                v-model="params.keyword"
-                style="max-width: 200px"
-                class="form-control form-control-sm mx-2"
-                placeholder="Ketik disini"
-              />
-              <button @click="search()" class="btn btn-sm btn-success">
-                Cari
-              </button>
-
-            </div>
-          </div>
           <div class="col-2">
             <div class="row">
               <div class="col-12">
@@ -76,7 +74,6 @@
                     v-model="params.row"
                     @change="getData()"
                   >
-                    <!-- <option selected>Pilih...</option> -->
                     <option value="100">100</option>
                     <option value="500">500</option>
                     <option value="1000">1000</option>
@@ -123,9 +120,9 @@
               >
                 Edit
               </CButton>
-              <CButton @click="hapus(item)" color="danger" square size="sm">
+              <!-- <CButton @click="hapus(item)" color="danger" square size="sm">
                 Delete
-              </CButton>
+              </CButton> -->
             </td>
           </template>
         </CDataTable>
@@ -141,46 +138,95 @@
     <CModal
       size="lg"
       :title="
-        isUpdate ? 'Edit Category' : 'Tambah Category'
+        isUpdate ? 'Edit Product' : 'Tambah Product'
       "
       centered
       :color="isUpdate ? 'success' : 'primary'"
       :show.sync="createModal"
     >
       <div class="row">
-        <div class="col-12">
+        <div class="col-6">
           <CInput
             v-model="form.name"
-            label="Nama Category"
+            label="Nama Product"
             placeholder="ketik disini"
           />
           <CInput
-            v-model="form.amount"
-            label="Harga"
+            v-model="form.expired_time"
+            label="Waktu Expired"
             placeholder="ketik disini"
           />
-          <label for="">Aktiv</label>
-          <select
-            name=""
-            v-model="form.is_active"
-            class="form-control"
-            placeholder="Pilih"
-            id=""
+        </div>
+        <div class="col-6">
+           <CInput
+            v-model="form.expired_result"
+            label="Hasil Expired"
+            placeholder="ketik disini"
+          />
+          <CInput
+            v-model="form.max_point_result"
+            label="Max Point"
+            placeholder="ketik disini"
+          />
+        </div>
+        <div class="col-12">
+          <table class="table table-bordered">
+            <tr>
+              <td>No.</td>
+              <td>Pertanyaan</td>
+              <td>Jawaban Benar</td>
+              <td>Point</td>
+              <td></td>
+            </tr>
+            <tr v-for="(detail, index) in form.product_details" :key="detail.id">
+              <td style="width:40px">
+                {{ index +1 }}.
+              </td>
+              <td>
+                <CInput
+                  v-model="detail.question"
+                  placeholder="ketik disini" />
+              </td>
+              <td style="width:100px">
+                <select
+                  v-model="detail.answer_correct"
+                  class="form-control"
+                  placeholder="Pilih"
+                >
+                  <option value="1" selected>Ya</option>
+                  <option value="0">Tidak</option>
+                </select>
+              </td>
+              <td style="width:100px">
+                 <CInput
+                  v-model="detail.point"
+                  placeholder="ketik disini" />
+              </td>
+              <td style="width:80px">
+                <CButton @click="deleteDetail(index)" color="danger" square size="sm">
+                Delete
+                </CButton>
+              </td>
+            </tr>
+          </table>
+          <CButton 
+            @click="addDetail"
+            color="success"
+            square
+            size="sm"
           >
-            <option value="1" selected>Aktiv</option>
-            <option value="0">Tidak Aktiv</option>
-          </select>
+            + Tambah Pertanyaan
+          </CButton>
         </div>
       </div>
       <template slot="footer">
         <div>
           <button @click="cancel" class="btn btn-secondary mr-3">Batal</button>
-
           <button @click="submit" v-if="!isUpdate" class="btn btn-primary">
-            Tambah Category
+            Tambah Product
           </button>
           <button @click="update" v-if="isUpdate" class="btn btn-primary">
-            Update Category
+            Update Product
           </button>
         </div>
       </template>
@@ -192,7 +238,7 @@
       color="primary"
       :show.sync="createModalImport"
     >
-        <a href="Category.xlsx" download class="btn btn-primary">Download format</a>
+        <a href="Product.xlsx" download class="btn btn-primary">Download format</a>
         <br /><br />
         <input
             type="file"
@@ -214,7 +260,7 @@
 </template>
 
 <script>
-import * as data from "../../model/category";
+import * as data from "../../model/product";
 import { uploadImage } from "@/utils/fileUpload";
 import FileSaver from "file-saver";
 
@@ -238,7 +284,7 @@ export default {
       total: 0,
       to: 0,
       form: {
-        is_active: 1
+        product_details: []
       },
       user: JSON.parse(localStorage.getItem("user")),
       params: {
@@ -273,7 +319,7 @@ export default {
     submit() {
       var loading = this.$loading.show();
       this.$store
-        .dispatch("category/addCategory", this.form)
+        .dispatch("product/addProduct", this.form)
         .then(() => {
           this.$toast.success("Berhasil menambahkan data");
           loading.hide();
@@ -301,7 +347,7 @@ export default {
       var loading = this.$loading.show();
       delete this.form.updated_at;
       this.$store
-        .dispatch("category/updateCategory", {
+        .dispatch("product/updateProduct", {
           id: this.form.id,
           data: this.form,
         })
@@ -321,7 +367,7 @@ export default {
     hapus(item) {
       if (confirm("Data akan dihapus !!")) {
         this.$store
-          .dispatch("category/deleteCategory", item.id)
+          .dispatch("product/deleteProduct", item.id)
           .then(() => {
             this.$toast.success("Berhasil menghapus data ");
 
@@ -339,7 +385,7 @@ export default {
     getData() {
       var loading = this.$loading.show();
       this.$store
-        .dispatch("category/getCategory", this.params)
+        .dispatch("product/getProduct", this.params)
         .then((resp) => {
           this.items = resp.data.data;
           this.total = resp.data.total;
@@ -455,7 +501,7 @@ export default {
     deleteSelected(action) {
       var loading = this.$loading.show();
       this.$store
-        .dispatch("category/selectedAction", 
+        .dispatch("product/selectedAction", 
         {
           action: action,
           data: this.selectedItems,
@@ -484,14 +530,14 @@ export default {
     exportExcel(action) {
       var loading = this.$loading.show();
       this.$store
-       .dispatch("category/exportReport", {
+       .dispatch("product/exportReport", {
           data: this.selectedItems,
         })
         .then((resp) => {
           loading.hide();
           FileSaver.saveAs(
             resp.data,
-            "Category"
+            "Product"
           );
           this.exportModal = false;
           this.exportDataParams = {};
@@ -501,19 +547,9 @@ export default {
         });
     },
     exportPDF() {
-      this.$router.push({ name: "CategoryExportPDF", query: { data: this.selectedItems } });
+      this.$router.push({ name: "ProductExportPDF", query: { data: this.selectedItems } });
     },
-    getKecamatan() {
-      this.$store
-        .dispatch("category/getKecamatan", this.params)
-        .then((resp) => {
-          this.kecamatans = resp.data;
-          console.log(this.kecamatans, "kecamatan");
-        })
-        .catch((e) => {
-          this.$toast.error("gagal mengambil data  \n", e);
-        });
-    },
+
     selectFileImport(event) {
       this.file = event.target.files[0];
     },
@@ -523,7 +559,7 @@ export default {
     importData() {
       var loading = this.$loading.show();
       this.$store
-        .dispatch("category/importCategory", this.file)
+        .dispatch("product/importProduct", this.file)
         .then((res) => {
           this.$toast.success(res.data.message);
           loading.hide();
@@ -537,7 +573,17 @@ export default {
           this.$toast.error(e);
           loading.hide();
         });
-    }
+    },
+    addDetail() {
+      this.form.product_details.push({
+        answer: "",
+        answer_correct: "",
+        point: "",
+      })
+    },
+    deleteDetail(index) {
+      this.form.product_details.splice(index, 1);
+    },
   },
   computed: {
     computedItems() {  
@@ -554,7 +600,6 @@ export default {
   mounted() {
     this.getData();
   },
-
   created() {
     this.fields = data.fields
   },

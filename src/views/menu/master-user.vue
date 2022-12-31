@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h3>Master User</h3>
-    <br />
     <CCard>
       <CCardBody>
         <div class="row">
@@ -40,7 +38,7 @@
                     <option selected value="50">50</option>
                     <option value="100">100</option>
                     <option value="500">500</option><option value="1000">1000</option>
-<option value="2000">2000</option>
+                    <option value="2000">2000</option>
                   </select>
                 </div>
               </div>
@@ -123,43 +121,31 @@
             placeholder="ketik disini"
           />
           <CInput
-            v-model="form.nip"
-            :readonly="isUpdate"
-            label="NIP"
-            type="number"
-            placeholder="12345678"
-          />
-          <CInput
             v-model="form.email"
             label="Email"
             type="email"
             placeholder="test@email.com"
           />
           <CInput
+            v-model="form.phone_number"
+            label="No. HP"
+            placeholder="ketik disini"
+          />
+          <CInput
             v-if="!isUpdate"
             v-model="form.password"
             label="Password"
-            type="text"
+            type="password"
             placeholder="*******"
           />
-        </div>
-        <div class="col">
           <CInput
-            v-model="form.position"
-            label="Jabatan"
+            v-if="!isUpdate"
+            v-model="form.password_confirmation"
+            label="Konfirmasi Password"
+            type='password'
             placeholder="ketik disini"
           />
-          <CInput
-            v-model="form.group"
-            label="Golongan"
-            placeholder="ketik disini"
-          />
-          <CSelect
-            :value.sync="form.role_id"
-            label="Role"
-            placeholder="Pilih Role"
-            :options="computedRole"
-          />
+          
         </div>
       </div>
       <template slot="footer">
@@ -167,7 +153,6 @@
           <button @click="createModal = false" class="btn btn-secondary mr-3">
             Batal
           </button>
-
           <button @click="submit" v-if="!isUpdate" class="btn btn-primary">
             Tambah User
           </button>
@@ -206,7 +191,7 @@
         </div>
         <div class="col-12">
           <CInput
-            v-model="form.confirm_password"
+            v-model="form.password_confirmation"
             label="Konfirmasi Password"
             type='password'
             placeholder="ketik disini"
@@ -264,7 +249,6 @@ export default {
         this.isSearching = true;
         this.getData();
         this.searchOn = this.params.keyword;
-        // this.params.keyword = '';
       } else {
         this.$toast.error("Inputan tidak boleh kosong !!");
       }
@@ -272,6 +256,7 @@ export default {
 
     searchOff(){
       this.isSearching = false;
+      this.params.keyword = '';
       this.getData();
     },
     submit() {
@@ -286,7 +271,6 @@ export default {
           this.getData();
         })
         .catch((e) => {
-          this.$toast.error(e);
           loading.hide();
         });
     },
@@ -307,7 +291,6 @@ export default {
           this.getData();
         })
         .catch((e) => {
-          this.$toast.error(e);
           loading.hide();
         });
     },
@@ -317,7 +300,6 @@ export default {
           .dispatch("user/deleteUser", item.id)
           .then(() => {
             this.$toast.success("Berhasil menghapus data user");
-
             this.form = {};
             this.getData();
           })
@@ -348,24 +330,7 @@ export default {
           loading.hide();
         })
         .catch((e) => {
-          this.$toast.error(e);
           loading.hide();
-        });
-    },
-    getRole() {
-      let _params = {
-        sorttype: "asc",
-        sortby: "id",
-        row: 100,
-      };
-      this.$store
-        .dispatch("role/getRole", _params)
-        .then((resp) => {
-          this.roles = resp.data.data;
-          console.log(this.roles);
-        })
-        .catch((e) => {
-          this.$toast.error("gagal mengambil data role \n", e);
         });
     },
     addUser() {
@@ -387,7 +352,7 @@ export default {
         this.invalidPassword = 'Password kurang dari 6 karakter!!';
         this.isPasswordValid = false;
         return false;
-      } else if (item.password != item.confirm_password) {
+      } else if (item.password != item.password_confirmation) {
         this.invalidPassword = 'Konfirmasi password tidak sama!!';
         this.isPasswordValid = false;
         return false;
@@ -427,7 +392,6 @@ export default {
       this.page = page;
       this.params.page = page;
       this.getData();
-      // console.log(page);
     },
   },
   computed: {
@@ -436,6 +400,8 @@ export default {
         return {
           ...item,
           role: item.role ? item.role.name : "Tidak ada",
+          created_at: this.$moment(item.created_at).format("Do MMMM YYYY"),
+          updated_at: this.$moment(item.updated_at).format("Do MMMM YYYY"),
         };
       });
     },
@@ -450,7 +416,6 @@ export default {
   },
   mounted() {
     this.getData();
-    this.getRole();
   },
 };
 </script>

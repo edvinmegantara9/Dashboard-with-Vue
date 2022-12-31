@@ -1,21 +1,7 @@
 <template>
   <CRow>
     <CCol sm="6" lg="3">
-      <CWidgetDropdown color="primary" header="9.823" text="Members online">
-        <template #default>
-          <CDropdown
-            color="transparent p-0"
-            placement="bottom-end"
-          >
-            <template #toggler-content>
-              <CIcon name="cil-settings"/>
-            </template>
-            <CDropdownItem>Action</CDropdownItem>
-            <CDropdownItem>Another action</CDropdownItem>
-            <CDropdownItem>Something else here...</CDropdownItem>
-            <CDropdownItem disabled>Disabled action</CDropdownItem>
-          </CDropdown>
-        </template>
+      <CWidgetDropdown color="primary" header="9" text="User Mendaftar">
         <template #footer>
           <CChartLineSimple
             pointed
@@ -30,7 +16,7 @@
       </CWidgetDropdown>
     </CCol>
     <CCol sm="6" lg="3">
-      <CWidgetDropdown color="info" header="9.823" text="Members online">
+      <CWidgetDropdown color="info" header="10" text="Melakukan Pembayaran">
         <template #default>
           <CDropdown
             color="transparent p-0"
@@ -63,8 +49,8 @@
     <CCol sm="6" lg="3">
       <CWidgetDropdown
         color="warning"
-        header="9.823"
-        text="Members online"
+        header="500,000"
+        text="Total Transaksi"
       >
         <template #default>
           <CDropdown
@@ -97,8 +83,8 @@
     <CCol sm="6" lg="3">
       <CWidgetDropdown
         color="danger"
-        header="9.823"
-        text="Members online"
+        header="200,000"
+        text="Total Transaksi Sukses"
       >
         <template #default>
           <CDropdown

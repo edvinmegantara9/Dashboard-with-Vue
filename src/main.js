@@ -18,6 +18,12 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 //  select multiple 
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
+
+import VueSweetalert2 from 'vue-sweetalert2';
+// If you don't need the styles, do not connect
+import 'sweetalert2/dist/sweetalert2.min.css';
+import Swal from 'sweetalert2'
+
 // select
 Vue.component('v-select', vSelect)
 
@@ -28,37 +34,61 @@ Vue.prototype.$log = console.log.bind(console)
 // setup base url
 Vue.prototype.$http = axios;
 // axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'https://admin.sibangun.bandungkab.go.id/rest/api/';
-// axios.defaults.baseURL = 'http://localhost:8000/api/';
+// axios.defaults.baseURL = 'https://admin.sibangun.bandungkab.go.id/rest/api/';
+axios.defaults.baseURL = 'http://localhost:8000/api/';
 
 // add token to localstorage
 if (localStorage.getItem('token')) {
   axios.defaults.headers.common['Authorization'] = 'bearer ' + localStorage.getItem('token');
 }
-// check valid token
+// check error handling
 axios.interceptors.response.use((response) => {
-  if (response.data.status === 401) {
-
-    console.log("You are not authorized");
-  }
   return response;
 }, (error) => {
   if (error.response && error.response.data) {
-
-    if (error.response.data.status == 401 || error.response.data.status == 403) {
+    
+    // error token expired
+    if (error.response.data.status == 401) {
+      console.log(error.response.data.message);
+      Swal.fire({icon: 'error', text: error.response.data.message});
       store.dispatch('auth/logout');
-      router.replace('/pages/login');
+      router.replace('/login');
     }
-    return Promise.reject(error.response.data.message);
+
+    // error email not verified
+    if (error.response.status == 403) {
+      router.replace('/email-verification');
+    }
+
+    // error validasi form
+    if (error.response.status == 422) {
+      let message = '';
+      Object.keys(error.response.data).forEach(element => {
+          message += error.response.data[element][0] + '<br />'
+      })
+      Swal.fire({icon: 'error', html: message});
+    }
+
+    // error message
+    if (error.response.status == 400) {
+      Swal.fire({icon: 'error', html: error.response.data.message});
+    }
+
+    return Promise.reject(error);
   }
-  return Promise.reject(error.message);
+
+  // error network
+  if (!error.status) {
+    Swal.fire({icon: 'error', html: error.message});
+  }
+  return Promise.reject(error);
 });
+
 
 // guard for auth
 router.beforeEach((to, from, next) => {
   var hasToken = localStorage.getItem('token');
   if (to.path != '/pages/login') {
-
     if (hasToken) {
       next();
       return
@@ -70,13 +100,8 @@ router.beforeEach((to, from, next) => {
       next({ path: '/dashboard' })
       return
     }
-    // next();
-
-    // return
   }
-
   next();
-
 })
 
 // setup overlay loading
@@ -89,6 +114,8 @@ Vue.use(VueLoading, {
 }, {
   // slots
 })
+
+Vue.use(VueSweetalert2);
 
 //  setup toast
 Vue.use(VueToast, {

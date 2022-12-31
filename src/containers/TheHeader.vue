@@ -17,8 +17,6 @@
       <CHeaderNavItem class="px-3">
         <CHeaderNavLink to="/dashboard"> Dashboard </CHeaderNavLink>
       </CHeaderNavItem>
-      <a href="https://sibangun.bandungkab.go.id/" class="btn btn-primary m-1">Beranda</a>
-      <a href="https://webgis.sibangun.bandungkab.go.id/public/" class="btn btn-primary m-1">Peta Inteaktif</a>
     </CHeaderNav>
     <CHeaderNav class="mr-4 ml-sm-auto">
       <TheHeaderDropdownAccnt />

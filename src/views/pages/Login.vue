@@ -1,16 +1,8 @@
 <template>
   <div class="c-app flex-row align-items-start">
     <CContainer>
-      <CRow class="">
+      <CRow class="mt-5">
         <CCol md="7" class="mt-5">
-          <CRow>
-            <!-- <CCol md="2">
-              <img src="@/assets/logo/pagaralam.png" width="100%" alt="" />
-            </CCol> -->
-            <CCol md="5">
-              <img src="@/assets/logo/bappeda.png" width="150%" alt="" />
-            </CCol>
-          </CRow>
           <CRow class="d-flex flex-row align-items-end">
             <img src="@/assets/logo/group.png" width="80%" alt="" />
           </CRow>
@@ -27,9 +19,9 @@
                   <h1>Login</h1>
                   <p class="text-muted">Sign In to your account</p>
                   <CInput
-                    placeholder="NIP"
-                    v-model="form.nip"
-                    autocomplete="nip"
+                    placeholder="Email"
+                    v-model="form.email"
+                    autocomplete="email"
                   >
                     <template #prepend-content
                       ><CIcon name="cil-user"
@@ -54,36 +46,10 @@
                         >Login</CButton
                       >
                     </CCol>
-                    <!-- <CCol col="6" class="text-right">
-                      <CButton color="link" class="px-0"
-                        >Forgot password?</CButton
-                      >
-                      <CButton color="link" class="d-lg-none"
-                        >Register now!</CButton
-                      >
-                    </CCol> -->
                   </CRow>
                 </CForm>
               </CCardBody>
             </CCard>
-            <!-- <CCard
-              color="primary"
-              text-color="white"
-              class="text-center py-5 d-md-down-none"
-              body-wrapper
-            >
-              <CCardBody>
-                <h2>Sign up</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <CButton
-                  color="light"
-                  variant="outline"
-                  size="lg"
-                >
-                  Register Now!
-                </CButton>
-              </CCardBody>
-            </CCard> -->
           </CCardGroup>
         </CCol>
       </CRow>
@@ -108,7 +74,7 @@ export default {
         this.$store
           .dispatch("auth/login", this.form)
           .then((resp) => {
-            // console.log(resp.data);
+            console.log(resp.data);
             this.$router.replace({ name: "Home" });
             this.$toast.success("Login Berhasil");
             loader.hide();

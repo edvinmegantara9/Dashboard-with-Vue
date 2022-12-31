@@ -12,26 +12,6 @@
         </div>
       </CHeaderNavLink>
     </template>
-    <!-- <CDropdownHeader tag="div" class="text-center" color="light">
-      <strong>Account</strong>
-    </CDropdownHeader>
-
-    <CDropdownItem>
-      <CIcon name="cil-envelope-open" /> Messages
-      <CBadge color="success" class="mfs-auto">{{ itemsCount }}</CBadge>
-    </CDropdownItem>
-
-    <CDropdownItem>
-      <CIcon name="cil-comment-square" /> Chat
-      <CBadge color="warning" class="mfs-auto">{{ itemsCount }}</CBadge>
-    </CDropdownItem>
-    <CDropdownHeader tag="div" class="text-center" color="light">
-      <strong>Settings</strong>
-    </CDropdownHeader>
-    <CDropdownItem> <CIcon name="cil-user" /> Profile </CDropdownItem> -->
-
-    <!-- <CDropdownDivider /> -->
-
     <CDropdownItem @click="logout()">
       <CIcon name="cil-lock-locked" /> Logout
     </CDropdownItem>

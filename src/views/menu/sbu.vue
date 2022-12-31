@@ -290,6 +290,7 @@ export default {
 
     searchOff(){
       this.isSearching = false;
+      this.params.keyword = '';
       this.getData();
     },
     submit() {
@@ -307,7 +308,6 @@ export default {
           this.getData();
         })
         .catch((e) => {
-          this.$toast.error(e);
           loading.hide();
         });
     },
@@ -341,7 +341,6 @@ export default {
           this.getData();
         })
         .catch((e) => {
-          this.$toast.error(e);
           loading.hide();
         });
     },
@@ -531,10 +530,7 @@ export default {
   },
 
   created() {
-    this.fields =
-      this.user.role.name.toLowerCase() == "admin"
-        ? data.fields
-        : data.fields_no_action;
+    this.fields = data.fields
   },
 };
 </script>

@@ -40,21 +40,21 @@ export default {
     }
   },
   mounted() {
-      this.$store.dispatch("paket_pekerjaan/persentase_sumber_dana").then((resp) => {
+      // this.$store.dispatch("paket_pekerjaan/persentase_sumber_dana").then((resp) => {
 
-        let grand_total = 0
-        resp.data.forEach(element => {
-            grand_total += element.total;
-        });
+      //   let grand_total = 0
+      //   resp.data.forEach(element => {
+      //       grand_total += element.total;
+      //   });
 
-        resp.data.forEach(element => {
-          this.sumber_dana.push(element.sumber_dana)
-          this.total.push((element.total).toFixed())
-          this.colors.push(this.getRandomColor())
-        });
-      }).catch(e => {
-        this.$toast.error(e);
-      });
+      //   resp.data.forEach(element => {
+      //     this.sumber_dana.push(element.sumber_dana)
+      //     this.total.push((element.total).toFixed())
+      //     this.colors.push(this.getRandomColor())
+      //   });
+      // }).catch(e => {
+      //   this.$toast.error(e);
+      // });
   },
 }
 </script>

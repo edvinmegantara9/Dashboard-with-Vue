@@ -24,7 +24,7 @@ table {
   <section>
     <div class="row mb-5">
       <div class="col-md-6">
-        <router-link to="/laporan-harian">
+        <router-link to="/product">
           <CButton class="mr-2" color="warning" square size="md">
             Kembali
           </CButton>
@@ -44,9 +44,8 @@ table {
       <header>
         <table id="header" style="width: 100%">
           <tr>
-            <td><img src="@/assets/logo/pagaralam.png" height="50pt" /></td>
             <td style="text-align: center; font-size: 11pt">
-              <b>Daftar SBU</b>
+              <b>Daftar Transaksi User Payment</b>
             </td>
           </tr>
         </table>
@@ -55,27 +54,29 @@ table {
         <br />
         <table id="content-table" style="width: 100%">
           <thead style="text-align: center">
-            <th>Nama PJBU</th>
-            <th>Nama Badan Usaha</th>
-            <th>Alamat</th>
-            <th>Kecamatan</th>
-            <th>Alamat Pekerjaan</th>
-            <th>Bentuk</th>
-            <th>Asosiasi</th>
-            <th>Sub Klasifikasi KBLI</th>
-            <th>Tanggal Terbit</th>
+            <th>No.</th>
+            <th>Kategori</th>
+            <th>No. Transaksi</th>
+            <th>User</th>
+            <th>Product</th>
+            <th>Amount</th>
+            <th>Payment Method</th>
+            <th>Payment Channel</th>
+            <th>Status</th>
+            <th>Note</th>
           </thead>
-          <tbody v-for="item in computedData" :key="item.id" class="p-1">
+          <tbody v-for="(item, index) in computedData" :key="item.id" class="p-1">
             <tr>
-              <td>{{ item.nama_pjbu }} </td>
-              <td>{{ item.nama_badan_usaha }} </td>
-              <td>{{ item.alamat }} </td>
-              <td>{{ item.kecamatan }} </td>
-              <td>{{ item.bentuk }} </td>
-              <td>{{ item.asosiasi }} </td>
-              <td>{{ item.sub_klasifikasi_kbli }} </td>
-              <td>{{ item.kualifikasi_kbli }} </td>
-              <td>{{ item.tanggal_terbit }} </td>
+              <td style="width:40px">{{ index +1 }}</td>
+              <td>{{ item.category }} </td>
+              <td>{{ item.no_transaction }} </td>
+              <td>{{ item.full_name }} </td>
+              <td>{{ item.name }} </td>
+              <td>{{ item.amount }} </td>
+              <td>{{ item.payment_method }} </td>
+              <td>{{ item.payment_channel }} </td>
+              <td>{{ item.status }} </td>
+              <td>{{ item.note }} </td>
             </tr>
           </tbody>
         </table>
@@ -95,17 +96,13 @@ export default {
       id: null,
       data: [],
       counter: 0,
-      signer: {
-        bappeda: null,
-        kepegawaian: null
-      }
     };
   },
   methods: {
     exportPDF(id) {
       var opt = {
         margin: 2,
-        filename: "Laporan_daftar_SBU.pdf",
+        filename: "Laporan_transaksi_payment.pdf",
         image: { type: "jpeg", quality: 1 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: "cm", format: "a4", orientation: "l" },
@@ -116,7 +113,7 @@ export default {
         .set(opt)
         .from(element)
         .save()
-        .then(() => this.$router.push("sbu"));
+        .then(() => this.$router.push("transaction"));
     },
   },
   computed: {
@@ -134,14 +131,13 @@ export default {
   mounted() {
     console.log(this.id)
     var loading = this.$loading.show();
-    this.$store.dispatch("sbu/ReportByDate", this.id).then((resp) => {
+    this.$store.dispatch("transaction/ReportByDate", this.id).then((resp) => {
       loading.hide();
       this.data = resp.data.data;
     }).catch(e => {
       this.$toast.error(e);
       loading.hide();
     });
-    // this.getSigner();
   },
 };
 </script>
