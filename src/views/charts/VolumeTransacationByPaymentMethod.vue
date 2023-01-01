@@ -7,7 +7,7 @@
         </div>
         <div class="col-3 text-right">
             <select v-model="tahun" class="form-control" aria-label="Default select example">
-              <option v-for="tahun in tahuns" :key="tahun.tahun" :value="tahun.tahun">{{ tahun.tahun }}</option>
+              <option v-for="tahun in tahuns" :key="tahun.tahun" :value="tahun.tahun" @change="change()">{{ tahun.tahun }}</option>
           </select>
         </div>
       </div>
@@ -73,6 +73,9 @@ export default {
       }).catch(e => {
         this.$toast.error(e);
       });
+    },
+    change() {
+      this.getYear();
     }
   },
   mounted() {
