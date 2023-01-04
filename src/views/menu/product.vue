@@ -397,10 +397,7 @@ export default {
         .then(() => {
           this.$toast.success("Berhasil merubah data ");
           loading.hide();
-          this.createModal = false;
-          this.form = {
-            type: 0,
-          };
+          // this.createModal = false;
           this.getData();
         })
         .catch((e) => {
