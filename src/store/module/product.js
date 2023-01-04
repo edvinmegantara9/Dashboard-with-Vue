@@ -17,6 +17,16 @@ export default {
             });
         },
 
+        getProductById(_, id) {
+            return new Promise((resolve, reject) => {
+                axios.get('/product/' + id).then(resp => {
+                    resolve(resp.data);
+                }).catch(e => {
+                    reject(e);
+                })
+            });
+        },
+
         addProduct(_, data) {
             return new Promise((resolve, reject) => {
                 axios.post('/product/create', data).then(resp => {

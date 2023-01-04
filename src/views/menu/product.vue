@@ -136,13 +136,14 @@
       </CCardBody>
     </CCard>
     <CModal
-      size="lg"
+      size="xl"
       :title="
         isUpdate ? 'Edit Product' : 'Tambah Product'
       "
       centered
-      :color="isUpdate ? 'success' : 'primary'"
+      :color="'primary'"
       :show.sync="createModal"
+      scrollable
     >
       <div class="row">
         <div class="col-6">
@@ -174,7 +175,6 @@
             <tr>
               <td>No.</td>
               <td>Pertanyaan</td>
-              <td>Jawaban Benar</td>
               <td>Point</td>
               <td></td>
             </tr>
@@ -186,16 +186,48 @@
                 <CInput
                   v-model="detail.question"
                   placeholder="ketik disini" />
-              </td>
-              <td style="width:100px">
-                <select
-                  v-model="detail.answer_correct"
-                  class="form-control"
-                  placeholder="Pilih"
-                >
-                  <option value="1" selected>Ya</option>
-                  <option value="0">Tidak</option>
-                </select>
+                  <table>
+                    <tr>
+                      <td>
+                        Pilihan Jawaban
+                      </td>
+                      <td>
+                        Jawaban Benar
+                      </td>
+                      <td></td>
+                    </tr>
+                    <tr v-for="(multiple, index_multiple) in detail.multiple_choices" :key="multiple.id">
+                      <td>
+                        <CInput
+                          v-model="multiple.option"
+                          placeholder="ketik disini" />
+                        </td>
+                        <td style="width:30px">
+                        <select
+                          v-model="multiple.answer_correct"
+                          class="form-control"
+                          placeholder="Pilih"
+                        >
+                          <option value="1" selected>Benar</option>
+                          <option value="0">Salah</option>
+                        </select>
+                      </td>
+                      <td style="width:20px">
+                        <CButton @click="deleteMutliple(index, index_multiple)" color="danger" square size="sm">
+                          Delete
+                        </CButton>
+                      </td>
+                    </tr>
+                  </table>
+                  <CButton 
+                    class="mt-2"
+                    @click="addMultiple(index)"
+                    color="success"
+                    square
+                    size="sm"
+                  >
+                    + Tambah Opsi
+                  </CButton>
               </td>
               <td style="width:100px">
                  <CInput
@@ -267,6 +299,7 @@ import FileSaver from "file-saver";
 export default {
   data() {
     return {
+      visibleStaticBackdropDemo: false,
       file: null,
       createModal: false,
       createModalImport: false,
@@ -333,7 +366,17 @@ export default {
         });
     },
     edit(item) {
-      this.form = item;
+      var loading = this.$loading.show();
+      this.$store
+        .dispatch("product/getProductById", item.id)
+        .then((result) => {
+          this.form = result.data;
+          loading.hide();    
+        })
+        .catch((e) => {
+          loading.hide();
+        });
+
       this.isUpdate = true;
       this.createModal = true;
     },
@@ -581,9 +624,18 @@ export default {
         point: "",
       })
     },
+    addMultiple(index) {
+      this.form.product_details[index].multiple_choices.push({
+        option: "",
+        answer_correct: "",
+      })
+    },
     deleteDetail(index) {
       this.form.product_details.splice(index, 1);
     },
+    deleteMutliple(index, index_multiple) {
+       this.form.product_details[index].multiple_choices.splice(index_multiple, 1);
+    }
   },
   computed: {
     computedItems() {  
