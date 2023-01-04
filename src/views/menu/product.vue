@@ -366,18 +366,21 @@ export default {
         });
     },
     edit(item) {
-      var loading = this.$loading.show();
-      this.$store
-        .dispatch("product/getProductById", item.id)
-        .then((result) => {
-          this.form = result.data;
-          loading.hide();    
-        })
-        .catch((e) => {
-          loading.hide();
-        });
 
-      this.isUpdate = true;
+      if (!this.isUpdate) {
+        var loading = this.$loading.show();
+        this.$store
+          .dispatch("product/getProductById", item.id)
+          .then((result) => {
+            this.form = result.data;
+            this.isUpdate = true;
+            loading.hide();    
+          })
+          .catch((e) => {
+            loading.hide();
+          });
+      }
+      
       this.createModal = true;
     },
     cancel() {
