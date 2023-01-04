@@ -86,7 +86,7 @@ export default {
           this.tahun = this.tahuns[0].tahun;
           this.getGrafikVolumeTransactionBySim();
         }).catch(e => {
-          this.$toast.error(e);
+          // this.$toast.error(e);
         });
       },
       change() {
