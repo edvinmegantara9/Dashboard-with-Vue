@@ -620,8 +620,8 @@ export default {
     addDetail() {
       this.form.product_details.push({
         answer: "",
-        answer_correct: "",
         point: "",
+        multiple_choices: []
       })
     },
     addMultiple(index) {
