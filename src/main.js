@@ -34,8 +34,7 @@ Vue.prototype.$log = console.log.bind(console)
 // setup base url
 Vue.prototype.$http = axios;
 // axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'https://sim.allinstudio.id/rest/api/';
-// axios.defaults.baseURL = 'http://localhost:8000/api/';
+axios.defaults.baseURL = process.env.VUE_APP_API_URL;
 
 // add token to localstorage
 if (localStorage.getItem('token')) {
