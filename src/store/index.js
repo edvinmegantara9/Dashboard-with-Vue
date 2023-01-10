@@ -9,6 +9,7 @@ import user_register from './module/user_register'
 import transaction from './module/transaction'
 import result from './module/result'
 import dashboard from './module/dashboard'
+import company from './module/company'
 
 Vue.use(Vuex)
 
@@ -42,7 +43,8 @@ export default new Vuex.Store({
     user_register,
     transaction,
     result,
-    dashboard
+    dashboard,
+    company
   },
   mutations
 })

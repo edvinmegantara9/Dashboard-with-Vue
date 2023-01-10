@@ -25,6 +25,8 @@ const TransactionExportPDF = () => import('@/views/menu/components/transaction-p
 const Result = () => import('@/views/menu/result')
 const ResultExportPDF = () => import('@/views/menu/components/result-pdf')
 const Dash = () => import('@/views/Dashboard')
+const Company = () => import('@/views/menu/company')
+const CompanyDetail = () => import('@/views/menu/company-detail')
 
 // Users
 const Users = () => import('@/views/users/Users')
@@ -126,6 +128,16 @@ function configRoutes() {
           path: 'product',
           name: 'Product',
           component: Product
+        },
+        {
+          path: 'company',
+          name: 'Profile Perusahaan',
+          component: Company
+        },
+        {
+          path: 'company-detail',
+          name: 'Profile Perusahaan Detail',
+          component: CompanyDetail
         },
         {
           path: 'user',

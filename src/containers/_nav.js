@@ -36,11 +36,14 @@ export const admin = [
       {
         name: 'Kelola Produk',
         to: 'product',
-
       },
       {
         name: 'Kelola Polres',
         to: 'category',
+      },
+      {
+        name: 'Kelola Profil Perusahaan',
+        to: 'company',
       },
       {
         name: 'Kelola Admin',
