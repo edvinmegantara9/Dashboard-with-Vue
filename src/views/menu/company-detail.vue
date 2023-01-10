@@ -43,7 +43,7 @@
                 <td>Deskripsi</td>
                 <td></td>
               </tr>
-              <tr v-for="service in form.company_services" :key="service.id">
+              <tr v-for="(service, index) in form.company_services" :key="service.id">
                 <td>
                   <CInput
                     v-model="service.title"
@@ -58,7 +58,7 @@
                 </td>
                 <td style="width: 50px">
                   <CButton 
-                    @click="removeService"
+                    @click="removeService(index)"
                     color="danger"
                     square
                     size="sm"
@@ -88,22 +88,41 @@
                 <td>Logo</td>
                 <td></td>
               </tr>
-              <tr v-for="client in form.company_clients" :key="client.id">
+              <tr v-for="(client, index) in form.company_clients" :key="client.id">
                 <td>
                   <CInput
                     v-model="client.name"
                     placeholder="ketik Nama"
                   />
                 </td>
-                <td>
-                  <CInput
+                <td style="width: 150px">
+                  <div v-if="client.logo">
+                    <CCardLink :href="client.logo" target="_blank" class="">
+                      <CCardImg
+                        :src="client.logo"
+                        style="object-fit: cover"
+                        height="auto"
+                        variant="full"
+                      />
+                    </CCardLink>
+
+                    <button
+                      class="btn btn-danger btn-sm btn-block mt-2"
+                      @click="deleteImage(index)"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+
+                  <input v-else
                     type="file"
-                    placeholder="Upload gambar"
+                    class="form-control"
+                    @change="selectFile($event, index)"
                   />
                 </td>
                 <td style="width: 50px">
                   <CButton 
-                    @click="removeClient"
+                    @click="removeClient(index)"
                     color="danger"
                     square
                     size="sm"
@@ -192,6 +211,7 @@
 
 <script>
 import { VueEditor } from "vue2-editor";
+import { uploadImage } from "@/utils/fileUpload";
 
 export default {
   components: {
@@ -206,11 +226,30 @@ export default {
     };
   },
   methods: {
+    deleteImage(index) {
+      this.form.company_clients[index].logo = null;
+    },
+    selectFile(event, index) {
+      this.file = event.target.files[0];
+      var loading = this.$loading.show();
+      uploadImage(this.file)
+        .then((resp) => {
+          this.form.company_clients[index].logo = resp;
+          loading.hide();
+          this.update();
+          this.$toast.success("File berhasil diupload !!");
+        })
+        .catch((e) => {
+          loading.hide();
+          this.$toast.error("Terjadi kesalahan !!");
+        });
+    },
     addService() {
       this.form.company_services.push({
         title: "",
         description: "",
       })
+      this.update();
     },
     removeService(index) {
       this.form.company_services.splice(index, 1);
