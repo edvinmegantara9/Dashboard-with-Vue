@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './module/auth'
 import user from './module/user'
-import sbu from './module/sbu'
 import category from './module/category'
 import product from './module/product'
 import user_register from './module/user_register'
@@ -37,7 +36,6 @@ export default new Vuex.Store({
   modules: {
     auth,
     user,
-    sbu,
     category,
     product,
     user_register,

@@ -7,13 +7,11 @@ const TheContainer = () => import('@/containers/TheContainer')
 // Views - menu
 const Dashboard = () => import('@/views/menu/dashboard')
 const MasterUser = () => import('@/views/menu/master-user')
-const Sbu = () => import('@/views/menu/sbu')
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
 const Page500 = () => import('@/views/pages/Page500')
 const Login = () => import('@/views/pages/Login')
-const SbuExportPDF = () => import('@/views/menu/components/sbu-pdf')
 const CategoryExportPDF = () => import('@/views/menu/components/category-pdf')
 const ProductExportPDF = () => import('@/views/menu/components/product-pdf')
 const UserExportPDF = () => import('@/views/menu/components/user-pdf')
@@ -73,11 +71,6 @@ function configRoutes() {
               component: MasterUser
             },
           ]
-        },
-        {
-          path: 'sbu-pdf',
-          name: 'SbuExportPDF',
-          component: SbuExportPDF
         },
         {
           path: 'category-pdf',
@@ -169,12 +162,7 @@ function configRoutes() {
               component: User
             }
           ]
-        },
-        {
-          path: 'sbu',
-          name: 'Sbu',
-          component: Sbu
-        },
+        }
       ]
     },
     {

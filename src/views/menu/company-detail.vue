@@ -196,6 +196,33 @@
               ></vue-editor>
           </div>
         </div>
+        <div class="row mt-3">
+          <div class="col-12">
+             <label for="">Tentang Aplikasi</label>
+              <vue-editor
+                v-model="form.about_application"
+                placeholder="Ketik disini..."
+              ></vue-editor>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+             <label for="">Kebijakan Privasi</label>
+              <vue-editor
+                v-model="form.privacy_policy"
+                placeholder="Ketik disini..."
+              ></vue-editor>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+             <label for="">Kebijakan Pengembalian</label>
+              <vue-editor
+                v-model="form.developer_policy"
+                placeholder="Ketik disini..."
+              ></vue-editor>
+          </div>
+        </div>
       </CCardBody>
       <CCardFooter>
         <div>
