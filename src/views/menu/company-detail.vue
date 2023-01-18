@@ -223,6 +223,15 @@
               ></vue-editor>
           </div>
         </div>
+        <div class="row mt-3">
+          <div class="col-12">
+             <label for="">Syarat & Ketentuan</label>
+              <vue-editor
+                v-model="form.term_and_condition"
+                placeholder="Ketik disini..."
+              ></vue-editor>
+          </div>
+        </div>
       </CCardBody>
       <CCardFooter>
         <div>
