@@ -61,7 +61,6 @@ table {
             <th>No. Payment</th>
             <th>Nama</th>
             <th>NIK</th>
-            <th>Umur</th>
             <th>Pekerjaan</th>
             <th>Alamat</th>
             <th>SIM</th>
@@ -79,7 +78,6 @@ table {
               <td>{{ item.no_transaction }} </td>
               <td>{{ item.nama }} </td>
               <td>{{ item.nik }} </td>
-              <td>{{ item.age }} </td>
               <td>{{ item.work }} </td>
               <td>{{ item.address }} </td>
               <td>{{ item.sim_type}} </td>
