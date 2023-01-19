@@ -6,7 +6,6 @@ export const fields = [
     { key: 'payment', label: "No Payment", _style:'min-width:100px' },
     { key: 'full_name', label: "Nama", _style:'min-width:100px' },
     { key: 'nik', label: "NIK", _style:'min-width:100px' },
-    { key: 'age', label: "Umur", _style:'min-width:30px' },
     { key: 'work', label: "Pekerjaan", _style:'min-width:100px' },
     { key: 'address', label: "Alamat", _style:'min-width:100px' },
     { key: 'sim_type', label: "SIM", _style:'min-width:100px' },
