@@ -364,9 +364,9 @@ export default {
         return {
           index: (this.to - this.items.length) + index+1 + '.',
           ...item,
-          category: item.category.name,
-          product: item.product.name,
-          user: item.user.full_name,
+          category: item.category ? item.category.name : '-',
+          product: item.product ? item.product.name : '-',
+          user: item.user ? item.user.full_name : '-',
           amount: this.numberWithCommas(item.amount),
           created_at: this.$moment(item.created_at).format("Do MMMM YYYY"),
           updated_at: this.$moment(item.updated_at).format("Do MMMM YYYY"),

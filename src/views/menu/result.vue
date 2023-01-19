@@ -362,9 +362,9 @@ export default {
         return {
           index: (this.to - this.items.length) + index+1 + '.',
           ...item,
-          product: item.product.name,
-          user: item.user.full_name,
-          payment: item.payment.no_transaction,
+          product: item.product ? item.product.name : '-',
+          user: item.user ? item.user.full_name : '-',
+          payment: item.payment ? item.payment.no_transaction : '-',
           expired_at: this.$moment(item.expired_at).format("Do MMMM YYYY"),
           created_at: this.$moment(item.created_at).format("Do MMMM YYYY"),
           updated_at: this.$moment(item.updated_at).format("Do MMMM YYYY"),
