@@ -2,8 +2,8 @@
   <div>
     <CCard>
       <CCardBody>
-        <div class="row justify-content-between">
-          <div class="col-10">
+        <div class="row">
+          <div class="col-md-5">
             <div class="row mb-3">
               <label class="m-1 ml-3" for="">Search : </label>
               <input
@@ -16,28 +16,11 @@
               <button @click="search()" class="btn btn-sm btn-success">
                 Cari
               </button>
-               <label class="m-1 ml-3" for="">Select All : </label>
-              <input
-                type="checkbox"
-                v-model="isSelectedAll"
-                @change="checkAll()"
-              />
-              <select v-if="selectedItems.length > 0"
-                  style="max-width: 200px"
-                  class="form-control form-control-sm mx-2"
-                  placeholder="Ketik disini"
-                  v-model="selectedAction"
-                  @change="changeActionSelected()"
-                >
-                <option value="0">Action Selected</option>
-                <option value="2">Export Excel Items Selected</option>
-                <option value="3">Export Pdf Items Selected</option>
-              </select>
             </div>
           </div>
-          <div class="col-2">
+          <div class="col-md-5 ml-auto">
             <div class="row">
-              <div class="col-12">
+              <div class="col">
                 <div class="input-group input-group-sm mb-3">
                   <div class="input-group-prepend">
                     <label class="input-group-text" for="inputGroupSelect01"
@@ -49,7 +32,7 @@
                     style="max-width: 100px"
                     id="inputGroupSelect01"
                     v-model="params.row"
-                    @change="getData()"
+                    @change="getData"
                   >
                     <!-- <option selected>Pilih...</option> -->
                     <option selected value="50">50</option>
@@ -58,6 +41,11 @@
                     <option value="2000">2000</option>
                   </select>
                 </div>
+              </div>
+              <div class="col">
+                <button class="btn btn-sm btn-primary" @click="addUser()">
+                  Tambah User
+                </button>
               </div>
             </div>
           </div>
@@ -72,22 +60,11 @@
             </h3>
           </div>
         </div>
-
         <CDataTable
           class="table-striped"
           :items="computedItems"
           :fields="fields"
-          sorter
         >
-        <template #select="{ item }">
-          <td class="py-2">
-            <input 
-                type="checkbox"
-                @change="check(item)"
-                v-model="item.select"
-              />
-          </td>
-        </template>
           <template #action="{ item }">
             <td class="py-2">
               <CButton
@@ -99,7 +76,22 @@
               >
                 Edit
               </CButton>
-              <CButton @click="hapus(item)" color="danger" square size="sm">
+              <CButton
+                @click="changePassword(item)"
+                class="mr-2"
+                color="info"
+                square
+                size="sm"
+              >
+                Change Password
+              </CButton>
+              <CButton
+                v-if="item.id != user.id"
+                @click="hapus(item)"
+                color="danger"
+                square
+                size="sm"
+              >
                 Delete
               </CButton>
             </td>
@@ -116,27 +108,104 @@
     </CCard>
     <CModal
       size="lg"
-      :title="
-        isUpdate ? 'Edit Data User' : 'Tambah Data User'
-      "
+      :title="isUpdate ? 'Edit User' : 'Tambah User'"
       centered
       :color="isUpdate ? 'success' : 'primary'"
       :show.sync="createModal"
     >
       <div class="row">
         <div class="col">
+          <CInput
+            v-model="form.full_name"
+            label="Nama Lengkap"
+            placeholder="ketik disini"
+          />
+          <CInput
+            v-model="form.email"
+            label="Email"
+            type="email"
+            placeholder="test@email.com"
+          />
+          <CInput
+            v-model="form.phone_number"
+            label="No. HP"
+            placeholder="ketik disini"
+          />
+          <CInput
+            v-if="!isUpdate"
+            v-model="form.password"
+            label="Password"
+            type="password"
+            placeholder="*******"
+          />
+          <CInput
+            v-if="!isUpdate"
+            v-model="form.password_confirmation"
+            label="Konfirmasi Password"
+            type='password'
+            placeholder="ketik disini"
+          />
           
         </div>
       </div>
       <template slot="footer">
         <div>
-          <button @click="cancel" class="btn btn-secondary mr-3">Batal</button>
-
+          <button @click="createModal = false" class="btn btn-secondary mr-3">
+            Batal
+          </button>
           <button @click="submit" v-if="!isUpdate" class="btn btn-primary">
-            Tambah Data User
+            Tambah User
           </button>
           <button @click="update" v-if="isUpdate" class="btn btn-primary">
-            Update Data User
+            Update User
+          </button>
+        </div>
+      </template>
+    </CModal>
+    <CModal
+      size="lg"
+      title="Change Password"
+      centered
+      color="primary"
+      :show.sync="modalPassword"
+    >
+      <div class="row">
+        <div class="col-12">
+          <CInput
+            v-model="form.full_name"
+            label="Nama User"
+            placeholder="nama"
+            disabled
+          />
+        </div>
+        <div class="col-12">
+          <CInput
+            v-model="form.password"
+            label="Password"
+            type='password'
+            placeholder="ketik disini"
+            :is-valid="isPasswordValid"
+            @update:value="inputPassword()"
+            :lazy="false"
+          />
+        </div>
+        <div class="col-12">
+          <CInput
+            v-model="form.password_confirmation"
+            label="Konfirmasi Password"
+            type='password'
+            placeholder="ketik disini"
+          />
+        </div>
+      </div>
+      <template slot="footer">
+        <div>
+          <button @click="closeModalPassword" class="btn btn-secondary mr-3">
+            Batal
+          </button>
+
+          <button @click="updatePassword" class="btn btn-primary">
+            Update Password
           </button>
         </div>
       </template>
@@ -144,37 +213,34 @@
   </div>
 </template>
 
-<script>
-import * as data from "../../model/user-register";
-import FileSaver from "file-saver";
 
+
+<script>
+import * as data from "../../model/user";
 export default {
   data() {
     return {
       createModal: false,
-      createModalImport: false,
-      fields: [],
+      fields: data.fields,
       isUpdate: false,
       items: [],
-      selectedItems: [],
-      isSelectedAll: false,
-      selectedAction: 0,
+      roles: [],
+      user: JSON.parse(localStorage.getItem("user")),
       page: 1,
       total: 0,
-      form: {
-   
-      },
-      user: JSON.parse(localStorage.getItem("user")),
+      form: {},
       params: {
-        sorttype: "desc",
+        sorttype: "asc",
         sortby: "id",
         row: 50,
         page: 1,
-        type: [0, 1],
         keyword: "",
       },
       isSearching: false,
-      searchOn: ''
+      searchOn: '',
+      modalPassword: false,
+      isPasswordValid: null, //null/boolean
+      invalidPassword: ''
     };
   },
   methods: {
@@ -194,17 +260,14 @@ export default {
       this.getData();
     },
     submit() {
-      this.form.user_id = JSON.parse(localStorage.getItem("user")).id;
-      this.form.opd_id = JSON.parse(localStorage.getItem("user")).role_id;
       var loading = this.$loading.show();
       this.$store
-        .dispatch("user_register/addUser", this.form)
+        .dispatch("user/addUser", this.form)
         .then(() => {
-          this.$toast.success("Berhasil menambahkan data");
+          this.$toast.success("Berhasil menambahkan user");
           loading.hide();
           this.createModal = false;
-          this.form = {
-          };
+          this.form = {};
           this.getData();
         })
         .catch((e) => {
@@ -216,28 +279,15 @@ export default {
       this.isUpdate = true;
       this.createModal = true;
     },
-    cancel() {
-      this.form = {
-        type: 0,
-      };
-      this.createModal = false;
-    },
     update() {
       var loading = this.$loading.show();
-      delete this.form.updated_at;
-      this.form.nilai_kontrak = parseInt(this.form.nilai_kontrak);
       this.$store
-        .dispatch("user_register/updateUser", {
-          id: this.form.id,
-          data: this.form,
-        })
+        .dispatch("user/updateUser", { id: this.form.id, data: this.form })
         .then(() => {
-          this.$toast.success("Berhasil merubah data ");
+          this.$toast.success("Berhasil merubah data user");
           loading.hide();
           this.createModal = false;
-          this.form = {
-            type: 0,
-          };
+          this.form = {};
           this.getData();
         })
         .catch((e) => {
@@ -247,13 +297,10 @@ export default {
     hapus(item) {
       if (confirm("Data akan dihapus !!")) {
         this.$store
-          .dispatch("user_register/deleteUser", item.id)
+          .dispatch("user/deleteUser", item.id)
           .then(() => {
-            this.$toast.success("Berhasil menghapus data ");
-
-            this.form = {
-              type: 0,
-            };
+            this.$toast.success("Berhasil menghapus data user");
+            this.form = {};
             this.getData();
           })
           .catch((e) => {
@@ -265,7 +312,7 @@ export default {
     getData() {
       var loading = this.$loading.show();
       this.$store
-        .dispatch("user_register/getUser", this.params)
+        .dispatch("user/getUser", this.params)
         .then((resp) => {
           this.items = resp.data.data;
           this.total = resp.data.total;
@@ -280,145 +327,95 @@ export default {
               element.select = false;
             }
           });
-
           loading.hide();
         })
         .catch((e) => {
-          this.$toast.error("gagal mengambil data  \n", e);
           loading.hide();
         });
     },
-    addModal() {
+    addUser() {
       this.isUpdate = false;
+      this.form = {};
       this.createModal = true;
+    },
+    changePassword(item) {
+      this.modalPassword = true
+      this.form.id = item.id
+      this.form.full_name = item.full_name
+    },
+    inputPassword(){
+      this.invalidPassword = '';
+      this.isPasswordValid = null;
+    },
+    validatePassword(item) {
+      if (item.password.length < 6) {
+        this.invalidPassword = 'Password kurang dari 6 karakter!!';
+        this.isPasswordValid = false;
+        return false;
+      } else if (item.password != item.password_confirmation) {
+        this.invalidPassword = 'Konfirmasi password tidak sama!!';
+        this.isPasswordValid = false;
+        return false;
+      } else {
+        this.invalidPassword = '';
+        this.isPasswordValid = null;
+        return true;
+      }
+    },
+    updatePassword() {
+      if (this.validatePassword(this.form)) {
+        var loading = this.$loading.show();
+        this.$store
+          .dispatch("user/changePassword", { id: this.form.id, password: this.form.password })
+          .then(() => {
+            this.$toast.success("Berhasil merubah password user");
+            loading.hide();
+            this.modalPassword = false;
+            this.form = {};
+            this.getData();
+          })
+          .catch((e) => {
+            this.$toast.error(e);
+            loading.hide();
+          });
+      } else {
+        this.$toast.error(this.invalidPassword);
+      }
+    },
+    closeModalPassword (){
+      this.form = {};
+      this.invalidPassword = '';
+      this.isPasswordValid = null;
+      this.modalPassword = false;
     },
     pagination(page) {
       this.page = page;
       this.params.page = page;
       this.getData();
     },
-    selectFileImport(event) {
-      this.file = event.target.files[0];
-      var loading = this.$loading.show();
-      this.$store
-        .dispatch("user_register/importUser", this.file)
-        .then((res) => {
-          this.$toast.success(res.data.message);
-          loading.hide();
-          this.createModalImport = false;
-          this.form = {
-          };
-          this.getData();
-        })
-        .catch((e) => {
-          console.log(e)
-          this.$toast.error(e);
-          loading.hide();
-        });
-    },
-    addModalImport() {
-      this.createModalImport = true;
-    },
-     check(item) {
-      if (item.select) {
-        this.selectedItems.push(item.id);
-      } else {
-        const index = this.selectedItems.indexOf(item.id);
-        this.selectedItems.splice(index, 1);
-      }
-    },
-    checkAll() {
-      this.getData();
-    },
-    changeActionSelected() {
-      console.log(this.selectedAction)
-      switch (Number(this.selectedAction)) {
-        case 1:
-          console.log('deleted')
-          this.deleteSelected('delete');
-          break;
-        case 2:
-          console.log('export excel')
-          this.exportExcel('export_excel');
-          break;
-        case 3:
-          console.log('export pdf')
-          this.exportPDF();
-          break;
-      }
-    },
-    deleteSelected(action) {
-      var loading = this.$loading.show();
-      this.$store
-        .dispatch("user_register/selectedAction", 
-        {
-          action: action,
-          data: this.selectedItems,
-        })
-        .then((resp) => {
-          this.$toast.success("Item Selected Berhasil diproses");
-          loading.hide();
-          this.createModal = false;
-          this.form = {
-          };
-          this.getData();
-        })
-        .catch((e) => {
-          this.$toast.error("gagal menghapus data  \n", e);
-          loading.hide();
-        });
-    },
-    openModalExcel() {
-      this.exportModal = true;
-      this.exportType = "Export Excel";
-    },
-    openModalPDF() {
-      this.exportModal = true;
-      this.exportType = "Export PDF";
-    },
-    exportExcel(action) {
-      var loading = this.$loading.show();
-      this.$store
-       .dispatch("user_register/exportReport", {
-          data: this.selectedItems,
-        })
-        .then((resp) => {
-          loading.hide();
-          FileSaver.saveAs(
-            resp.data,
-            "user_register_"
-          );
-          this.exportModal = false;
-          this.exportDataParams = {};
-        })
-        .catch((e) => {
-          console.log(e)
-          this.$toast.error(e);
-          loading.hide();
-        });
-    },
-    exportPDF() {
-      this.$router.push({ name: "UserExportPDF", query: { data: this.selectedItems } });
-    },
   },
   computed: {
     computedItems() {
       return this.items.map((item, index) => {
         return {
-          index: index+1 + '.',
           ...item,
+          role: item.role ? item.role.name : "Tidak ada",
           created_at: this.$moment(item.created_at).format("Do MMMM YYYY"),
           updated_at: this.$moment(item.updated_at).format("Do MMMM YYYY"),
+        };
+      });
+    },
+    computedRole() {
+      return this.roles.map((item) => {
+        return {
+          value: item.id,
+          label: item.name,
         };
       });
     },
   },
   mounted() {
     this.getData();
-  },
-
-  created() {
-    this.fields = data.fields
   },
 };
 </script>

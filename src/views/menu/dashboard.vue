@@ -1,10 +1,10 @@
 <template>
  <div>
-    <VolumeTransaction />
+    <!-- <VolumeTransaction />
     <div class="row">
       <VolumeTransactionBySimType />
       <CChartDoughnutExample />
-    </div>
+    </div> -->
  </div>
 </template>
 

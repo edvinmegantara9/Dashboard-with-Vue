@@ -22,7 +22,6 @@ export default {
       role: {},
     };
   },
-
   computed: {
     show() {
       return this.$store.state.sidebarShow;
@@ -34,10 +33,34 @@ export default {
       return JSON.parse(localStorage.getItem("user"));
     },
     computedSidebar() {
+      let menus = [
+        {
+          _name: 'CSidebarNavItem',
+          name: 'Dashboard',
+          to: '/dashboard',
+          icon: 'cil-speedometer',
+        },
+        {
+          _name: 'CSidebarNavTitle',
+          _children: ['Menu']
+        },
+      ]
+
+      if (JSON.parse(localStorage.getItem("user")).roles.menus) {
+        JSON.parse(localStorage.getItem("user")).roles.menus.forEach(element => {
+          menus.push({
+            _name: 'CSidebarNavItem',
+            name: element.name,
+            to: element.path,
+            icon: 'cil-file',
+          })
+        });
+      }
+
       return [
           {
             _name: "CSidebarNav",
-            _children: data.admin,
+            _children: menus,
           },
         ];
     },
@@ -47,12 +70,12 @@ export default {
 
 
 <style>
-.bg-main {
-  background: #5945e6 !important;
-}
+  .bg-main {
+    background: #024531 !important;
+  }
 
-.c-sidebar .c-sidebar-brand {
-    color: #fff;
-    background: #fff !important;
-}
+  .c-sidebar .c-sidebar-brand {
+      color: #fff;
+      background: #fff !important;
+  }
 </style>

@@ -5,30 +5,15 @@ import Router from 'vue-router'
 const TheContainer = () => import('@/containers/TheContainer')
 
 // Views - menu
-const Dashboard = () => import('@/views/menu/dashboard')
-const MasterUser = () => import('@/views/menu/master-user')
+const Dashboard = () => import('@/views/menu/Dashboard')
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
 const Page500 = () => import('@/views/pages/Page500')
 const Login = () => import('@/views/pages/Login')
-const CategoryExportPDF = () => import('@/views/menu/components/category-pdf')
-const ProductExportPDF = () => import('@/views/menu/components/product-pdf')
-const UserExportPDF = () => import('@/views/menu/components/user-pdf')
-const Category = () => import('@/views/menu/category')
-const Product = () => import('@/views/menu/product')
-const UserRegister = () => import('@/views/menu/user-register')
-const Transaction = () => import('@/views/menu/transaction')
-const TransactionExportPDF = () => import('@/views/menu/components/transaction-pdf')
-const Result = () => import('@/views/menu/result')
-const ResultExportPDF = () => import('@/views/menu/components/result-pdf')
-const Dash = () => import('@/views/Dashboard')
-const Company = () => import('@/views/menu/company')
-const CompanyDetail = () => import('@/views/menu/company-detail')
-
-// Users
-const Users = () => import('@/views/users/Users')
-const User = () => import('@/views/users/User')
+const User = () => import('@/views/menu/User')
+const Role = () => import('@/views/menu/Role')
+const Menu = () => import('@/views/menu/Menu')
 
 Vue.use(Router)
 
@@ -53,116 +38,20 @@ function configRoutes() {
           component: Dashboard
         },
         {
-          path: 'dash',
-          name: 'Dash',
-          component: Dash
+          path: 'User',
+          name: 'Kelola User',
+          component: User
         },
         {
-          path: 'master-user',
-          redirect: '/master-user/user',
-          name: 'Master User',
-          component: {
-            render(c) { return c('router-view') }
-          },
-          children: [
-            {
-              path: 'user',
-              name: 'User data',
-              component: MasterUser
-            },
-          ]
+          path: 'Role',
+          name: 'Kelola Role / PD',
+          component: Role
         },
         {
-          path: 'category-pdf',
-          name: 'CategoryExportPDF',
-          component: CategoryExportPDF
+          path: 'Menu',
+          name: 'Kelola Menu',
+          component: Menu
         },
-        {
-          path: 'product-pdf',
-          name: 'ProductExportPDF',
-          component: ProductExportPDF
-        },
-        {
-          path: 'user-pdf',
-          name: 'UserExportPDF',
-          component: UserExportPDF
-        },
-        {
-          path: 'transaction-pdf',
-          name: 'TransactionExportPDF',
-          component: TransactionExportPDF
-        },
-        {
-          path: 'result-pdf',
-          name: 'ResultExportPDF',
-          component: ResultExportPDF
-        },
-        {
-          path: 'result',
-          name: 'Result',
-          component: Result
-        },
-        {
-          path: 'transaction',
-          name: 'Transaction',
-          component: Transaction
-        },
-        {
-          path: 'user-register',
-          name: 'User Register',
-          component: UserRegister
-        },
-        {
-          path: 'category',
-          name: 'Category',
-          component: Category
-        },
-        {
-          path: 'product',
-          name: 'Product',
-          component: Product
-        },
-        {
-          path: 'company',
-          name: 'Profile Perusahaan',
-          component: Company
-        },
-        {
-          path: 'company-detail',
-          name: 'Profile Perusahaan Detail',
-          component: CompanyDetail
-        },
-        {
-          path: 'user',
-          name: 'User data',
-          component: MasterUser
-        },
-        {
-          path: 'users',
-          meta: {
-            label: 'Users'
-          },
-          component: {
-            render(c) {
-              return c('router-view')
-            }
-          },
-          children: [
-            {
-              path: '',
-              name: 'Users',
-              component: Users
-            },
-            {
-              path: ':id',
-              meta: {
-                label: 'User Details'
-              },
-              name: 'User',
-              component: User
-            }
-          ]
-        }
       ]
     },
     {

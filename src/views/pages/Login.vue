@@ -19,9 +19,9 @@
                   <h1>Login</h1>
                   <p class="text-muted">Sign In to your account</p>
                   <CInput
-                    placeholder="Email"
-                    v-model="form.email"
-                    autocomplete="email"
+                    placeholder="Nip"
+                    v-model="form.nip"
+                    autocomplete="nip"
                   >
                     <template #prepend-content
                       ><CIcon name="cil-user"
@@ -74,13 +74,11 @@ export default {
         this.$store
           .dispatch("auth/login", this.form)
           .then((resp) => {
-            console.log(resp.data);
             this.$router.replace({ name: "Home" });
             this.$toast.success("Login Berhasil");
             loader.hide();
           })
           .catch((e) => {
-            this.$toast.error(e);
             loader.hide();
           });
       }, 2000);

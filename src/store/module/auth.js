@@ -15,7 +15,7 @@ export default {
 
         login({ commit }, data) {
             return new Promise((resolve, reject) => {
-                axios.post('/login-admin', data).then(resp => {
+                axios.post('/login', data).then(resp => {
                     localStorage.setItem('token', resp.data.token)
                     localStorage.setItem('user', JSON.stringify(resp.data.user))
                     commit('setUser', resp.data)
