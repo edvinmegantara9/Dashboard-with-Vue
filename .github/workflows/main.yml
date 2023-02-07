@@ -11,14 +11,18 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2
 
-    - name: Use Node.js 18
+    - name: Use Node.js 14
       uses: actions/setup-node@v2-beta
       with:
-        node-version: '18'
+        node-version: '14'
+
+    - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
       
     - name: 🔨 Build Project
       run: |
-        npm install
         npm run build --prod
     
     - name: 📂 Sync files
