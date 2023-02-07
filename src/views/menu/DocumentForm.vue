@@ -15,8 +15,13 @@
     import HorizontalStepper from 'vue-stepper';
  
     // This components will have the content for each stepper step.
-    import StepOne from './FormOne.vue';
-    import StepTwo from './FormTwo.vue';
+    import FormPengajuan from './DocumentDetail/FormPengajuan.vue';
+    import FormMenimbang from './DocumentDetail/FormMenimbang.vue';
+    import FormMengingat from './DocumentDetail/FormMengingat.vue';
+    import FormMemperhatikan from './DocumentDetail/FormMemperhatikan.vue';
+    import FormKeputusan from './DocumentDetail/FormKeputusan.vue';
+    import FormLampiran from './DocumentDetail/FormLampiran.vue';
+    import FormSummary from './DocumentDetail/FormSummary.vue';
  
     export default {
         components: {
@@ -26,21 +31,53 @@
             return {
                 demoSteps: [
                     {
-                        icon: 'mail',
-                        name: 'first',
-                        title: 'Sample title 1',
-                        subtitle: 'Subtitle sample',
-                        component: StepOne,
+                        icon: 'description',
+                        name: 'satu',
+                        subtitle: '1. Pengajuan',
+                        component: FormPengajuan,
                         completed: false
- 
                     },
                     {
-                        icon: 'report_problem',
-                        name: 'second',
-                        title: 'Sample title 2',
-                        subtitle: 'Subtitle sample',
-                        component: StepTwo,
+                        icon: 'description',
+                        name: 'dua',
+                        subtitle: '2. Menimbang',
+                        component: FormMenimbang,
                         completed: false
+                    },
+                    {
+                        icon: 'description',
+                        name: 'tiga',
+                        subtitle: '3. Mengingat',
+                        component: FormMengingat,
+                        completed: false
+                    },
+                    {
+                        icon: 'description',
+                        name: 'empat',
+                        subtitle: '4. Memperhatikan',
+                        component: FormMemperhatikan,
+                        completed: false
+                    },
+                    {
+                        icon: 'description',
+                        name: 'lima',
+                        subtitle: '5. Diktum Keputusan',
+                        component: FormKeputusan,
+                        completed: false
+                    },
+                    {
+                        icon: 'description',
+                        name: 'enam',
+                        subtitle: '6. Lampiran',
+                        component: FormLampiran,
+                        completed: false
+                    },
+                    {
+                        icon: 'description',
+                        name: 'tujuh',
+                        subtitle: '7. Summary',
+                        component: FormSummary,
+                        completed: true
                     }
                 ]
             }
@@ -73,5 +110,8 @@
 </script>
 
 <style>
-
+    .stepper-box .top .steps-wrapper .step .step-title h5 {
+        font-size: 12px !important;
+        font-weight: bold !important;
+    }
 </style>
