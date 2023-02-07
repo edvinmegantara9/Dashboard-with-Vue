@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './module/auth'
 import user from './module/user'
+import menu from './module/menu'
+import role from './module/role'
+import document from './module/document'
 import dashboard from './module/dashboard'
 
 
@@ -32,6 +35,9 @@ export default new Vuex.Store({
     auth,
     user,
     dashboard,
+    menu,
+    role,
+    document
   },
   mutations
 })

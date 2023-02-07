@@ -9,7 +9,7 @@ export default {
 
         getUser(_,_params){
             return new Promise((resolve, reject) => {
-                axios.get('admin', {params : _params}).then(resp => {
+                axios.get('user', {params : _params}).then(resp => {
                     resolve(resp.data);
                 }).catch(e => {
                     reject(e);
@@ -19,7 +19,7 @@ export default {
         
         addUser(_, data){
             return new Promise((resolve,reject) => {
-                axios.post('admin', data).then(resp => {
+                axios.post('register', data).then(resp => {
                     resolve(resp);
                 }).catch(e => {
                     reject(e);
@@ -29,7 +29,7 @@ export default {
 
         updateUser(_, {id,data}){
             return new Promise((resolve,reject) => {
-                axios.put('admin/update/'+ id, data).then(resp => {
+                axios.put('user/update/'+ id, data).then(resp => {
                     resolve(resp);
                 }).catch(e => {
                     reject(e)
@@ -39,7 +39,7 @@ export default {
 
         deleteUser(_, id){
             return new Promise((resolve,reject) => {
-                axios.delete('admin/delete/'+ id).then(resp => {
+                axios.delete('user/delete/'+ id).then(resp => {
                     resolve(resp);
                 }).catch(e => {
                     reject(e)
@@ -49,7 +49,7 @@ export default {
 
         changePassword(_, {id, password}) {
             return new Promise((resolve, reject) => {
-                axios.put('admin/change-password/' + id, {password: password}).then(resp => {
+                axios.put('user/change-password/' + id, {password: password}).then(resp => {
                     resolve(resp);
                 }).catch(e => {
                     reject(e)

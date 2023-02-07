@@ -121,16 +121,27 @@
             placeholder="ketik disini"
           />
           <CInput
+            v-model="form.position"
+            label="Jabatan"
+            placeholder="ketik disini"
+          />
+           <CInput
+            v-model="form.nip"
+            label="NIP"
+            placeholder="ketik disini"
+          />
+          <CInput
             v-model="form.email"
             label="Email"
             type="email"
             placeholder="test@email.com"
           />
-          <CInput
-            v-model="form.phone_number"
-            label="No. HP"
-            placeholder="ketik disini"
-          />
+          <label for="Role">Role / PD</label>
+          <v-select class="mb-3"
+            v-model="form.role_id"
+            placeholder="Pilih Role"
+            :options="computedRole"
+          ></v-select>
           <CInput
             v-if="!isUpdate"
             v-model="form.password"
@@ -145,7 +156,6 @@
             type='password'
             placeholder="ketik disini"
           />
-          
         </div>
       </div>
       <template slot="footer">
@@ -261,6 +271,7 @@ export default {
     },
     submit() {
       var loading = this.$loading.show();
+      this.form.role_id = this.form.role_id.value
       this.$store
         .dispatch("user/addUser", this.form)
         .then(() => {
@@ -281,6 +292,7 @@ export default {
     },
     update() {
       var loading = this.$loading.show();
+      this.form.role_id = this.form.role_id.value
       this.$store
         .dispatch("user/updateUser", { id: this.form.id, data: this.form })
         .then(() => {
@@ -327,6 +339,29 @@ export default {
               element.select = false;
             }
           });
+          loading.hide();
+
+          this.getDataRole();
+        })
+        .catch((e) => {
+          loading.hide();
+        });
+    },
+    getDataRole() {
+      var loading = this.$loading.show();
+
+      let params = {
+        sorttype: "asc",
+        sortby: "id",
+        row: 100,
+        page: 1,
+        keyword: "",
+      }
+
+      this.$store
+        .dispatch("role/get", params)
+        .then((resp) => {
+          this.roles = resp.data.data;
           loading.hide();
         })
         .catch((e) => {
@@ -399,13 +434,22 @@ export default {
       return this.items.map((item, index) => {
         return {
           ...item,
-          role: item.role ? item.role.name : "Tidak ada",
+          role: item.roles ? item.roles.name : "Tidak ada",
           created_at: this.$moment(item.created_at).format("Do MMMM YYYY"),
           updated_at: this.$moment(item.updated_at).format("Do MMMM YYYY"),
         };
       });
     },
     computedRole() {
+      if (this.form.role_id) {
+        let role = {
+          value: this.form.role_id,
+          label: this.roles.find(element => {
+            return element.id == this.form.role_id
+          }).name
+        }
+        this.form.role_id = role
+      }
       return this.roles.map((item) => {
         return {
           value: item.id,
