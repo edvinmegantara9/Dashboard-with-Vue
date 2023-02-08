@@ -3,7 +3,7 @@
         <div class="columns">
             <div class="column is-8 is-offset-2">
                 <horizontal-stepper :steps="demoSteps" @completed-step="completeStep"
-                                    @active-step="isStepActive" @stepper-finished="alert"
+                                    @active-step="isStepActive" @stepper-finished="alert" 
                 >                     
                 </horizontal-stepper>
             </div>
@@ -21,7 +21,7 @@
     import FormMemperhatikan from './DocumentDetail/FormMemperhatikan.vue';
     import FormKeputusan from './DocumentDetail/FormKeputusan.vue';
     import FormLampiran from './DocumentDetail/FormLampiran.vue';
-    import FormSummary from './DocumentDetail/FormSummary.vue';
+    import FormPreview from './DocumentDetail/FormPreview.vue';
  
     export default {
         components: {
@@ -75,8 +75,8 @@
                     {
                         icon: 'description',
                         name: 'tujuh',
-                        subtitle: '7. Summary',
-                        component: FormSummary,
+                        subtitle: '7. Preview',
+                        component: FormPreview,
                         completed: true
                     }
                 ]
@@ -113,5 +113,9 @@
     .stepper-box .top .steps-wrapper .step .step-title h5 {
         font-size: 12px !important;
         font-weight: bold !important;
+    }
+
+    .stepper-box .top .steps-wrapper .step .circle i {
+        background-color: #024531 !important;
     }
 </style>

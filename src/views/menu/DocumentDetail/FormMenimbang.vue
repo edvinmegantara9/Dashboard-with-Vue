@@ -7,7 +7,7 @@
                     <td>
                         <div class="form-group">
                             <textarea type="text" :class="['form-control', (!v.description.required) ? 'is-invalid' : '']"  v-model="item.description" id="title" aria-describedby="title" placeholder="Ketik Menimbang" rows="3"></textarea>
-                            <small id="document_type" v-if="!v.description.required" class="form-text text-muted">Deskripsi Wajid Diisi!</small>
+                            <small id="document_type" v-if="!v.description.required" class="form-text text-muted">Deskripsi Menimbang Wajid Diisi!</small>
                         </div>
                         <div class="row">
                             <div class="form-group col">
@@ -66,6 +66,7 @@
             $v: {
                 handler: function (val) {
                     if(!val.$invalid && this.document_considers.length > 0) {
+                        this.$store.commit('document/setDocumentConsiders', this.document_considers);
                         this.$emit('can-continue', {value: true});
                     } else {
                         this.$emit('can-continue', {value: false});
@@ -75,7 +76,7 @@
             },
             clickedNext(val) {
                 if(val === true) {
-                    this.$v.form.$touch();
+                    this.$v.document_considers.$touch();
                 }
             }
         },

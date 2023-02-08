@@ -62,6 +62,7 @@
             $v: {
                 handler: function (val) {
                     if(!val.$invalid) {
+                        this.$store.commit('document/setDocument', this.form);
                         this.$emit('can-continue', {value: true});
                     } else {
                         this.$emit('can-continue', {value: false});
@@ -76,6 +77,7 @@
             }
         },
         mounted() {
+            console.log(this.$v);
             if(!this.$v.$invalid) {
                 this.$emit('can-continue', {value: true});
             } else {

@@ -23,6 +23,10 @@ import VueSweetalert2 from 'vue-sweetalert2';
 // If you don't need the styles, do not connect
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Swal from 'sweetalert2'
+import CKEditor from '@ckeditor/ckeditor5-vue2';
+
+Vue.use( CKEditor )
+
 // select
 Vue.component('v-select', vSelect)
 

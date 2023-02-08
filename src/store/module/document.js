@@ -3,8 +3,45 @@ import axios from 'axios';
 
 export default {
     namespaced: true,
-    state: {},
-    mutations: {},
+    state: {
+        document: {},
+        document_considers: [],
+        document_remembers: [],
+        document_notices: [],
+        document_decisions: [],
+        document_attachments: []
+    },
+    mutations: {
+        setDocument (state, data) {
+            state.document = data
+        },
+        setDocumentConsiders (state, data) {
+            state.document_considers = data
+        },
+        setDocumentRemembers (state, data) {
+            state.document_remembers = data
+        },
+        setDocumentNotices (state, data) {
+            state.document_notices = data
+        },
+        setDocumentDecisions (state, data) {
+            state.document_decisions = data
+        },
+        setDocumentAttachments (state, data) {
+            state.document_attachments = data
+        }
+    },
+    getters: {
+        getDocument: state => { 
+            let document = state.document;
+            document.document_considers = state.document_considers;
+            document.document_remembers = state.document_remembers;
+            document.document_notices = state.document_notices;
+            document.document_decisions = state.document_decisions;
+            document.document_attachments = state.document_attachments;
+            return document 
+        }
+    },
     actions: {
 
         get(_,_params){
@@ -92,10 +129,5 @@ export default {
                 })
             })
         },
-
     },
-    getters: {
-
-    }
-
 }

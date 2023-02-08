@@ -12,7 +12,7 @@ export default {
 // Import Main styles for this application
 @import "assets/scss/style";
 
-table {
+.table {
   display: table;
   width: 100%;
   overflow-x: auto;
