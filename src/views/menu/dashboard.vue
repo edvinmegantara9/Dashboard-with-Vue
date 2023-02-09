@@ -76,7 +76,7 @@ export default {
 </style>
 
 <style>
-table {
+.table {
   display: table;
   width: 100%;
   overflow-x: auto;

@@ -16,7 +16,7 @@
 #footer {
   font-size: 8pt;
 }
-table {
+.table {
   white-space: normal !important;
 }
 </style>
