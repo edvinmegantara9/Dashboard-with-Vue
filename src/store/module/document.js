@@ -9,7 +9,8 @@ export default {
         document_remembers: [],
         document_notices: [],
         document_decisions: [],
-        document_attachments: []
+        document_attachments: [],
+        document_supports: [],
     },
     mutations: {
         setDocument (state, data) {
@@ -29,6 +30,9 @@ export default {
         },
         setDocumentAttachments (state, data) {
             state.document_attachments = data
+        },
+        setDocumentSupports (state, data) {
+            state.document_supports = data
         }
     },
     getters: {
@@ -39,10 +43,21 @@ export default {
             document.document_notices = state.document_notices;
             document.document_decisions = state.document_decisions;
             document.document_attachments = state.document_attachments;
+            document.document_supports = state.document_supports;
             return document 
         }
     },
     actions: {
+
+        show(_,id){
+            return new Promise((resolve, reject) => {
+                axios.get('document/' + id).then(resp => {
+                    resolve(resp.data);
+                }).catch(e => {
+                    reject(e);
+                })
+            })
+        },
 
         get(_,_params){
             return new Promise((resolve, reject) => {

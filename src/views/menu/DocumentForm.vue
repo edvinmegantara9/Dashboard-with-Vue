@@ -83,6 +83,9 @@
             }
         },
         methods: {
+            leaving() {
+                alert("Leaving...");
+            },
             // Executed when @completed-step event is triggered
             completeStep(payload) {
                 this.demoSteps.forEach((step) => {
@@ -105,7 +108,12 @@
             alert(payload) {
                 alert('end')
             }
-        }
+        },
+        ready() {
+            Vue.util.on(document.getElementsByTagName('body')[0], 'DOMFocusOut',
+                this.leaving,
+                false);
+        },
     }
 </script>
 

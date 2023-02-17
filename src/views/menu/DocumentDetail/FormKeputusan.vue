@@ -3,15 +3,15 @@
         <div v-for="(item, index) in document_decisions" :key="index" :set="v = $v.document_decisions.$each[index]">
             <table>
                 <tr>
-                    <td style="vertical-align: baseline;"><strong>{{ index +1 }}.</strong></td>
+                    <td style="vertical-align: baseline;width: 15px;"><strong>{{ index +1 }}.</strong></td>
                     <td>
-                        <ckeditor :editor="editor" v-model="item.description" :config="editorConfig"></ckeditor>
+                        <ckeditor tag-name="textarea" :editor="editor" v-model="item.description" :config="editorConfig"></ckeditor>
                         <!-- <vue-editor :editor-toolbar="customToolbar"
                             v-model="item.description"
                             placeholder="Ketik disini..."
                         ></vue-editor> -->
                         <small id="document_type" v-if="!v.description.required" class="form-text text-muted">Deskripsi Keputusan Wajid Diisi!</small>
-                        <div class="row mt-2">
+                        <!-- <div class="row mt-2">
                             <div class="form-group col">
                                 <input type="text" class="form-control"  v-model="item.margin_top" id="title" aria-describedby="title" placeholder="Margin Atas">
                             </div>
@@ -24,16 +24,17 @@
                             <div class="form-group col">
                                 <input type="text" class="form-control"  v-model="item.margin_rigth" id="title" aria-describedby="title" placeholder="Margin Kanan">
                             </div>
-                        </div>
+                        </div> -->
                     </td>
                     <td style="width: 20px;vertical-align: baseline;">
                         <button @click="deleteDetail(index)" class="btn btn-sm btn-danger m-1">Hapus</button>
                     </td>
                 </tr>
             </table>
-            <hr class="mt-0" />
+            <!-- <hr class="mt-0" /> -->
         </div>
-        <button @click="add" class="btn btn-sm btn-success mt-3"><CIcon name="cilMedicalCross" /> Tambah Keputusan</button>
+        <button @click="add" class="btn btn-sm mt-3 btn-success"><CIcon name="cilMedicalCross" /> Tambah Keputusan</button>
+        <button class="btn btn-sm btn-primary mt-3 ml-1"><CIcon name="cilMedicalCross" /> Tambah Tembusan</button>
     </div>
 </template>
 
@@ -65,6 +66,7 @@
                 editorData: '',
                 editorConfig: {
                     // The configuration of the editor.
+                    resize_maxWidth: 800
                 }
             }
         },
@@ -111,6 +113,10 @@
             }
         },
         mounted() {
+            let _document_decisions = this.$store.state.document.document_decisions;
+            if (_document_decisions.length > 0) {
+                this.document_decisions = _document_decisions;
+            }
             if(!this.$v.$invalid) {
                 this.$emit('can-continue', {value: true});
             } else {
@@ -119,3 +125,14 @@
         }
     }
 </script>
+
+<style>
+    /* .table {
+        white-space: normal !important;
+    } */
+    .ck-editor .ck-editor__main .ck-content {
+        min-height: 200px !important;
+        max-width: 900px !important;
+        width: 900px !important;
+    }
+</style>
