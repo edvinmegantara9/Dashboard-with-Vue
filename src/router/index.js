@@ -14,8 +14,6 @@ const Login = () => import('@/views/pages/Login')
 const User = () => import('@/views/menu/User')
 const Role = () => import('@/views/menu/Role')
 const Menu = () => import('@/views/menu/Menu')
-const EProduct = () => import('@/views/menu/Document')
-const EProductForm = () => import('@/views/menu/DocumentForm')
 
 Vue.use(Router)
 
@@ -53,16 +51,6 @@ function configRoutes() {
           path: 'Menu',
           name: 'Kelola Menu',
           component: Menu
-        },
-        {
-          path: 'Document',
-          name: 'Pengajuan E-Produk',
-          component: EProduct
-        },
-        {
-          path: 'DocumentFrom',
-          name: 'Pengajuan Form E-Produk',
-          component: EProductForm
         },
       ]
     },

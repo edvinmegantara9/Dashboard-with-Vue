@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import * as data from "./_nav";
+// import * as data from "./_nav";
 
 export default {
   name: "TheSidebar",

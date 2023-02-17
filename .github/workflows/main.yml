@@ -1,35 +1,35 @@
-on:
-  push:
-    branches: 
-      - main
-name: 🚀 Deploy website on push main
-jobs:
-  web-deploy:
-    name: 🎉 Deploy
-    runs-on: ubuntu-latest
-    steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v2
+# on:
+#   push:
+#     branches: 
+#       - main
+# name: 🚀 Deploy website on push main
+# jobs:
+#   web-deploy:
+#     name: 🎉 Deploy
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: 🚚 Get latest code
+#       uses: actions/checkout@v2
 
-    - name: Use Node.js 14
-      uses: actions/setup-node@v2-beta
-      with:
-        node-version: '14'
+#     - name: Use Node.js 14
+#       uses: actions/setup-node@v2-beta
+#       with:
+#         node-version: '14'
 
-    - name: Run install
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: install # will run `yarn install` command
+#     - name: Run install
+#       uses: borales/actions-yarn@v4
+#       with:
+#         cmd: install # will run `yarn install` command
       
-    - name: 🔨 Build Project
-      run: |
-        npm run build --prod
+#     - name: 🔨 Build Project
+#       run: |
+#         npm run build --prod
     
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./dist/
-        server-dir: ./
+#     - name: 📂 Sync files
+#       uses: SamKirkland/FTP-Deploy-Action@4.0.0
+#       with:
+#         server: ${{ secrets.FTP_SERVER }}
+#         username: ${{ secrets.FTP_USERNAME }}
+#         password: ${{ secrets.FTP_PASSWORD }}
+#         local-dir: ./dist/
+#         server-dir: ./
