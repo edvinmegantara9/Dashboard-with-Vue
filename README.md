@@ -1,11 +1,6 @@
 
 ## Description
 
-ADBANG VUE ADMIN
-
-BAPPEDA KOTA PAGAR ALAM - SUMATERA SELATAN
-
-
 ### Installation
 # install app's dependencies
 ```
