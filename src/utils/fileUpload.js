@@ -1,6 +1,6 @@
 import firebase from "firebase/compat/app";
 
-export function uploadFile(file) {
+export function uploadImage(file) {
 
     return new Promise((resolve, reject) => {
 
@@ -11,8 +11,8 @@ export function uploadFile(file) {
 
         storageRef.on(
             "state_changed",
-            (snapshot) => {
-                console.log(snapshot);
+            () => {
+                // console.log(snapshot);
             },
             (error) => {
                 reject(error.message)

@@ -1,7 +1,7 @@
 <template>
   <CSidebar class="bg-main" fixed :minimize="minimize" :show.sync="show">
     <CSidebarBrand class="d-md-down-none mb-2" to="/">
-      <img src="@/assets/logo/logo.png" width="60%" alt="" />
+      <img src="@/assets/logo/donasi_02.png" width="40%" alt="" />
     </CSidebarBrand>
 
     <CRenderFunction flat :content-to-render="computedSidebar" />
@@ -13,13 +13,14 @@
 </template>
 
 <script>
-// import * as data from "./_nav";
+import * as data from "./_nav";
 
 export default {
   name: "TheSidebar",
   data() {
     return {
       role: {},
+      data
     };
   },
   computed: {
@@ -29,40 +30,31 @@ export default {
     minimize() {
       return this.$store.state.sidebarMinimize;
     },
+    getRoles() {
+      return this.$store.getters["auth/getUser"];
+    },
+
     getRoleFromLocal() {
       return JSON.parse(localStorage.getItem("user"));
     },
     computedSidebar() {
-      let menus = [
-        {
-          _name: 'CSidebarNavItem',
-          name: 'Dashboard',
-          to: '/dashboard',
-          icon: 'cil-speedometer',
-        },
-        {
-          _name: 'CSidebarNavTitle',
-          _children: ['Menu']
-        },
-      ]
+      const role = JSON.parse(localStorage.getItem("user"));
 
-      if (JSON.parse(localStorage.getItem("user")).roles.menus) {
-        JSON.parse(localStorage.getItem("user")).roles.menus.forEach(element => {
-          menus.push({
-            _name: 'CSidebarNavItem',
-            name: element.name,
-            to: element.path,
-            icon: 'cil-file',
-          })
-        });
-      }
-
-      return [
+      if (role.roles.name.toLowerCase() == "dinas") {
+        return [
           {
             _name: "CSidebarNav",
-            _children: menus,
+            _children: data.admin,
           },
         ];
+      } else {
+        return [
+          {
+            _name: "CSidebarNav",
+            _children: data.restaurant,
+          },
+        ];
+      }
     },
   },
 };

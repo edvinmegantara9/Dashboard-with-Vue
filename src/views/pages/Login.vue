@@ -7,9 +7,9 @@
             <img src="@/assets/logo/group.png" width="80%" alt="" />
           </CRow>
         </CCol>
-        <CCol md="5" class="mt-5">
+        <CCol md="5" class="mt-4">
           <center>
-            <img src="@/assets/logo/logo.png" width="50%" alt="" />
+            <img src="@/assets/logo/donasi_02.png" width="35%" alt="" />
           </center>
           <br />
           <CCardGroup>
@@ -73,12 +73,12 @@ export default {
       setTimeout(() => {
         this.$store
           .dispatch("auth/login", this.form)
-          .then((resp) => {
+          .then(() => {
             this.$router.replace({ name: "Home" });
             this.$toast.success("Login Berhasil");
             loader.hide();
           })
-          .catch((e) => {
+          .catch(() => {
             loader.hide();
           });
       }, 2000);

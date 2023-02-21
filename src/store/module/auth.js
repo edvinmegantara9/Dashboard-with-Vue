@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 export default {
     namespaced: true,
     state: {
@@ -27,7 +26,7 @@ export default {
             });
         },
 
-        me(_) {
+        me() {
             return new Promise((resolve, reject) => {
                 axios.get('/me').then(resp => {
                     resolve(resp);
@@ -37,13 +36,12 @@ export default {
             });
         },
 
-        logout(_) {
+        logout() {
             return new Promise(resolve => {
                 localStorage.removeItem('token');
                 resolve();
             })
         }
-
     },
     getters: {
         getUser: state => { return state.user.user }

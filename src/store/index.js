@@ -4,7 +4,9 @@ import auth from './module/auth'
 import user from './module/user'
 import menu from './module/menu'
 import role from './module/role'
+import restorant from './module/restaurant'
 import dashboard from './module/dashboard'
+import donasi from './module/donasi'
 
 
 Vue.use(Vuex)
@@ -36,6 +38,8 @@ export default new Vuex.Store({
     dashboard,
     menu,
     role,
+    restorant,
+    donasi
   },
   mutations
 })

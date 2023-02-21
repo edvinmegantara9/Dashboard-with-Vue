@@ -120,11 +120,6 @@
             label="Nama Lengkap"
             placeholder="ketik disini"
           />
-          <CInput
-            v-model="form.position"
-            label="Jabatan"
-            placeholder="ketik disini"
-          />
            <CInput
             v-model="form.nip"
             label="NIP"
@@ -140,8 +135,17 @@
           <v-select class="mb-3"
             v-model="form.role_id"
             placeholder="Pilih Role"
+            label="label"
             :options="computedRole"
           ></v-select>
+          <label for="">Pilih restaurant</label>
+          <v-select 
+            placeholder="Rumah Makan"
+            class="" 
+            :reduce="itemsRestorant => itemsRestorant.value" 
+            v-model="form.restorant_id" 
+            label="label" 
+            :options="itemsRestorant"></v-select>
           <CInput
             v-if="!isUpdate"
             v-model="form.password"
@@ -160,7 +164,7 @@
       </div>
       <template slot="footer">
         <div>
-          <button @click="createModal = false" class="btn btn-secondary mr-3">
+          <button @click="createModal = !createModal" class="btn btn-secondary mr-3">
             Batal
           </button>
           <button @click="submit" v-if="!isUpdate" class="btn btn-primary">
@@ -238,7 +242,9 @@ export default {
       user: JSON.parse(localStorage.getItem("user")),
       page: 1,
       total: 0,
-      form: {},
+      form: {
+
+      },
       params: {
         sorttype: "asc",
         sortby: "id",
@@ -250,7 +256,8 @@ export default {
       searchOn: '',
       modalPassword: false,
       isPasswordValid: null, //null/boolean
-      invalidPassword: ''
+      invalidPassword: '',
+      itemsRestorant: [],
     };
   },
   methods: {
@@ -263,7 +270,36 @@ export default {
         this.$toast.error("Inputan tidak boleh kosong !!");
       }
     },
+    getDataRestorant() {
+        var loading = this.$loading.show();
 
+        let params = {
+          sorttype: "asc",
+          sortby: "id",
+          row: 100,
+          page: 1,
+          keyword: "",
+        }
+        
+        this.$store
+          .dispatch("restorant/get", params)
+          .then((resp) => {
+            const restData = resp.data.data;
+
+            restData.map(item => {
+              this.itemsRestorant.push({
+                label: item.name,
+                value: item.id
+              })
+            })
+
+            loading.hide();
+          })
+          .catch((e) => {
+            this.$toast.error("gagal mengambil data  \n", e);
+            loading.hide();
+          });
+      },
     searchOff(){
       this.isSearching = false;
       this.params.keyword = '';
@@ -272,6 +308,9 @@ export default {
     submit() {
       var loading = this.$loading.show();
       this.form.role_id = this.form.role_id.value
+      this.form.restorant_id = this.form.role_id.value
+      console.log(this.form)
+
       this.$store
         .dispatch("user/addUser", this.form)
         .then(() => {
@@ -281,7 +320,7 @@ export default {
           this.form = {};
           this.getData();
         })
-        .catch((e) => {
+        .catch(() => {
           loading.hide();
         });
     },
@@ -289,10 +328,31 @@ export default {
       this.form = item;
       this.isUpdate = true;
       this.createModal = true;
+      if (this.form.role_id) {
+        let role = {
+          value: this.form.role_id,
+          label: this.roles.find(element => {
+            return element.id == this.form.role_id
+          }).name
+        }
+        this.form.role_id = role
+      }
+
+      if (this.form.restaurant_id !== null) {
+        let role = {
+          value: this.form.restaurant_id,
+          label: this.itemsRestorant.find(element => {
+            return element.value == this.form.restaurant_id
+          }).label
+        }
+        this.form.restaurant_id = role
+      }
     },
     update() {
       var loading = this.$loading.show();
       this.form.role_id = this.form.role_id.value
+      this.form.restorant_id = this.form.restorant_id.value
+      console.log(this.form)
       this.$store
         .dispatch("user/updateUser", { id: this.form.id, data: this.form })
         .then(() => {
@@ -302,7 +362,7 @@ export default {
           this.form = {};
           this.getData();
         })
-        .catch((e) => {
+        .catch(() => {
           loading.hide();
         });
     },
@@ -317,7 +377,7 @@ export default {
           })
           .catch((e) => {
             this.$toast.error(e);
-            loading.hide();
+            this.$loading.hide();
           });
       }
     },
@@ -328,7 +388,7 @@ export default {
         .then((resp) => {
           this.items = resp.data.data;
           this.total = resp.data.total;
-
+          console.log(resp.data.data)
           // khusus untuk checkbox
           this.selectedItems = [];
           this.items.forEach(element => {
@@ -341,9 +401,9 @@ export default {
           });
           loading.hide();
 
-          this.getDataRole();
+          // this.getDataRole();
         })
-        .catch((e) => {
+        .catch(() => {
           loading.hide();
         });
     },
@@ -362,9 +422,10 @@ export default {
         .dispatch("role/get", params)
         .then((resp) => {
           this.roles = resp.data.data;
+
           loading.hide();
         })
-        .catch((e) => {
+        .catch(() => {
           loading.hide();
         });
     },
@@ -431,7 +492,7 @@ export default {
   },
   computed: {
     computedItems() {
-      return this.items.map((item, index) => {
+      return this.items.map((item) => {
         return {
           ...item,
           role: item.roles ? item.roles.name : "Tidak ada",
@@ -440,16 +501,24 @@ export default {
         };
       });
     },
+    computedRestorantItems(){
+        return this.itemsRestorant.map(item => {
+          return {
+            label: item.name,
+            value: item.id
+          }
+        })
+      },
     computedRole() {
-      if (this.form.role_id) {
-        let role = {
-          value: this.form.role_id,
-          label: this.roles.find(element => {
-            return element.id == this.form.role_id
-          }).name
-        }
-        this.form.role_id = role
-      }
+      // if (this.form.role_id) {
+      //   let role = {
+      //     value: this.form.role_id,
+      //     label: this.roles.find(element => {
+      //       return element.id == this.form.role_id
+      //     }).name
+      //   }
+      //   this.form.role_id = role
+      // }
       return this.roles.map((item) => {
         return {
           value: item.id,
@@ -460,6 +529,8 @@ export default {
   },
   mounted() {
     this.getData();
+    this.getDataRestorant()
+    this.getDataRole()
   },
 };
 </script>

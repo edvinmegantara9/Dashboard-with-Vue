@@ -14,6 +14,8 @@ const Login = () => import('@/views/pages/Login')
 const User = () => import('@/views/menu/User')
 const Role = () => import('@/views/menu/Role')
 const Menu = () => import('@/views/menu/Menu')
+const Donasi = () => import('@/views/menu/Donasi')
+const Restaurant = () => import('@/views/menu/Restaurant')
 
 Vue.use(Router)
 
@@ -38,19 +40,29 @@ function configRoutes() {
           component: Dashboard
         },
         {
-          path: 'User',
+          path: 'user',
           name: 'Kelola User',
           component: User
         },
         {
-          path: 'Role',
-          name: 'Kelola Role / PD',
+          path: 'role',
+          name: 'Kelola Role',
           component: Role
         },
         {
-          path: 'Menu',
+          path: 'menu',
           name: 'Kelola Menu',
           component: Menu
+        },
+        {
+          path: 'donasi',
+          name: 'Kelola Donasi',
+          component: Donasi
+        },
+        {
+          path: 'restaurant',
+          name: 'Kelola Restaurant',
+          component: Restaurant
         },
       ]
     },
