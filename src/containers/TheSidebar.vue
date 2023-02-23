@@ -1,7 +1,7 @@
 <template>
   <CSidebar class="bg-main" fixed :minimize="minimize" :show.sync="show">
     <CSidebarBrand class="d-md-down-none mb-2" to="/">
-      <img src="@/assets/logo/donasi_02.png" width="40%" alt="" />
+      <img src="@/assets/logo/DONASI_01.png" width="80%" alt="" />
     </CSidebarBrand>
 
     <CRenderFunction flat :content-to-render="computedSidebar" />
