@@ -30,7 +30,7 @@ function configRoutes() {
   return [
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: '/donasi',
       name: 'Home',
       component: TheContainer,
       children: [
