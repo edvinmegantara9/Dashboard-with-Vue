@@ -1,10 +1,10 @@
 export const admin = [
-  // {
-  //   _name: 'CSidebarNavItem',
-  //   name: 'Dashboard',
-  //   to: '/dashboard',
-  //   icon: 'cil-speedometer',
-  // },
+  {
+    _name: 'CSidebarNavItem',
+    name: 'Dashboard',
+    to: '/dashboard',
+    icon: 'cil-speedometer',
+  },
   {
     _name: 'CSidebarNavTitle',
     _children: ['Menu']
@@ -46,12 +46,12 @@ export const admin = [
 ]
 
 export const restaurant = [
-    // {
-    //   _name: 'CSidebarNavItem',
-    //   name: 'Dashboard',
-    //   to: '/dashboard',
-    //   icon: 'cil-speedometer',
-    // },
+    {
+      _name: 'CSidebarNavItem',
+      name: 'Dashboard',
+      to: '/dashboard',
+      icon: 'cil-speedometer',
+    },
     {
       _name: 'CSidebarNavTitle',
       _children: ['Menu']

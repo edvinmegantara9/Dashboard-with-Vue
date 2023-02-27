@@ -39,7 +39,7 @@ export default {
     },
     computedOptions () {
       return deepObjectsMerge(this.defaultOptions, this.options || {})
-    }
+    },
   },
     methods: {
     // generate random color

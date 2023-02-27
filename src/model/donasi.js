@@ -4,6 +4,7 @@ export const fields = [
     { key: 'nama_restorant', label: "Rumah Makan", _style:'min-width:100px' },
     { key: 'name', label: "Nama", _style:'min-width:100px' },
     { key: 'phone_number', label: "No. Telepon", _style:'min-width:100px' },
+    { key: 'jumlah_donasi', label: "Jumlah Donasi", _style:'min-width:100px' },
     { key: 'payment_method', label: "Jenis pembayaran", _style:'min-width:100px' },
     { key: 'bukti_transfer', label: "Bukti transfer", _style:'min-width:100px' },
     { key: 'created_at', label: "Tanggal Dibuat", _style:'min-width:100px' },

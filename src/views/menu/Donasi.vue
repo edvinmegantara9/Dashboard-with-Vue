@@ -182,6 +182,20 @@
                     placeholder="ketik disini"
                 />
             </div>
+            <div class="col-3">Payment methods</div>
+            <div class="col-9">
+              <CSelect
+                v-model="form.payment_method"
+                :options="[{ label:'Cash', value:'Cash' },{label: 'Transfer', value: 'Transfer'}]"
+              />
+            </div>
+            <div class="col-3">Jumlah donasi</div>
+            <div class="col-9">
+                <CInput
+                    v-model="form.jumlah_donasi"
+                    placeholder="ketik disini"
+                />
+            </div>
             <div class="col-3">Bukti transfer</div>
             <div class="col-9">
               <div class="row">
@@ -236,13 +250,7 @@
               </div>
             </div>
             </div>
-            <div class="col-3">Payment methods</div>
-            <div class="col-9">
-                <CInput
-                    v-model="form.payment_method"
-                    placeholder="ketik disini"
-                />
-            </div>
+            
         </div>
         <template slot="footer">
           <div>
@@ -311,6 +319,7 @@
           phone_number: "",
           bukti_transfer: "",
           payment_method: "",
+          jumlah_donasi: "",
           restorant_id: ""
         },
         user: JSON.parse(localStorage.getItem("user")),
@@ -363,7 +372,7 @@
       },
       submit() {
         var loading = this.$loading.show();
-        this.form.restorant_id = JSON.parse(localStorage.getItem('user')).restaurant_id
+        this.form.restorant_id = JSON.parse(localStorage.getItem('user')).restorant_id
         // console.log(JSON.parse(localStorage.getItem('user')))
         this.$store
           .dispatch("donasi/add", this.form)
@@ -376,6 +385,7 @@
               phone_number: "",
               bukti_transfer: "",
               payment_method: "",
+              jumlah_donasi: "",
               restorant_id: ""
             }
             this.getData();
@@ -391,8 +401,13 @@
       },
       cancel() {
         this.form = {
-          type: 0,
-        };
+          name: "",
+          phone_number: "",
+          bukti_transfer: "",
+          payment_method: "",
+          jumlah_donasi: "",
+          restorant_id: ""
+        }
         this.createModal = false;
       },
       update() {
@@ -412,6 +427,7 @@
               phone_number: "",
               bukti_transfer: "",
               payment_method: "",
+              jumlah_donasi: "",
               restorant_id: ""
             }
             this.getData();
@@ -434,12 +450,13 @@
             .dispatch("donasi/delete", item.id)
             .then(() => {
               this.$toast.success("Berhasil menghapus data ");
-  
+              console.log(item.id)
               this.form = {
                 name: "",
                 phone_number: "",
                 bukti_transfer: "",
                 payment_method: "",
+                jumlah_donasi: "",
                 restorant_id: ""
               }
               this.getData();
@@ -459,7 +476,7 @@
             this.items = resp.data.data;
             this.total = resp.data.total;
             this.to = resp.data.to;
-            // console.log(resp.data)
+            console.log(resp.data)
   
             // khusus untuk checkbox
             this.selectedItems = [];
@@ -660,7 +677,7 @@
   
     created() {
       this.fields = data.fields
-      this.form.restorant_id = JSON.parse(localStorage.getItem('user')).restaurant_id
+      // this.form.restorant_id = JSON.parse(localStorage.getItem('user')).restaurant_id
 
     },
   };

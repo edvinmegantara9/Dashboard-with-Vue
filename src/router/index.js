@@ -5,7 +5,7 @@ import Router from 'vue-router'
 const TheContainer = () => import('@/containers/TheContainer')
 
 // Views - menu
-const Dashboard = () => import('@/views/menu/dashboard')
+const Dashboard = () => import('@/views/menu/Dashboard')
 
 // Views - Pages
 const Page404 = () => import('@/views/pages/Page404')
@@ -30,7 +30,7 @@ function configRoutes() {
   return [
     {
       path: '/',
-      redirect: '/donasi',
+      redirect: '/dashboard',
       name: 'Home',
       component: TheContainer,
       children: [

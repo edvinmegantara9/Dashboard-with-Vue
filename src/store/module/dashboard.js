@@ -42,6 +42,15 @@ export default {
                 })
             });
         },
+        getDonasiRumahMakan(_){
+            return new Promise((resolve, reject) => {
+                axios.get('/dashboard/').then(resp => {
+                    resolve(resp.data);
+                }).catch(e => {
+                    reject(e);
+                })
+            })
+        }
     },
     getters: {
 
