@@ -4,7 +4,7 @@
       <span class="ml-1">&copy; {{ new Date().getFullYear() }}</span>
     </div>
     <div class="mfs-auto">
-      <span class="mr-1" target="_blank">GEMABERILMU</span>
+      <span class="mr-1" target="_blank">DASHBOARD</span>
     </div>
   </CFooter>
 </template>

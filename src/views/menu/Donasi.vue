@@ -196,6 +196,18 @@
                     placeholder="ketik disini"
                 />
             </div>
+            <div class="col-3">Pilih Restoran</div>
+            <div class="col-9">
+              <select
+                style="max-width: 100%"
+                class="form-control form-control-md mb-3"
+                placeholder="Pilih Restoran"
+                v-model="form.restorant_id"
+              >
+                <option value="" disabled>Nama Restoran</option>
+                <option v-for="(item) in restorans" :key="item.id" :value="item.id">{{ item.name }}</option>
+              </select>
+            </div>
             <div class="col-3">Bukti transfer</div>
             <div class="col-9">
               <div class="row">
@@ -308,6 +320,7 @@
         fields: [],
         isUpdate: false,
         items: [],
+        restorans: [],
         selectedItems: [],
         isSelectedAll: false,
         selectedAction: 0,
@@ -337,11 +350,28 @@
       };
     },
     methods: {
+      getData() {
+        var loading = this.$loading.show();
+        
+        this.$store
+          .dispatch("restorant/get", this.params)
+          .then((resp) => {
+            this.restorans = resp.data.data;
+            this.getDataRestorant();
+            loading.hide();
+          })
+          .catch((e) => {
+            this.$toast.error("gagal mengambil data  \n", e);
+            loading.hide();
+          });
+      },
       getDataRestorant() {
         this.$store
           .dispatch("restorant/get", this.params)
           .then((resp) => {
             let restData = resp.data.data;
+
+            this.restorans = resp.data.data;
 
             restData.map(item => {
               this.itemRestorant.push({
@@ -372,7 +402,7 @@
       },
       submit() {
         var loading = this.$loading.show();
-        this.form.restorant_id = JSON.parse(localStorage.getItem('user')).restorant_id
+        // this.form.restorant_id = JSON.parse(localStorage.getItem('user')).restorant_id
         // console.log(JSON.parse(localStorage.getItem('user')))
         this.$store
           .dispatch("donasi/add", this.form)

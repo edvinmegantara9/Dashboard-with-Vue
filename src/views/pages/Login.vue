@@ -4,13 +4,10 @@
       <CRow class="mt-5">
         <CCol md="7" class="mt-5">
           <CRow class="d-flex flex-row align-items-end">
-            <img src="@/assets/logo/DONASI_02.png" width="70%" alt="" />
+            <img src="@/assets/logo/group.png" width="70%" alt="" />
           </CRow>
         </CCol>
         <CCol md="5" class="mt-4">
-          <center>
-            <img src="@/assets/logo/DONASI_01.png" width="70%" alt="" />
-          </center>
           <br />
           <CCardGroup>
             <CCard class="p-4 radius">
@@ -19,7 +16,7 @@
                   <h1>Login</h1>
                   <p class="text-muted">Sign In to your account</p>
                   <CInput
-                    placeholder="Nip"
+                    placeholder="Username"
                     v-model="form.nip"
                     autocomplete="nip"
                   >

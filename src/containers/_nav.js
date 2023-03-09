@@ -34,6 +34,10 @@ export const admin = [
     icon: 'cil-file',
     items: [
       {
+        name: 'Kelola Menu',
+        to: 'menu',
+      },
+      {
         name: 'Kelola User',
         to: 'user',
       },

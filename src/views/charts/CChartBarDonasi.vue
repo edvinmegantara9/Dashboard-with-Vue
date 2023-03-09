@@ -3,7 +3,7 @@
       :datasets="computedListDonasi"
       :labels="labels"
       :options="computedOptions"
-      style="height:300px"
+      style="height:400px"
     />
   </template>
   
