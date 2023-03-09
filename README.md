@@ -1,5 +1,8 @@
 
 ## Description
+Dashboard Application with Chart, Report, User Management, User Role Management, and Menu Management Features
+
+This Dashboard Application is a platform used to monitor important data and information within an organization or business. The application is equipped with various features such as charts, reports, user management, user role management, and menu management to facilitate users in accessing and managing data.
 
 ### Installation
 # install app's dependencies
@@ -26,18 +29,21 @@ npm run test:unit
 npm run test:e2e
 
 ```
+## Features
 
+### Chart
+The chart feature in this application is used to display data in an interactive and easy-to-understand graph. Users can choose the type of chart they want, such as line chart, bar chart, pie chart, and so on. Data on the chart can be updated in real-time and adjusted to suit the user's needs.
 
-### Documentation
+### Report
+The report feature in this application is used to create reports based on data entered into the system. Users can determine the type of report they want, filter data, and customize the appearance of the report to suit their needs. Reports that have been created can be downloaded in PDF or Excel file format.
 
-CoreUI tools documentation:
+### User Management
+The user management feature in this application is used to manage user data that has access to the system. Users can add, edit, or delete user data. Users can also determine the type of access that users have, such as admin, editor, or viewer.
 
-- Components documentation: [CoreUI Vue library](https://coreui.io/vue/docs)
-- Styles documentation: [CoreUI styles](https://coreui.io/docs/3.0-beta/)
-- Icons documentation: [CoreUI Icons](http://coreui.io/icons)
+### User Role Management
+The user role management feature in this application is used to determine user access rights. Users can add, edit, or delete user roles. Each user role has different access rights based on their respective roles.
 
-## Copyright and license
+### Menu Management
+The menu management feature in this application is used to add, edit, or delete menus in the system. Users can customize the menu according to user or organizational needs.
 
-Copyright 2020 creativeLabs Łukasz Holeczek. Code released under [the MIT license](https://github.com/coreui/coreui-free-vue-admin-template/blob/master/LICENSE).
-There is only one limitation - you cannot re-distribute the `CoreUI` as stock nor if you modify the `CoreUI`. In the past we faced some problems with persons who tried to sell `CoreUI` based templates.
 
